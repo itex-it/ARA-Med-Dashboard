@@ -1,0 +1,2639 @@
+{
+  "name": "MEDSTAR Complete V2 - medstar-2512 All 14 Tools + Session Management",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "medstar-2512",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a7be3914-d3b4-44ea-84c5-609ba75d8b86",
+      "name": "Node-000: Webhook-ElevenLabs",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2016,
+        560
+      ],
+      "webhookId": "medstar-2518"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "identify_patient",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "4ae0e269-894d-4483-9cc9-df264fb23901"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "identify_patient"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "check_patient_active",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "136738bf-d4a2-4797-9d92-81accc09f75e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "check_patient_active"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "get_profiles",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "659ef635-c167-44b3-89d5-c2bb68ca3503"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "get_profiles"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "get_appointment_types",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a6301032-4b43-48d0-9aa2-6bbdd4f06148"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "get_appointment_types"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "find_next_free_appointment",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8b6c6b65-6c09-4b51-93b9-3285a78a0abb"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "find_next_free_appointment"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "book_appointment",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "47f86dac-bcf1-42bc-88c3-70550c040193"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "book_appointment"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "get_patient_appointments",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2aa87857-8ab4-427b-8b95-64309db30437"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "get_patient_appointments"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "cancel_appointment",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "14f41caa-707b-4b0e-8e5c-f8de62533d79"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancel_appointment"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "get_available_prescriptions",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2f3e0232-1233-4082-8012-5aead9a483c7"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "get_available_prescriptions"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "order_prescription",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a6ceed69-6328-45f3-9583-adbd0960c10a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "order_prescription"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "get_prescription_orders",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "31577cf4-9824-42b8-88dc-1aea03894c8b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "get_prescription_orders"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "cancel_prescription_order",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "185dd215-5aa6-485b-bdca-fed53b4b01bb"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancel_prescription_order"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "check_emergency_symptoms",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "380cf697-5a87-4d56-bca5-2d52e849c53d"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "check_emergency_symptoms"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "leave_message",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ef90cc99-c040-4f88-8048-bf2c254b6a13"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "leave_message"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "d5b81692-b2a4-46bf-b443-379348ec95ef",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "check_appointment_availability",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "check_appointment_availability"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "a884c95e-0da4-477c-999b-d153e9af9c03",
+                    "leftValue": "={{ $json.headers.action }}",
+                    "rightValue": "2pre_webhook",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pre_webhook"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "f6aad327-d8d5-495b-a17c-f5027bcaf8bc",
+                    "leftValue": "={{ $json.headers.action }}",
+                    "rightValue": "check_patient_active",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pre_webhook2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "f1d5cdc8-4fad-4079-91b6-bced9bbc9259",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "getOpeningHours",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "getOpeningHours"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "f6e5b47e-2a40-449a-8899-7b25c75f91fe",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "send_email",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "send_email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "82e93c91-7a01-4a6d-bf3d-48c5cfc6751d",
+      "name": "Node-001: Switch-ActionRouter",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -1008,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "9c3830d3-47c0-4ce2-bcc8-c743892f5ec6",
+      "name": "Node-999: Respond-Final",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1296,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/patient/identify",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=phone",
+              "value": "={{ $json.body.phone }}"
+            },
+            {
+              "name": "birthdate",
+              "value": "={{ $json.body.birthdate }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "45ac4d44-b946-41ac-83a6-bb2cb5e5b1cb",
+      "name": "Node-0102: API-identify_patient",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -368,
+        -1360
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst webhookData = $node[\"Node-000: Webhook-ElevenLabs\"].json.body;\n\ntry {\n  if (data.error) {\n\n  // 👇 NEUER IF-BLOCK für \"no unique match\"\n  if (typeof data.error.message === 'string' && data.error.message.includes('no unique match')) {\n    try {\n      const jsonStart = data.error.message.indexOf('{');\n      const jsonString = data.error.message.slice(jsonStart);\n      const parsed = JSON.parse(jsonString);\n      \n      return {\n        message: \"Wir haben mehrere Personen mit dieser Telefonnummer im System. Bitte nennen Sie mir Ihr Geburtsdatum zur eindeutigen Identifikation.\",\n        status: \"error\",\n        error_type: \"multiple_pids\",\n        count: String(parsed.entries || 2)\n      };\n    } catch (e) {\n      // Fallback wird unten behandelt\n    }\n  }\n\n\n\n    \n    let errorType = data.error;\n\n    // Wenn error ein Axios-Objekt ist, extrahiere den API-Error\n    if (typeof errorType === 'object' && errorType.response && errorType.response.data && errorType.response.data.error) {\n      errorType = errorType.response.data.error;\n    } else if (typeof errorType === 'object') {\n      // Fallback: Nur message und code extrahieren\n      errorType = errorType.message || 'unknown';\n    }\n\n    if (errorType === 'no_match') {\n      return {\n        message: \"Ihre Telefonnummer ist noch nicht in unserem System hinterlegt. Waren Sie schon einmal bei uns?\",\n        status: \"error\",\n        error_type: \"no_match\"\n      };\n    }\n\n if (errorType === 'multiple_pids') {\n      return {\n        message: \"Wir haben mehrere Personen mit dieser Telefonnummer im System. Bitte nennen Sie mir Ihr Geburtsdatum zur eindeutigen Identifikation.\",\n        status: \"error\",\n        error_type: \"multiple_pids\",\n        count: String(data.count || 2)\n      };\n    }\n    \n    return {\n      message: `Patient konnte nicht identifiziert werden.`,\n      status: \"error\",\n      error_type: \"no_match\"\n    };\n  }\n\n  // Success case\n  const active = data.active ? true : false;\n  const activeText = active ? 'aktiv' : 'inaktiv';\n  return {\n //   message: `Patient erfolgreich identifiziert. Ihre Patienten-ID ist ${data.pid} und Ihr Status ist ${activeText}.`,\n    message: `Sehr gut, ich habe Sie im System gefunden.`,\n    status: \"success\",\n    pid: String(data.pid),\n    svnr: String(data.svnr),\n    active: String(active)\n  };\n} catch (e) {\n  // Globaler Fallback für undefinierte Errors\n  return {\n    message: \"Patient nicht im System angelegt.\",\n    status: \"error\",\n    error_type: \"no_match\"\n  };\n}"
+      },
+      "id": "d399e57a-94bf-4124-b723-72d44fef33cc",
+      "name": "Node-0103: Transform-identify_patient",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -1344
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.MedstarServer }}/patient/active?pid={{ $json.body.pid }}&svnr={{ $json.body.svnr }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "9b1a0c6a-fb3d-4b52-825e-0f3ad23b6ef9",
+      "name": "Node-0202: API-check_patient_active",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -336,
+        -1168
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\nif (data.error || data.active === undefined) {\n  return {\n    message: \"Patient-Status konnte nicht geprüft werden.\",\n    status: \"error\",\n   // error_type: data.error || \"unknown\"\n  };\n}\n\nconst active = data.active ? true : false;\nconst statusText = active ? \"aktiv und kann Termine buchen\" : \"nicht im System\";\n\nreturn {\n  message: `Patient ist ${statusText}.`,\n  status: \"success\",\n  active: String(active),\n  pid: String(data.pid || \"null\"),\n  svnr: String(data.svnr || \"null\")\n};\n"
+      },
+      "id": "316c3303-1669-4b27-8103-956701219987",
+      "name": "Node-0203: Transform-check_patient_active",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        -1184
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.MedstarServer }}/profiles?",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "53875ab2-3a5b-4a2d-9292-66bcf8a20da9",
+      "name": "Node-0302: API-get_profiles",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -320,
+        -976
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const profiles = $input.item.json.profiles || [];\nconst error = $input.item.json.error;\n\nif (error) {\n  return {\n    message: `Profile konnten nicht abgerufen werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (profiles.length === 0) {\n  return {\n    message: \"Keine Profile verfügbar.\",\n    status: \"success\",\n    count: \"0\"\n  };\n}\n\nconst result = {\n  status: \"success\",\n  count: String(profiles.length)\n};\n\nprofiles.forEach((profile, index) => {\n  const num = index + 1;\n  result[`profile_${num}_name`] = profile.name;\n  result[`profile_${num}_id`] = String(profile.id);\n  result[`profile_${num}_open_days`] = profile.open.join(', ');\n});\n\nconst profileNames = profiles.map(p => p.name).join(', ');\nresult.message = `Es sind ${profiles.length} Profile verfügbar: ${profileNames}.`;\n\nreturn result;\n"
+      },
+      "id": "f55fb70f-452b-47b8-8716-1c5e5e11f0b5",
+      "name": "Node-0303: Transform-get_profiles",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        -992
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.MedstarServer }}/appointments/types?profile=0",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "b5f9e529-31c2-454a-8485-28547f038bdc",
+      "name": "Node-0402: API-get_appointment_types",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -304,
+        -784
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const types = $input.item.json.appointment_types || [];\nconst error = $input.item.json.error;\n\nif (error) {\n  return {\n    message: `Terminarten konnten nicht abgerufen werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (types.length === 0) {\n  return {\n    message: \"Keine Terminarten verfügbar.\",\n    status: \"success\",\n    count: \"0\"\n  };\n}\n\nconst result = {\n  status: \"success\",\n  count: String(types.length)\n};\n\ntypes.forEach((appt, index) => {\n  const num = index + 1;\n  result[`type_${num}_name`] = appt.name;\n  result[`type_${num}_duration`] = String(appt.duration_minutes);\n});\n\nconst typeNames = types.map(a => `${a.name} (${a.duration_minutes} Minuten)`).join(', ');\nresult.message = `Es sind ${types.length} Terminarten verfügbar: ${typeNames}.`;\n\nreturn result;\n"
+      },
+      "id": "f18bc186-6262-4396-ab1f-5263b8d61e49",
+      "name": "Node-0403: Transform-get_appointment_types",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        -768
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.MedstarServer }}/appointments/next-free-slot?date={{ $json.body.from_date }}&type={{ $json.body.type }}&profile=0",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "c7630d37-c6d6-42c8-bc41-a21536a32cce",
+      "name": "Node-0502: API-find_next_free_appointment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -288,
+        -576
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\ntry {\n  if (data.error) {\n    let errorMsg = 'unbekannter Fehler';\n\n    // Axios-Error: response.data.error vorhanden?\n    if (data.error.response?.data?.error) {\n      errorMsg = data.error.response.data.error;\n    }\n    // Oder message enthält escaped JSON wie \"400 - {\\\"error\\\":\\\"invalid date\\\"}\"\n    else if (data.error.message) {\n      const msg = data.error.message;\n      const jsonPart = msg.split(' - ')[1] || msg;\n      if (jsonPart.startsWith('{\"error\":')) {\n        try {\n          errorMsg = JSON.parse(jsonPart).error;\n        } catch (e) {\n          errorMsg = jsonPart;\n        }\n      } else {\n        errorMsg = msg;\n      }\n    }\n\n    // Nutzerfreundliche Übersetzung bekannter MEDSTAR-Fehler\n    const friendly = {\n      'invalid date': 'Das angegebene Datum ist ungültig oder liegt außerhalb der Öffnungszeiten.',\n      'invalid profile': 'Das gewählte Profil ist nicht verfügbar.',\n      'invalid type': 'Die Terminart wird nicht angeboten.'\n    };\n\n    const displayMsg = friendly[errorMsg] || `Technischer Fehler: ${errorMsg}`;\n\n    return {\n      message: `Nächster Termin konnte nicht gefunden werden. ${displayMsg}`,\n      status: \"error\",\n      error_type: errorMsg\n    };\n  }\n\n  // Kein Slot gefunden (kein Error, aber nichts frei)\n  if (!data.slot) {\n    return {\n      message: \"Kein freier Termin gefunden. Möchten Sie einen anderen Zeitraum oder eine andere Terminart versuchen?\",\n      status: \"success\",\n      available: \"false\"\n    };\n  }\n\n  // Erfolg: Slot vorhanden\n  const slotDate = new Date(data.slot);\n  const dateStr = slotDate.toLocaleDateString('de-DE', {\n    day: 'numeric',\n    month: 'long',\n    year: 'numeric'\n  });\n  const timeStr = slotDate.toLocaleTimeString('de-DE', {\n    hour: '2-digit',\n    minute: '2-digit'\n  });\n\n  return {\n    message: `Der nächste freie Termin ist am ${dateStr} um ${timeStr} Uhr für ${data.duration_minutes} Minuten.`,\n    status: \"success\",\n    available: \"true\",\n    slot: data.slot,\n    duration_minutes: String(data.duration_minutes)\n  };\n\n} catch (e) {\n  return {\n    message: \"Unerwarteter Fehler bei der Terminsuche.\",\n    status: \"error\",\n    error_type: \"unexpected\"\n  };\n}"
+      },
+      "id": "53da3efa-1e15-41eb-bb3f-252eb165794c",
+      "name": "Node-0503: Transform-find_next_free_appointment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        -576
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/appointments/book",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"patient\": {\n    \"svnr\": \"{{ $json.body.svnr }}\",\n    \"pid\": \"{{ $json.body.pid }}\"\n  },\n  \"date\": \"{{ $json.body.date }}\",\n  \"profile\": 0,\n  \"type\": \"{{ $json.body.type }}\",\n  \"notes\": \"{{ $json.body.notes }}\"\n}\n",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "698f1650-2a9f-4761-8f3d-5b48102f83af",
+      "name": "Node-0602: API-book_appointment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        -384
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\ntry {\n  if (data.error) {\n    let errorMsg = 'unbekannter Fehler';\n\n    // Axios-Error parsen\n    if (data.error.response?.data?.error) {\n      errorMsg = data.error.response.data.error;\n    } else if (data.error.message) {\n      const msg = data.error.message;\n      const jsonPart = msg.split(' - ')[1] || msg;\n      if (jsonPart.startsWith('{\"error\":')) {\n        try { errorMsg = JSON.parse(jsonPart).error; } catch {}\n      } else {\n        errorMsg = jsonPart;\n      }\n    }\n\n    // Bekannte Fehler für /appointments/book (Doku Seite 12-13)\n    const friendly = {\n      'Slot not available': 'Der gewünschte Termin ist leider nicht mehr verfügbar.',\n      'patient not identified': 'Patient konnte nicht identifiziert werden.',\n      'pid not valid': 'Ungültige Patienten-ID.',\n      'pid doesnt match to svnr': 'Patienten-ID und SVNR stimmen nicht überein.',\n      'invalid profile': 'Das Profil ist ungültig.',\n      'invalid date': 'Das Datum/Uhrzeit ist ungültig.',\n      'invalid type': 'Die Terminart ist ungültig.'\n    };\n\n    const display = friendly[errorMsg] || `Technischer Fehler: ${errorMsg}`;\n\n    return {\n      message: `Termin konnte nicht gebucht werden. ${display} Möchten Sie einen anderen Termin wählen?`,\n      status: \"error\",\n      error_type: errorMsg\n    };\n  }\n\n  // Erfolg: Termin gebucht\n  const appointmentDate = new Date(data.date);\n  const dateStr = appointmentDate.toLocaleDateString('de-DE', {\n    day: 'numeric',\n    month: 'long',\n    year: 'numeric'\n  });\n  const timeStr = appointmentDate.toLocaleTimeString('de-DE', {\n    hour: '2-digit',\n    minute: '2-digit'\n  });\n\n  return {\n    message: `Ihr Termin wurde erfolgreich gebucht für den ${dateStr} um ${timeStr} Uhr (${data.type}).${data.notes ? ` Notiz: ${data.notes}.` : ''} Vielen Dank!`,\n    status: \"success\",\n    appointment_id: data.id || \"\",\n    date: data.date,\n    type: data.type,\n    profile: data.profile,\n    duration_minutes: String(data.duration_minutes || '')\n  };\n\n} catch (e) {\n  return {\n    message: \"Unerwarteter Fehler beim Buchen des Termins.\",\n    status: \"error\",\n    error_type: \"unexpected\"\n  };\n}"
+      },
+      "id": "d336475f-afe2-415c-926a-398b7298a21a",
+      "name": "Node-0603: Transform-book_appointment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        384,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/appointments/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pid\": \"{{ $json.body.pid }}\",\n  \"date\": \"{{ $json.body.date }}\",\n  \"profile\": \"0\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "a35133d5-b653-4a70-b0b4-a8d4bf30f094",
+      "name": "Node-0702: API-get_patient_appointments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -240,
+        -160
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const appointments = $input.item.json.appointments || [];\nconst error = $input.item.json.error;\n\nif (error) {\n  return {\n    message: `Termine konnten nicht abgerufen werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (appointments.length === 0) {\n  return {\n    message: \"Sie haben aktuell keine gebuchten Termine.\",\n    status: \"success\",\n    count: \"0\"\n  };\n}\n\nconst result = {\n  status: \"success\",\n  count: String(appointments.length)\n};\n\nappointments.forEach((appt, index) => {\n  const num = index + 1;\n  result[`appointment_${num}_id`] = appt.id;\n  result[`appointment_${num}_date`] = appt.date;\n  result[`appointment_${num}_type`] = appt.type;\n  result[`appointment_${num}_profile`] = appt.profile;\n});\n\n// Build summary message\nconst apptList = appointments.map(a => {\n  const date = new Date(a.date);\n  const dateStr = date.toLocaleDateString('de-DE', { day: 'numeric', month: 'long' });\n  const timeStr = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });\n  return `${dateStr} um ${timeStr} Uhr (${a.type})`;\n}).join(', ');\n\nresult.message = `Sie haben ${appointments.length} Termin${appointments.length > 1 ? 'e' : ''}: ${apptList}.`;\n\nreturn result;\n"
+      },
+      "id": "05aa8dd8-c9eb-40be-a1b4-298283f0eddf",
+      "name": "Node-0703: Transform-get_patient_appointments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/appointments/cancel ",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"id\": \"{{ $json.body.appointment_id }}\",\n  \"reason\": \"{{ $json.body.reason }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "fcb810d9-21bb-40fd-a5ae-0b32355589ea",
+      "name": "Node-0802: API-cancel_appointment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        608
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst error = data.error;\n\nif (error) {\n  return {\n    message: `Termin konnte nicht storniert werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (!data.success) {\n  return {\n    message: \"Termin konnte nicht storniert werden. Bitte versuchen Sie es erneut oder kontaktieren Sie die Ordination.\",\n    status: \"error\",\n    error_type: \"cancellation_failed\"\n  };\n}\n\nreturn {\n  message: \"Ihr Termin wurde erfolgreich storniert.\",\n  status: \"success\",\n  cancelled: \"true\",\n  appointment_id: data.id || \"\"\n};\n"
+      },
+      "id": "6bfcffb5-4e86-482a-8294-fafab8f2f008",
+      "name": "Node-0803: Transform-cancel_appointment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.MedstarServer }}/patient/prescriptions?pid={{ $json.body.pid }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "ebd5912e-7a45-48f6-8a94-f1908317243b",
+      "name": "Node-0902: API-get_available_prescriptions",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        768
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\ntry {\n  // Error-Handling (Axios-Error parsen)\n  if (data.error) {\n    let errorMsg = 'unbekannter Fehler';\n\n    if (data.error.response?.data?.error) {\n      errorMsg = data.error.response.data.error;\n    } else if (data.error.message) {\n      const msg = data.error.message;\n      const jsonPart = msg.split(' - ')[1] || msg;\n      if (jsonPart.startsWith('{\"error\":')) {\n        try { errorMsg = JSON.parse(jsonPart).error; } catch {}\n      } else {\n        errorMsg = jsonPart;\n      }\n    }\n\n    // \"order not possible\" = keine Medikamente bestellbar → kein Error für User\n    if (errorMsg === 'order not possible') {\n      return {\n        message: \"Keine Medikamente verfügbar.\",\n        status: \"success\",\n        count: \"0\"\n      };\n    }\n\n    // Andere bekannte Fehler nutzerfreundlich\n    const friendly = {\n      'invalid pid': 'Ungültige Patienten-ID.',\n      'patient not active': 'Patient ist nicht aktiv.',\n      'invalid profile': 'Profil nicht gefunden.',\n      'no prescriptions found': 'Keine Medikamente gefunden.'\n    };\n    const display = friendly[errorMsg] || `Technischer Fehler: ${errorMsg}`;\n\n    return {\n      message: `Medikamente konnten nicht abgerufen werden. ${display}`,\n      status: \"error\",\n      error_type: errorMsg\n    };\n  }\n\n  // Normaler Erfolgsfall\n  const prescriptions = data.prescriptions || [];\n  if (prescriptions.length === 0) {\n    return {\n      message: \"Keine Medikamente verfügbar.\",\n      status: \"success\",\n      count: \"0\"\n    };\n  }\n\n  const result = {\n    status: \"success\",\n    count: String(prescriptions.length)\n  };\n\n  prescriptions.forEach((med, index) => {\n    const num = index + 1;\n    result[`medication_${num}_name`] = med.name.trim();\n    result[`medication_${num}_pznr`] = med.pznr;\n  });\n\n  const medNames = prescriptions.map(m => m.name.trim()).join(', ');\n  result.message = `Es sind ${prescriptions.length} Medikamente verfügbar: ${medNames}. Welches möchten Sie bestellen?`;\n\n  return result;\n\n} catch (e) {\n  return {\n    message: \"Unerwarteter Fehler bei der Medikamentenabfrage.\",\n    status: \"error\",\n    error_type: \"unexpected\"\n  };\n}"
+      },
+      "id": "109df39f-a0ec-4f90-9dd7-fe038062ad4b",
+      "name": "Node-0903: Transform-get_available_prescriptions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/prescriptions/order",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pid\": \"{{ $json.body.pid }}\",\n  \"pznr\": \"{{ $json.body.pznr }}\",\n  \"note\": \"{{ $json.body.note }}\",\n  \"name\": \"VOLTAREN EMULGEL-GEL            40 G\",\n  \"profile\": \"0\"\n\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "a34f1ec3-f814-4f56-8cf0-fd3412fea54b",
+      "name": "Node-1002: API-order_prescription",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        944
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst error = data.error;\n\nif (error) {\n  return {\n    message: `Rezeptbestellung konnte nicht durchgeführt werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nconst medName = data.name || \"das Medikament\";\n\nreturn {\n  message: `Ihre Bestellung für ${medName} wurde erfolgreich aufgegeben. Sie können das Rezept in der Ordination abholen.`,\n  status: \"success\",\n  order_id: data.oid || \"\",\n  medication_name: data.name,\n  pznr: data.pznr\n};\n"
+      },
+      "id": "75a5d2d0-8e62-4415-91be-cd7fcce50bb2",
+      "name": "Node-1003: Transform-order_prescription",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prescriptions = $input.item.json.prescriptions || [];\nconst error = $input.item.json.error;\n\nif (error) {\n  return {\n    message: `Rezeptbestellungen konnten nicht abgerufen werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (prescriptions.length === 0) {\n  return {\n    message: \"Sie haben aktuell keine offenen Rezeptbestellungen.\",\n    status: \"success\",\n    count: \"0\"\n  };\n}\n\nconst result = {\n  status: \"success\",\n  count: String(prescriptions.length)\n};\n\nprescriptions.forEach((order, index) => {\n  const num = index + 1;\n  result[`order_${num}_id`] = order.oid;\n  result[`order_${num}_medication`] = order.name;\n  result[`order_${num}_pznr`] = order.pznr;\n});\n\nconst orderList = prescriptions.map(o => o.name).join(', ');\nresult.message = `Sie haben ${prescriptions.length} offene Rezeptbestellung${prescriptions.length > 1 ? 'en' : ''}: ${orderList}.`;\n\nreturn result;\n"
+      },
+      "id": "92d57735-a18f-4c60-8d3a-2852f0c78792",
+      "name": "Node-1103: Transform-get_prescription_orders",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/prescriptions/cancel",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"oid\": \"{{ $json.body.oid }}\",\n  \"reason\": \"{{ $json.body.reason }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "4be84f7e-5673-4b85-8070-eea35138e343",
+      "name": "Node-1202: API-cancel_prescription_order",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        1392
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst error = data.error;\n\nif (error) {\n  return {\n    message: `Rezeptbestellung konnte nicht storniert werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (!data.success) {\n  return {\n    message: \"Rezeptbestellung konnte nicht storniert werden. Möglicherweise wurde sie bereits abgeholt.\",\n    status: \"error\",\n    error_type: \"cancellation_failed\"\n  };\n}\n\nreturn {\n  message: \"Ihre Rezeptbestellung wurde erfolgreich storniert.\",\n  status: \"success\",\n  cancelled: \"true\",\n  order_id: data.oid || \"\"\n};\n"
+      },
+      "id": "0b384724-09f0-42c2-b860-ebe3a55436a3",
+      "name": "Node-1203: Transform-cancel_prescription_order",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        1456
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  symptom_keyword,\n  severity,\n  recommended_action,\n  escalation_required\nFROM emergency_symptoms\nWHERE \n  is_active = true\n  AND symptom_keyword ILIKE '%{{ symptoms }}%'\n  AND language_code = 'de'\nLIMIT 5\n",
+        "options": {}
+      },
+      "id": "1230c637-ed88-43b5-8b95-2864dad72c2a",
+      "name": "Node-1302: Supabase-check_emergency_symptoms",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        112,
+        1648
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "8A59sajMGRpvt3ba",
+          "name": "zumbalois@gmail.com"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const symptoms = $input.item.json;\n\n// Check if any symptoms were found\nif (!symptoms || symptoms.length === 0) {\n  return {\n    message: \"Ich habe Ihre Symptome registriert. Für eine genaue Einschätzung empfehle ich einen Termin zu vereinbaren.\",\n    status: \"success\",\n    severity: \"MODERATE\",\n    action: \"book_regular_appointment\",\n    escalation_required: \"false\"\n  };\n}\n\n// Get highest severity\nconst severities = symptoms.map(s => s.severity);\nconst hasCritical = severities.includes('CRITICAL');\nconst hasUrgent = severities.includes('URGENT');\n\nif (hasCritical) {\n  const criticalSymptom = symptoms.find(s => s.severity === 'CRITICAL');\n  return {\n    message: \"Das klingt nach einem medizinischen Notfall! Bitte rufen Sie SOFORT die Rettung unter 144 an oder lassen Sie sich zur nächsten Notaufnahme bringen. Ich kann Ihnen bei einem Notfall leider nicht weiterhelfen.\",\n    status: \"emergency\",\n    severity: \"CRITICAL\",\n    action: \"call_144_immediately\",\n    escalation_required: \"true\",\n    recommended_action: criticalSymptom.recommended_action\n  };\n}\n\nif (hasUrgent) {\n  const urgentSymptom = symptoms.find(s => s.severity === 'URGENT');\n  return {\n    message: \"Ihre Symptome erfordern dringend ärztliche Behandlung. Ich suche Ihnen den schnellstmöglichen Termin oder empfehle Ihnen unsere Walk-In Zeiten.\",\n    status: \"urgent\",\n    severity: \"URGENT\",\n    action: \"book_urgent_appointment\",\n    escalation_required: \"true\",\n    recommended_action: urgentSymptom.recommended_action\n  };\n}\n\n// Moderate symptoms\nreturn {\n  message: \"Ich empfehle Ihnen einen regulären Termin zu vereinbaren, damit wir Ihre Symptome untersuchen können.\",\n  status: \"success\",\n  severity: \"MODERATE\",\n  action: \"book_regular_appointment\",\n  escalation_required: \"false\"\n};\n"
+      },
+      "id": "2cff11cd-f76d-4dd5-a9f0-6e826a1d90e3",
+      "name": "Node-1303: Transform-check_emergency_symptoms",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        1696
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/message",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pid\": \"{{ $json.body.pid }}\",\n  \"note\": \"{{ $json.body.note }}\",\n  \"profile\": \"0\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "3c6c50ec-ccd3-4f5a-9921-0b597457768e",
+      "name": "Node-1402: API-leave_message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        1936
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\ntry {\n  if (data.error) {\n    let errorMsg = 'unbekannter Fehler';\n\n    // Axios-Error parsen\n    if (data.error.response?.data?.error) {\n      errorMsg = data.error.response.data.error;\n    } else if (data.error.message) {\n      const msg = data.error.message;\n      const jsonPart = msg.split(' - ')[1] || msg;\n      if (jsonPart.startsWith('{\"error\":')) {\n        try { errorMsg = JSON.parse(jsonPart).error; } catch {}\n      } else {\n        errorMsg = jsonPart;\n      }\n    }\n\n    // Bekannte Fehler für /message (Doku Seite 20)\n    const friendly = {\n      'invalid pid': 'Ungültige Patienten-ID.',\n      'patient not active': 'Der Patient ist derzeit nicht aktiv.',\n      'invalid profile': 'Das Profil ist ungültig.'\n    };\n\n    const display = friendly[errorMsg] || `Technischer Fehler: ${errorMsg}`;\n\n    return {\n      message: `Nachricht konnte nicht hinterlegt werden. ${display} Die Ordination wird informiert.`,\n      status: \"error\",\n      error_type: errorMsg\n    };\n  }\n\n  // Erfolg: Nachricht hinterlegt (Response: { \"success\": true })\n  return {\n    message: \"Ihre Nachricht wurde erfolgreich hinterlegt. Die Ordination wird sich bei Ihnen melden. Vielen Dank für Ihren Anruf!\",\n    status: \"success\"\n  };\n\n} catch (e) {\n  return {\n    message: \"Unerwarteter Fehler beim Hinterlegen der Nachricht.\",\n    status: \"error\",\n    error_type: \"unexpected\"\n  };\n}"
+      },
+      "id": "934b3dfa-8cb4-4b6d-81a4-43e0fe9da7f5",
+      "name": "Node-1403: Transform-leave_message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        1936
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/prescriptions/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pid\": \"{{ $json.body.pid }}\",\n  \"date\": \"{{ $json.body.date }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "04b8a36b-a465-4f1a-9b43-5f8e2e8b2c7f",
+      "name": "Node-1102: API-get_prescription_orders",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        144,
+        1152
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst webhookData = $node[\"Node-000: Webhook-ElevenLabs\"].json.body;\n\n// Check for errors\nif (data.error) {\n  const errorType = data.error;\n  \n  if (errorType === 'no_match') {\n    return {\n      message: \"Ihre Telefonnummer ist noch nicht in unserem System hinterlegt. Waren Sie schon einmal bei uns?\",\n      status: \"error\",\n      error_type: \"no_match\"\n    };\n  }\n  \n  if (errorType === 'multiple_pids') {\n    return {\n      message: \"Wir haben mehrere Personen mit dieser Telefonnummer im System. Bitte nennen Sie mir Ihr Geburtsdatum zur eindeutigen Identifikation.\",\n      status: \"error\",\n      error_type: \"multiple_pids\",\n      count: String(data.count || 2)\n    };\n  }\n  \n  return {\n    message: `Patient konnte nicht identifiziert werden. Fehler: ${errorType}`,\n    status: \"error\",\n    error_type: errorType\n  };\n}\n\n// Success case\nconst active = data.active ? true : false;\nconst activeText = active ? 'aktiv' : 'inaktiv';\n\nreturn {\n  message: `Patient erfolgreich identifiziert. Ihre Patienten-ID ist ${data.pid} und Ihr Status ist ${activeText}.`,\n  status: \"success\",\n  pid: String(data.pid),\n  svnr: String(data.svnr),\n  active: String(active)\n};\n"
+      },
+      "id": "7e404318-03bb-4758-8d26-f6f8deee4f9b",
+      "name": "Node-0103: Transform-identify_patient1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -1008
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst error = data.error;\n\nif (error) {\n  return {\n    message: `Nächster Termin konnte nicht gefunden werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (!data.slot) {\n  return {\n    message: \"Kein freier Termin gefunden. Möchten Sie einen anderen Zeitraum oder eine andere Terminart versuchen?\",\n    status: \"success\",\n    available: \"false\"\n  };\n}\n\n// Format date for German message\nconst slotDate = new Date(data.slot);\nconst dateStr = slotDate.toLocaleDateString('de-DE', { \n  day: 'numeric', \n  month: 'long', \n  year: 'numeric' \n});\nconst timeStr = slotDate.toLocaleTimeString('de-DE', { \n  hour: '2-digit', \n  minute: '2-digit' \n});\n\nreturn {\n  message: `Der nächste freie Termin ist am ${dateStr} um ${timeStr} Uhr für ${data.duration_minutes} Minuten.`,\n  status: \"success\",\n  available: \"true\",\n  slot: data.slot,\n  duration_minutes: String(data.duration_minutes)\n};\n"
+      },
+      "id": "fad71c4d-292d-4d4c-b5a7-5ac40ab2a9e6",
+      "name": "Node-0503: Transform-find_next_free_appointment1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prescriptions = $input.item.json.prescriptions || [];\nconst error = $input.item.json.error;\n\nif (error) {\n  return {\n    message: `Medikamente konnten nicht abgerufen werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\nif (prescriptions.length === 0) {\n  return {\n    message: \"Keine Medikamente verfügbar.\",\n    status: \"success\",\n    count: \"0\"\n  };\n}\n\nconst result = {\n  status: \"success\",\n  count: String(prescriptions.length)\n};\n\nprescriptions.forEach((med, index) => {\n  const num = index + 1;\n  result[`medication_${num}_name`] = med.name;\n  result[`medication_${num}_pznr`] = med.pznr;\n});\n\nconst medNames = prescriptions.map(m => m.name).join(', ');\nresult.message = `Es sind ${prescriptions.length} Medikamente verfügbar: ${medNames}.`;\n\nreturn result;\n"
+      },
+      "id": "263d7539-d4dd-4d1a-89d3-9a1ea56d092f",
+      "name": "Node-0903: Transform-get_available_prescriptions1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst error = data.error;\n\nif (error) {\n  return {\n    message: `Termin konnte nicht gebucht werden. Fehler: ${error}`,\n    status: \"error\",\n    error_type: error\n  };\n}\n\n// Format date for German message\nconst appointmentDate = new Date(data.date);\nconst dateStr = appointmentDate.toLocaleDateString('de-DE', { \n  day: 'numeric', \n  month: 'long', \n  year: 'numeric' \n});\nconst timeStr = appointmentDate.toLocaleTimeString('de-DE', { \n  hour: '2-digit', \n  minute: '2-digit' \n});\n\nreturn {\n  message: `Ihr Termin wurde erfolgreich gebucht für den ${dateStr} um ${timeStr} Uhr.`,\n  status: \"success\",\n  appointment_id: data.id || \"\",\n  date: data.date,\n  type: data.type,\n  profile: data.profile\n};\n"
+      },
+      "id": "9c1b6c90-6ddf-46a8-b904-dff5fa1fea58",
+      "name": "Node-0603: Transform-book_appointment1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "efd88cc7-4b1c-4983-b884-a32a6fca262f",
+              "name": "headers",
+              "value": "={{ $json.headers }}",
+              "type": "object"
+            },
+            {
+              "id": "51882b15-8b93-4a51-b398-3c8b4266b14b",
+              "name": "params",
+              "value": "={{ $json.params }}",
+              "type": "object"
+            },
+            {
+              "id": "0167284a-a291-40d6-b075-9a9ff6f06ebc",
+              "name": "query",
+              "value": "={{ $json.query }}",
+              "type": "object"
+            },
+            {
+              "id": "0a6e8d23-2d20-489a-8467-1b6a45402eb4",
+              "name": "body",
+              "value": "={{ $json.body }}",
+              "type": "object"
+            },
+            {
+              "id": "a4b37b0d-b4e9-41cf-902d-e9f3abb157af",
+              "name": "webhookUrl",
+              "value": "={{ $json.webhookUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "0ed5a18c-653b-42c9-8fe1-5fcd1b7b56f7",
+              "name": "body.MedstarServer",
+              "value": "=http://10.187.57.2:8080",
+              "type": "string"
+            },
+            {
+              "id": "fecb837d-5434-49bc-9758-e9ccd34f4fa7",
+              "name": "body.phone",
+              "value": "={{ $json.body.caller_id }}",
+              "type": "string"
+            },
+            {
+              "id": "ab57c37f-0a33-40c0-8f3f-870c713654cb",
+              "name": "body.MedstarServer2",
+              "value": "=http://188.21.236.253:8080",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1648,
+        560
+      ],
+      "id": "c1b2b646-1a10-43ef-b621-701b53c7af22",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\ntry {\n  if (data.error) {\n    let errorMsg = 'unbekannter Fehler';\n\n    // Axios-Error parsen\n    if (data.error.response?.data?.error) {\n      errorMsg = data.error.response.data.error;\n    } else if (data.error.message) {\n      const msg = data.error.message;\n      const jsonPart = msg.split(' - ')[1] || msg;\n      if (jsonPart.startsWith('{\"error\":')) {\n        try { errorMsg = JSON.parse(jsonPart).error; } catch {}\n      } else {\n        errorMsg = jsonPart;\n      }\n    }\n\n    // Bekannte Fehler für /message (Doku Seite 20)\n    const friendly = {\n      'invalid pid': 'Ungültige Patienten-ID.',\n      'patient not active': 'Der Patient ist derzeit nicht aktiv.',\n      'invalid profile': 'Das Profil ist ungültig.'\n    };\n\n    const display = friendly[errorMsg] || `Technischer Fehler: ${errorMsg}`;\n\n    return {\n      message: `Nachricht konnte nicht hinterlegt werden. ${display} Die Ordination wird informiert.`,\n      status: \"error\",\n      error_type: errorMsg\n    };\n  }\n\n  // Erfolg: Nachricht hinterlegt (Response: { \"success\": true })\n  return {\n    message: \"Ihre Nachricht wurde erfolgreich hinterlegt. Die Ordination wird sich bei Ihnen melden. Vielen Dank für Ihren Anruf!\",\n    status: \"success\"\n  };\n\n} catch (e) {\n  return {\n    message: \"Unerwarteter Fehler beim Hinterlegen der Nachricht.\",\n    status: \"error\",\n    error_type: \"unexpected\"\n  };\n}"
+      },
+      "id": "2e58ef0c-fef3-4f20-b4ed-56942dba2c9d",
+      "name": "Node-1501: Transform-heck_appointment_availability",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        2176
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.MedstarServer }}/appointments/check?date=2025-08-10T10:00:00&type=Kontrolle&profile=0",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "dc6b5f5e-3e4d-4f12-83a3-48ac49446dfb",
+      "name": "Node-1501: API-check_appointment_availability",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -192,
+        2176
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst webhookData = $node[\"Node-000: Webhook-ElevenLabs\"].json.body;\n\n// 🔒 Kanonische Telefonnummer festlegen\nconst phone =\n  webhookData?.caller_id ||\n  webhookData?.phone ||\n  data?.phone ||\n  null;\n\ntry {\n  if (data.error) {\n\n    // 👇 Sonderfall: \"no unique match\" mit JSON im Error-String\n    if (\n      typeof data.error.message === 'string' &&\n      data.error.message.includes('no unique match')\n    ) {\n      try {\n        const jsonStart = data.error.message.indexOf('{');\n        const jsonString = data.error.message.slice(jsonStart);\n        const parsed = JSON.parse(jsonString);\n\n        return {\n          message: \"Wir haben mehrere Personen mit dieser Telefonnummer im System. Bitte nennen Sie mir Ihr Geburtsdatum zur eindeutigen Identifikation.\",\n          status: \"error\",\n          error_type: \"multiple_pids\",\n          count: String(parsed.entries || 2),\n          phone: String(phone)\n        };\n      } catch (e) {\n        // fällt unten in generische Error-Behandlung\n      }\n    }\n\n    let errorType = data.error;\n\n    // Axios-Error sauber extrahieren\n    if (\n      typeof errorType === 'object' &&\n      errorType.response &&\n      errorType.response.data &&\n      errorType.response.data.error\n    ) {\n      errorType = errorType.response.data.error;\n    } else if (typeof errorType === 'object') {\n      errorType = errorType.message || 'unknown';\n    }\n\n    if (errorType === 'no_match') {\n      return {\n        message: \"Ihre Telefonnummer ist noch nicht in unserem System hinterlegt. Waren Sie schon einmal bei uns?\",\n        status: \"error\",\n        error_type: \"no_match\",\n        phone: String(phone)\n      };\n    }\n\n    if (errorType === 'multiple_pids') {\n      return {\n        message: \"Wir haben mehrere Personen mit dieser Telefonnummer im System. Bitte nennen Sie mir Ihr Geburtsdatum zur eindeutigen Identifikation.\",\n        status: \"error\",\n        error_type: \"multiple_pids\",\n        count: String(data.count || 2),\n        phone: String(phone)\n      };\n    }\n\n    return {\n      message: \"Patient konnte nicht identifiziert werden.\",\n      status: \"error\",\n      error_type: \"no_match\",\n      phone: String(phone)\n    };\n  }\n\n  // ✅ Success case\n  const active = data.active ? true : false;\n\n  // 🛑 Optional hartes Failing, falls Telefonnummer fehlt\n  if (!phone) {\n    throw new Error(\"No phone number available for identified patient\");\n  }\n\n  return {\n    message: \"Sehr gut, ich habe Sie im System gefunden.\",\n    status: \"success\",\n    pid: String(data.pid),\n    svnr: String(data.svnr),\n    active: String(active),\n    phone: String(phone)\n  };\n\n} catch (e) {\n  // Globaler Fallback\n  return {\n    message: \"Patient nicht im System angelegt.\",\n    status: \"error\",\n    error_type: \"no_match\",\n    phone: String(phone)\n  };\n}\n"
+      },
+      "id": "238dcb6e-a870-46fa-afc5-4ea1b341f670",
+      "name": "Node-0103: Transform-identify_patient2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        2464
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1776,
+        2464
+      ],
+      "id": "d1fb5dd2-f778-41b0-83c3-c7d6daf9d3db",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"client\": {\n    \"message\" : \"{{ $json.message }}\",\n    \"phone\": \"{{ $('Node-001: Switch-ActionRouter').item.json.body.caller_id }}\",\n    \"patient_identified\": \"{{ $json.status === 'success' }}\",\n    \"pid\": \"{{ $json.pid ? $json.pid : null }}\",\n    \"svnr\": \"{{ $json.svnr ? $json.svnr : null }}\",\n    \"active\": \"{{ $json.active === 'true' }}\",\n    \"has_prescriptions\" : \"{{ $json.has_prescriptions }}\",\n    \"message_prescriptions\" : \"{{ $json.message_prescriptions }}\"\n\n  }\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        2464
+      ],
+      "id": "89859e77-4c10-42b9-b1d2-6a944db5cef3",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "medstar-25121",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2048,
+        -176
+      ],
+      "id": "eaf07bc3-851f-4963-918f-3f9d7f44b669",
+      "name": "Webhook",
+      "webhookId": "da20f6ed-e6a6-47dd-827f-2f5d954a8b96"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"type\": \"conversation_initiation_client_data\",\n  \"dynamic_variables\": {\n    \"pid\":\" {{ $json.client.pid }}\",\n    \"svnr\":\"{{ $json.client.svnr }}\",\n    \"active\":\"{{ $json.client.active }}\",\n    \"phone\":\"{{ $json.client.phone }}\",\n\n\n    \"message\" : \"{{ $json.message }}\",\n    \"phone\": \"{{ $('Node-001: Switch-ActionRouter').item.json.body.caller_id }}\",\n    \"patient_identified\": \"{{ $json.status === 'success' }}\",\n    \"has_prescriptions\" : \"{{ $json.has_prescriptions }}\",\n    \"message_prescriptions\" : \"{{ $json.message_prescriptions }}\"\n\n\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        2464
+      ],
+      "id": "a20f5a7c-69fd-444f-82c8-320f873c724a",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "044f6141-9ae5-4bac-8caf-c04049825fc8",
+              "name": "body.data.analysis.transcript_summary",
+              "value": "={{ $json.body.data.analysis.transcript_summary }}",
+              "type": "string"
+            },
+            {
+              "id": "4512bdc9-cdb8-498b-bb0c-29b5319500fd",
+              "name": "body.data.conversation_initiation_client_data.dynamic_variables.system__caller_id",
+              "value": "={{ $json.body.data.conversation_initiation_client_data.dynamic_variables.system__caller_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e834a3fd-7130-487e-8848-64ec72fa4cdc",
+              "name": "body.data.conversation_initiation_client_data.dynamic_variables.system__time",
+              "value": "={{ $json.body.data.conversation_initiation_client_data.dynamic_variables.system__time }}",
+              "type": "string"
+            },
+            {
+              "id": "e3e8b094-bc84-431d-9898-08f074545a7e",
+              "name": "body.data.conversation_initiation_client_data.dynamic_variables.system__conversation_id",
+              "value": "={{ $json.body.data.conversation_initiation_client_data.dynamic_variables.system__conversation_id }}",
+              "type": "string"
+            },
+            {
+              "id": "559cb923-0b2b-4032-987d-a90d15fbead6",
+              "name": "body.data.metadata.phone_call",
+              "value": "={{ $json.body.data.metadata.phone_call }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1664,
+        -192
+      ],
+      "id": "fd880405-60d8-4c11-9784-f6b5e3dd7952",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "content": "## PRODUKTIV MEDSTART 2025-12-29\n** ELEVENLABS Workflow\nMEDSTAR 2025-12-28 - GPT Entwurf reduziert\nX-API-KEY\nMEDSTAR-API-ITEX",
+        "height": 832,
+        "width": 848
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3072,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "c5ae97bb-ead2-4e52-a53e-31522f99e83f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.MedstarServer }}/patient/identify",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=phone2",
+              "value": "=06641290352"
+            },
+            {
+              "name": "call_sid",
+              "value": "={{ $json.body.call_sid }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $json.body.caller_id }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "dbbe7284-a1ac-4ab8-8e37-b9eecedc8a38",
+      "name": "Node-1502: API-identify_patient-preWebhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        2448
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2df4c970-b475-4d46-8c33-5fcd4b4f4170",
+              "name": "OpenHour",
+              "value": "Montag - Donnerstag 08 - 12 Uhr",
+              "type": "string"
+            },
+            {
+              "id": "47f17a2e-5efa-473f-a073-b45d6aee6ba9",
+              "name": "Urlaub",
+              "value": "23.12.2025 - 06.01.2026",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -816,
+        1856
+      ],
+      "id": "fffab783-4c30-4e7d-9bae-b9aba293e199",
+      "name": "node_getOpeningHours"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -624,
+        1856
+      ],
+      "id": "20164f8b-fc9d-483b-8c37-b497db6fb8dc",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "content": "##POST-Webhook",
+        "height": 288,
+        "width": 1168
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2256,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "6c6e27f8-f2ba-4d4c-b79d-a2acffa6c755",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b86a3707-7ea0-46c8-830b-77f132d7ad58",
+              "name": "body.betreff",
+              "value": "={{ $json.body.betreff }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1296,
+        1408
+      ],
+      "id": "7884cc56-8eae-4867-a5f0-bec705880020",
+      "name": "sendEMail"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Edit Fields').item.json.body.MedstarServer }}/patient/prescriptions?pid={{ $json.pid }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "1d92e4b8-3a31-4f7a-b751-384877c2e75e",
+      "name": "Node-0902: API-get_available_prescriptions1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        2800
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6AaBWGnRjwgnuK7B",
+          "name": "X-API-KEY"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\ntry {\n  const pid = data.pid ? String(data.pid) : null;\n\n  // Default-Annahme\n  let has_prescriptions = false;\n  let message_prescriptions = \"Es ist keine Medikation vorhanden.\";\n\n  // 👉 Fall: API hat einen Fehler geliefert\n  if (data.error) {\n    let errorMsg = null;\n\n    // Axios-Response sauber extrahieren\n    if (data.error.response?.data?.error) {\n      errorMsg = data.error.response.data.error;\n    } else if (data.error.message) {\n      const msg = data.error.message;\n      const jsonPart = msg.split(' - ')[1];\n      if (jsonPart && jsonPart.startsWith('{')) {\n        try {\n          errorMsg = JSON.parse(jsonPart).error;\n        } catch {\n          errorMsg = msg;\n        }\n      } else {\n        errorMsg = msg;\n      }\n    }\n\n    // ✅ Fachlich gültiger Zustand: keine Medikamente\n    if (errorMsg === 'no prescriptions found' || errorMsg === 'order not possible') {\n      return {\n        pid,\n        has_prescriptions: false,\n        message_prescriptions: \"Es ist keine Medikation vorhanden.\"\n      };\n    }\n\n    // ❌ Echter technischer Fehler\n    return {\n      pid,\n      has_prescriptions: false,\n      message_prescriptions: \"Medikationen konnten technisch nicht geprüft werden.\"\n    };\n  }\n\n  // 👉 Erfolgsfall ohne Error-Objekt\n  const prescriptions = Array.isArray(data.prescriptions)\n    ? data.prescriptions\n    : [];\n\n  if (prescriptions.length > 0) {\n    has_prescriptions = true;\n    message_prescriptions = \"Es ist eine Medikation vorhanden.\";\n  }\n\n  return {\n    pid,\n    has_prescriptions,\n    message_prescriptions\n  };\n\n} catch (e) {\n  // Globaler Fallback – lieber klar als falsch\n  return {\n    pid: data?.pid ? String(data.pid) : null,\n    has_prescriptions: false,\n    message_prescriptions: \"Medikationen konnten nicht geprüft werden.\"\n  };\n}\n"
+      },
+      "id": "05e96512-71ef-4819-82cb-86da3792ac88",
+      "name": "Node-0903: Transform-get_available_prescriptions2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "pid",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        608,
+        2496
+      ],
+      "id": "c51eb9f3-17aa-4548-a33f-fe1f01b6062a",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.srv895382.hstgr.cloud",
+            "user-agent": "ElevenLabs/1.0",
+            "content-length": "4887",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "content-type": "application/json",
+            "elevenlabs-signature": "t=1767037725,v0=50451b23b6b43f846e209a2b5da2478f2686e2ef4ed1765a0720d2f8cdd8f2c8",
+            "x-forwarded-for": "34.59.11.47",
+            "x-forwarded-host": "n8n.srv895382.hstgr.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4b6fac07330b",
+            "x-real-ip": "34.59.11.47"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "type": "post_call_transcription",
+            "event_timestamp": 1767037725,
+            "data": {
+              "agent_id": "agent_9101kdj54fpye5varjjwscjeysdp",
+              "conversation_id": "conv_8201kdntffmefb8tgzw0pbam1qvw",
+              "status": "done",
+              "user_id": null,
+              "branch_id": "agtbrch_0601kdj54gzcfphrrmzn8b9vv22k",
+              "transcript": [
+                {
+                  "role": "agent",
+                  "agent_metadata": {
+                    "agent_id": "agent_9101kdj54fpye5varjjwscjeysdp",
+                    "branch_id": "agtbrch_0601kdj54gzcfphrrmzn8b9vv22k",
+                    "workflow_node_id": null
+                  },
+                  "message": "Guten Tag! Sie sind verbunden mit der Ordination von Doktor Omerovic. Sie können mit mir ganz normal sprechen. Darf ich nach Ihrem Namen fragen?\nUnd,...",
+                  "multivoice_message": null,
+                  "tool_calls": [],
+                  "tool_results": [],
+                  "feedback": null,
+                  "llm_override": null,
+                  "time_in_call_secs": 0,
+                  "conversation_turn_metrics": {
+                    "metrics": {
+                      "convai_tts_service_ttfb": {
+                        "elapsed_time": 0.27284678099931625
+                      }
+                    }
+                  },
+                  "rag_retrieval_info": null,
+                  "llm_usage": null,
+                  "interrupted": true,
+                  "original_message": "Guten Tag! Sie sind verbunden mit der Ordination von Doktor Omerovic. Sie können mit mir ganz normal sprechen. Darf ich nach Ihrem Namen fragen?\nUnd, wie geht es Ihnen heute? ",
+                  "source_medium": null
+                }
+              ],
+              "metadata": {
+                "start_time_unix_secs": 1767037714,
+                "accepted_time_unix_secs": 1767037715,
+                "call_duration_secs": 9,
+                "cost": 60,
+                "deletion_settings": {
+                  "deletion_time_unix_secs": 1769629725,
+                  "deleted_logs_at_time_unix_secs": null,
+                  "deleted_audio_at_time_unix_secs": null,
+                  "deleted_transcript_at_time_unix_secs": null,
+                  "delete_transcript_and_pii": true,
+                  "delete_audio": true
+                },
+                "feedback": {
+                  "type": null,
+                  "overall_score": null,
+                  "likes": 0,
+                  "dislikes": 0,
+                  "rating": null,
+                  "comment": null
+                },
+                "authorization_method": "signed_url",
+                "charging": {
+                  "dev_discount": false,
+                  "is_burst": false,
+                  "tier": "creator",
+                  "llm_usage": {
+                    "irreversible_generation": {
+                      "model_usage": {}
+                    },
+                    "initiated_generation": {
+                      "model_usage": {}
+                    }
+                  },
+                  "llm_price": 0,
+                  "llm_charge": 0,
+                  "call_charge": 60,
+                  "free_minutes_consumed": 0,
+                  "free_llm_dollars_consumed": 0
+                },
+                "phone_call": {
+                  "direction": "inbound",
+                  "phone_number_id": "phnum_3501kbb4wn6hf8a9aad03z0j9qtn",
+                  "agent_number": "+43724220668867",
+                  "external_number": "00437242206688",
+                  "type": "sip_trunking",
+                  "call_sid": "SCL_uoJ6jApMPTnp"
+                },
+                "batch_call": null,
+                "termination_reason": "Client disconnected: 1000",
+                "error": null,
+                "warnings": [],
+                "main_language": "de",
+                "rag_usage": {
+                  "usage_count": 0,
+                  "embedding_model": "multilingual_e5_large_instruct"
+                },
+                "text_only": false,
+                "features_usage": {
+                  "language_detection": {
+                    "enabled": true,
+                    "used": false
+                  },
+                  "transfer_to_agent": {
+                    "enabled": false,
+                    "used": false
+                  },
+                  "transfer_to_number": {
+                    "enabled": true,
+                    "used": false
+                  },
+                  "multivoice": {
+                    "enabled": false,
+                    "used": false
+                  },
+                  "dtmf_tones": {
+                    "enabled": false,
+                    "used": false
+                  },
+                  "external_mcp_servers": {
+                    "enabled": false,
+                    "used": false
+                  },
+                  "pii_zrm_workspace": false,
+                  "pii_zrm_agent": false,
+                  "tool_dynamic_variable_updates": {
+                    "enabled": false,
+                    "used": false
+                  },
+                  "is_livekit": true,
+                  "voicemail_detection": {
+                    "enabled": false,
+                    "used": false
+                  },
+                  "workflow": {
+                    "enabled": false,
+                    "tool_node": {
+                      "enabled": false,
+                      "used": false
+                    },
+                    "standalone_agent_node": {
+                      "enabled": false,
+                      "used": false
+                    },
+                    "phone_number_node": {
+                      "enabled": false,
+                      "used": false
+                    },
+                    "end_node": {
+                      "enabled": false,
+                      "used": false
+                    }
+                  },
+                  "agent_testing": {
+                    "enabled": false,
+                    "tests_ran_after_last_modification": false,
+                    "tests_ran_in_last_7_days": false
+                  },
+                  "versioning": {
+                    "enabled": true,
+                    "used": false
+                  }
+                },
+                "eleven_assistant": {
+                  "is_eleven_assistant": false
+                },
+                "initiator_id": null,
+                "conversation_initiation_source": "sip_trunk",
+                "conversation_initiation_source_version": null,
+                "timezone": "Europe/Vienna",
+                "initiation_trigger": {
+                  "trigger_type": "default"
+                },
+                "async_metadata": null,
+                "whatsapp": null,
+                "agent_created_from": "ui",
+                "agent_last_updated_from": "ui"
+              },
+              "analysis": {
+                "evaluation_criteria_results": {},
+                "data_collection_results": {},
+                "call_successful": "success",
+                "transcript_summary": "The AI agent, acting as a receptionist for Dr. Omerovic's office, greets the user in German and asks for their name.\n",
+                "call_summary_title": "Doctor's office greeting"
+              },
+              "conversation_initiation_client_data": {
+                "conversation_config_override": {
+                  "turn": null,
+                  "tts": null,
+                  "conversation": null,
+                  "agent": null
+                },
+                "custom_llm_extra_body": {},
+                "user_id": null,
+                "source_info": {
+                  "source": null,
+                  "version": null
+                },
+                "dynamic_variables": {
+                  "system__agent_id": "agent_9101kdj54fpye5varjjwscjeysdp",
+                  "system__agent_turns": 1,
+                  "system__current_agent_turns": 1,
+                  "system__current_subagent_turns": 1,
+                  "system__current_agent_id": "agent_9101kdj54fpye5varjjwscjeysdp",
+                  "system__conversation_id": "conv_8201kdntffmefb8tgzw0pbam1qvw",
+                  "system__call_duration_secs": 8,
+                  "system__time_utc": "2025-12-29T19:48:43.663810+00:00",
+                  "system__time": "Monday, 20:48 29 December 2025",
+                  "system__timezone": "Europe/Vienna",
+                  "system__caller_id": "00437242206688",
+                  "system__called_number": "+43724220668867",
+                  "system__call_sid": "SCL_uoJ6jApMPTnp"
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://n8n.srv895382.hstgr.cloud/webhook/medstar-25121",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Node-000: Webhook-ElevenLabs": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.srv895382.hstgr.cloud",
+            "user-agent": "ElevenLabs/1.0",
+            "content-length": "57",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "34.59.11.47",
+            "x-forwarded-host": "n8n.srv895382.hstgr.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "376e83f4ba57",
+            "x-real-ip": "34.59.11.47"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "action": "identify_patient",
+            "phone": "+436506906812",
+            "MedstarServer": "http://10.187.57.2:8080",
+            "MedstarServer2": "http://188.21.236.253:8080"
+          },
+          "webhookUrl": "https://n8n.srv895382.hstgr.cloud/webhook/medstar-2512",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Edit Fields": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.srv895382.hstgr.cloud",
+            "user-agent": "ElevenLabs/1.0",
+            "content-length": "57",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "34.59.11.47",
+            "x-forwarded-host": "n8n.srv895382.hstgr.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "376e83f4ba57",
+            "x-real-ip": "34.59.11.47"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "action": "identify_patient",
+            "phone": "+436506906812",
+            "MedstarServer": "http://10.187.57.2:8080",
+            "MedstarServer2": "http://188.21.236.253:8080"
+          },
+          "webhookUrl": "https://n8n.srv895382.hstgr.cloud/webhook/medstar-2512"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Node-001: Switch-ActionRouter": {
+      "main": [
+        [
+          {
+            "node": "Node-0102: API-identify_patient",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0202: API-check_patient_active",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0302: API-get_profiles",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0402: API-get_appointment_types",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0502: API-find_next_free_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0602: API-book_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0702: API-get_patient_appointments",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0802: API-cancel_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0902: API-get_available_prescriptions",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1002: API-order_prescription",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1102: API-get_prescription_orders",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1202: API-cancel_prescription_order",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1302: Supabase-check_emergency_symptoms",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1402: API-leave_message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1501: API-check_appointment_availability",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1502: API-identify_patient-preWebhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1502: API-identify_patient-preWebhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "node_getOpeningHours",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "sendEMail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-000: Webhook-ElevenLabs": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0102: API-identify_patient": {
+      "main": [
+        [
+          {
+            "node": "Node-0103: Transform-identify_patient",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0103: Transform-identify_patient",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0103: Transform-identify_patient": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0202: API-check_patient_active": {
+      "main": [
+        [
+          {
+            "node": "Node-0203: Transform-check_patient_active",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0203: Transform-check_patient_active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0203: Transform-check_patient_active": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0302: API-get_profiles": {
+      "main": [
+        [
+          {
+            "node": "Node-0303: Transform-get_profiles",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0303: Transform-get_profiles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0303: Transform-get_profiles": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0402: API-get_appointment_types": {
+      "main": [
+        [
+          {
+            "node": "Node-0403: Transform-get_appointment_types",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0403: Transform-get_appointment_types",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0403: Transform-get_appointment_types": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0502: API-find_next_free_appointment": {
+      "main": [
+        [
+          {
+            "node": "Node-0503: Transform-find_next_free_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0503: Transform-find_next_free_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0503: Transform-find_next_free_appointment": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0602: API-book_appointment": {
+      "main": [
+        [
+          {
+            "node": "Node-0603: Transform-book_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0603: Transform-book_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0603: Transform-book_appointment": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0702: API-get_patient_appointments": {
+      "main": [
+        [
+          {
+            "node": "Node-0703: Transform-get_patient_appointments",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0703: Transform-get_patient_appointments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0703: Transform-get_patient_appointments": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0802: API-cancel_appointment": {
+      "main": [
+        [
+          {
+            "node": "Node-0803: Transform-cancel_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0803: Transform-cancel_appointment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0803: Transform-cancel_appointment": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0902: API-get_available_prescriptions": {
+      "main": [
+        [
+          {
+            "node": "Node-0903: Transform-get_available_prescriptions",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0903: Transform-get_available_prescriptions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0903: Transform-get_available_prescriptions": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1002: API-order_prescription": {
+      "main": [
+        [
+          {
+            "node": "Node-1003: Transform-order_prescription",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1003: Transform-order_prescription",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1003: Transform-order_prescription": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1103: Transform-get_prescription_orders": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1202: API-cancel_prescription_order": {
+      "main": [
+        [
+          {
+            "node": "Node-1203: Transform-cancel_prescription_order",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1203: Transform-cancel_prescription_order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1203: Transform-cancel_prescription_order": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1302: Supabase-check_emergency_symptoms": {
+      "main": [
+        [
+          {
+            "node": "Node-1303: Transform-check_emergency_symptoms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1303: Transform-check_emergency_symptoms": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1402: API-leave_message": {
+      "main": [
+        [
+          {
+            "node": "Node-1403: Transform-leave_message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1403: Transform-leave_message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1403: Transform-leave_message": {
+      "main": [
+        [
+          {
+            "node": "Node-999: Respond-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1102: API-get_prescription_orders": {
+      "main": [
+        [
+          {
+            "node": "Node-1103: Transform-get_prescription_orders",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1103: Transform-get_prescription_orders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Node-001: Switch-ActionRouter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1501: API-check_appointment_availability": {
+      "main": [
+        [
+          {
+            "node": "Node-1501: Transform-heck_appointment_availability",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-1501: Transform-heck_appointment_availability",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0103: Transform-identify_patient2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-1502: API-identify_patient-preWebhook": {
+      "main": [
+        [
+          {
+            "node": "Node-0103: Transform-identify_patient2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Node-0902: API-get_available_prescriptions1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0103: Transform-identify_patient2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "node_getOpeningHours": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook1": {
+      "main": [
+        []
+      ]
+    },
+    "Node-0902: API-get_available_prescriptions1": {
+      "main": [
+        [
+          {
+            "node": "Node-0903: Transform-get_available_prescriptions2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Node-0903: Transform-get_available_prescriptions2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node-0903: Transform-get_available_prescriptions2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "93e4bc55-6d15-4a2b-ab14-7d1d78ba3168",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "292134e46ccc331f026c7704ead61ac5393d944b868cd2ae99462a81c76cecdb"
+  },
+  "id": "COxPrY5QslpUdhdm",
+  "tags": []
+}
