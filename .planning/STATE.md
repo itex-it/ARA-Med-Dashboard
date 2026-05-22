@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 2 — n8n Event Ingestion Pipeline
-current_plan: 02-PLAN-03 COMPLETE (Phase 2 all 3 plans done)
+current_phase: 3 — Core Dashboard Status Bar & Call Log
+current_plan: 03-02 COMPLETE
 status: executing
-last_updated: "2026-05-22T18:02:07.069Z"
+last_updated: "2026-05-22T22:16:01.984Z"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 7
-  completed_plans: 7
+  completed_plans: 9
   percent: 13
 ---
 
@@ -40,16 +40,16 @@ progress:
 
 ## Current Position
 
-**Current Phase:** 2 — n8n Event Ingestion Pipeline
-**Current Plan:** 02-PLAN-03 COMPLETE (Phase 2 all 3 plans done)
-**Status:** Ready to execute
+**Current Phase:** 3 — Core Dashboard Status Bar & Call Log
+**Current Plan:** 03-02 COMPLETE
+**Status:** Executing Phase 3
 
 **Progress Bar:**
 
 ```
 Phase 1 [████████] 100% COMPLETE (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
 Phase 2 [████████] 100% COMPLETE (02-01 DB schema+types, 02-02 webhook route, 02-03 Realtime hooks)
-Phase 3 [        ] 0%
+Phase 3 [████    ] 50% IN PROGRESS (03-01 DB migration COMPLETE, 03-02 StatusBar COMPLETE)
 Phase 4 [        ] 0%
 Phase 5 [        ] 0%
 Phase 6 [        ] 0%
@@ -111,6 +111,9 @@ Phase 8 [        ] 0%
 - **Realtime event subscription:** Use single `event: '*'` (ALL) filter on postgres_changes — not per-event loop — to get correct union type `RealtimePostgresChangesPayload<T>` in supabase-js v2
 - **Initial count query:** Always include `.eq('tenant_id', tenantId)` alongside `.eq('status', ...)` — RLS is backstop but explicit filter is defense-in-depth
 - **Status-bar layout:** layout.tsx main area is flex-col: status-bar div (border-b) above flex-1 content div; layout.tsx stays Server Component, OpenTaskCounter is Client Component
+- **Realtime tenants filter:** useTenantStatus subscribes with filter 'id=eq.' + tenantId (NOT tenant_id) because tenants table is keyed on its primary key `id`
+- **createServerClient is async:** Must await createServerClient() in Server Actions — it returns a Promise (uses next/headers cookies())
+- **Toggle action pattern:** useOptimistic + useTransition for instant UI feedback on ARA-MED toggle; Loader2 spinner shown during pending; Switch disabled during transition
 - **TOTP state machine:** Use unified state object with phase string field instead of discriminated union — preserves all fields (factorId, qrCode) across phase transitions without type casting
 - **supabase.auth.admin.signOut signature:** Takes positional scope string, not object: `signOut(userId, 'global')` — not `{ scope: 'global' }`
 - **revoke-session auth pattern:** Bearer token checked against SUPABASE_SERVICE_ROLE_KEY env var; route returns 401 if missing or mismatched before any DB operation
@@ -161,9 +164,11 @@ Phase 8 hardens for launch: compliance and audit readiness.
 - USER ACTION REQUIRED: Run `scripts/seed-tenant.ts` with env vars to bootstrap first tenant + Vault keys
 - USER ACTION REQUIRED: Verify login → TOTP → /dashboard → /settings end-to-end loop
 - PHASE 2 COMPLETE: 02-01 (DB schema+types), 02-02 (n8n webhook route), 02-03 (Realtime hooks + status-bar) all done
-- Start Phase 3: Core Dashboard — Status Bar & Call Log (STATUS-01..05, CALL-01..10)
+- PHASE 3 IN PROGRESS: 03-01 (DB migration: ara_status, practice_status, active_mode columns + RLS) COMPLETE
+- PHASE 3 IN PROGRESS: 03-02 (shadcn install, useTenantStatus, toggleAraMedAction, useActiveCallCount, StatusBar, layout wiring) COMPLETE — STATUS-01..05 delivered
+- Next: 03-03 (Call Log table + filters), 03-04 (Call Detail Sheet)
 - Realtime architecture decisions locked: useRealtimeChannel (tenant-scoped, removeChannel cleanup), useOpenTaskCount (initial count + delta), OpenTaskCounter (German UI, badge)
-- Layout.tsx: status-bar shell added above children, tenantId from app_metadata, Server Component preserved
+- StatusBar wired into layout.tsx: 5 segments live (ara_status, practice_status, active_mode, active calls, open tasks), toggle switch for operator/ordination_admin
 
 ### Active Blockers
 
@@ -180,7 +185,7 @@ Phase 8 hardens for launch: compliance and audit readiness.
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
 4. Continue with 01-PLAN-04 (Wave 3 — DB push checkpoint, seed script, smoke test)
 
-**Last session:** 2026-05-22T14:21:40.332Z
+**Last session:** 2026-05-22T22:16:01.977Z
 
 **File locations:**
 
