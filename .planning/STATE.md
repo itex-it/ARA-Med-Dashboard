@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 2 — n8n Event Ingestion Pipeline
-current_plan: 02-PLAN-01 (Phase 2, Wave 1 in progress)
+current_plan: 02-PLAN-03 complete — Phase 2 Wave 2 done
 status: executing
-last_updated: "2026-05-22T16:00:00.000Z"
+last_updated: "2026-05-22T18:00:00.000Z"
 progress:
   total_phases: 8
   completed_phases: 1
-  total_plans: 7
-  completed_plans: 4
-  percent: 13
+  total_plans: 3
+  completed_plans: 3
+  percent: 37
 ---
 
 # STATE: ARA-Med Dashboard
@@ -41,14 +41,14 @@ progress:
 ## Current Position
 
 **Current Phase:** 2 — n8n Event Ingestion Pipeline
-**Current Plan:** 02-PLAN-01 (Phase 2, not yet started)
-**Status:** Ready to execute
+**Current Plan:** 02-PLAN-03 COMPLETE (Phase 2 all 3 plans done)
+**Status:** Phase 2 complete — ready for Phase 3
 
 **Progress Bar:**
 
 ```
 Phase 1 [████████] 100% COMPLETE (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
-Phase 2 [        ] 0%
+Phase 2 [████████] 100% COMPLETE (02-01 DB schema+types, 02-02 webhook route, 02-03 Realtime hooks)
 Phase 3 [        ] 0%
 Phase 4 [        ] 0%
 Phase 5 [        ] 0%
@@ -57,7 +57,7 @@ Phase 7 [        ] 0%
 Phase 8 [        ] 0%
 ```
 
-**Overall: 1/8 phases complete**
+**Overall: 2/8 phases complete**
 
 ---
 
@@ -66,7 +66,7 @@ Phase 8 [        ] 0%
 | Phase | Name | Requirements | Status |
 |-------|------|-------------|--------|
 | 1 | Tenant Foundation & Auth | AUTH-01..06, TENANT-01..05 (11 req) | Planned (4 plans, 3 waves) |
-| 2 | n8n Event Ingestion Pipeline | REALTIME-01..03 (3 req) | Not started |
+| 2 | n8n Event Ingestion Pipeline | REALTIME-01..03 (3 req) | COMPLETE (3 plans) |
 | 3 | Core Dashboard — Status Bar & Call Log | STATUS-01..05, CALL-01..10 (15 req) | Not started |
 | 4 | Inbox & Task Management | INBOX-01..05 (5 req) | Not started |
 | 5 | Configuration | HOURS-01..03, APPT-01..05, TEXT-01..04, DEPUTY-01..04, MED-01 (17 req) | Not started |
@@ -78,9 +78,9 @@ Phase 8 [        ] 0%
 
 ## Performance Metrics
 
-**Requirements:** 73 total / 11 complete (AUTH-01..06, TENANT-01..05) / 62 remaining
-**Phases:** 8 total / 1 complete (Phase 1)
-**Plans:** 4 written (Phase 1) / 4 complete (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
+**Requirements:** 73 total / 14 complete (AUTH-01..06, TENANT-01..05, REALTIME-01..03) / 59 remaining
+**Phases:** 8 total / 2 complete (Phase 1, Phase 2)
+**Plans:** 7 written (Phase 1 + Phase 2) / 7 complete (01-PLAN-01..04, 02-01..03)
 
 ---
 
@@ -107,6 +107,10 @@ Phase 8 [        ] 0%
 - **Hook tenant_id cast:** Injected as ::text cast before to_jsonb() to ensure consistent UUID string representation in JWT app_metadata
 - **Vault only path:** public.get_secret(text) is the only allowed path to vault.decrypted_secrets — revoked from all roles except service_role
 - **Server Action form pattern:** Page is Server Component, form is extracted Client Component file; useActionState (React 19) returns [state, formAction, isPending]; react-hook-form handles client-side UX only
+- **Realtime hook generic constraint:** useRealtimeChannel<T> uses `T extends { [key: string]: unknown }` not `Record<string,unknown>` — named interfaces (InboxItemRow) lack index signatures
+- **Realtime event subscription:** Use single `event: '*'` (ALL) filter on postgres_changes — not per-event loop — to get correct union type `RealtimePostgresChangesPayload<T>` in supabase-js v2
+- **Initial count query:** Always include `.eq('tenant_id', tenantId)` alongside `.eq('status', ...)` — RLS is backstop but explicit filter is defense-in-depth
+- **Status-bar layout:** layout.tsx main area is flex-col: status-bar div (border-b) above flex-1 content div; layout.tsx stays Server Component, OpenTaskCounter is Client Component
 - **TOTP state machine:** Use unified state object with phase string field instead of discriminated union — preserves all fields (factorId, qrCode) across phase transitions without type casting
 - **supabase.auth.admin.signOut signature:** Takes positional scope string, not object: `signOut(userId, 'global')` — not `{ scope: 'global' }`
 - **revoke-session auth pattern:** Bearer token checked against SUPABASE_SERVICE_ROLE_KEY env var; route returns 401 if missing or mismatched before any DB operation
@@ -156,7 +160,10 @@ Phase 8 hardens for launch: compliance and audit readiness.
 - USER ACTION REQUIRED: Register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks → public.custom_access_token_hook)
 - USER ACTION REQUIRED: Run `scripts/seed-tenant.ts` with env vars to bootstrap first tenant + Vault keys
 - USER ACTION REQUIRED: Verify login → TOTP → /dashboard → /settings end-to-end loop
-- Start Phase 2: n8n Event Ingestion Pipeline (REALTIME-01..03)
+- PHASE 2 COMPLETE: 02-01 (DB schema+types), 02-02 (n8n webhook route), 02-03 (Realtime hooks + status-bar) all done
+- Start Phase 3: Core Dashboard — Status Bar & Call Log (STATUS-01..05, CALL-01..10)
+- Realtime architecture decisions locked: useRealtimeChannel (tenant-scoped, removeChannel cleanup), useOpenTaskCount (initial count + delta), OpenTaskCounter (German UI, badge)
+- Layout.tsx: status-bar shell added above children, tenantId from app_metadata, Server Component preserved
 
 ### Active Blockers
 
