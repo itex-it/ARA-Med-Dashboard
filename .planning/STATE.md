@@ -24,12 +24,12 @@
 ## Current Position
 
 **Current Phase:** 1 — Tenant Foundation & Auth
-**Current Plan:** 01-PLAN-01 (Wave 1, ready for execution)
-**Status:** Phase 1 planned — ready to execute
+**Current Plan:** 01-PLAN-02 (Wave 1, ready for execution)
+**Status:** Phase 1 in progress — 01-PLAN-01 complete
 
 **Progress Bar:**
 ```
-Phase 1 [▓▓      ] 25% (planned)
+Phase 1 [▓▓▓▓    ] 50% (01-PLAN-01 complete)
 Phase 2 [        ] 0%
 Phase 3 [        ] 0%
 Phase 4 [        ] 0%
@@ -60,9 +60,9 @@ Phase 8 [        ] 0%
 
 ## Performance Metrics
 
-**Requirements:** 73 total / 0 complete / 73 remaining
+**Requirements:** 73 total / 2 complete (AUTH-01, AUTH-05) / 71 remaining
 **Phases:** 8 total / 0 complete (Phase 1 in progress)
-**Plans:** 4 written (Phase 1) / 0 complete
+**Plans:** 4 written (Phase 1) / 1 complete (01-PLAN-01)
 
 ---
 
@@ -70,6 +70,9 @@ Phase 8 [        ] 0%
 
 ### Architecture Decisions (Locked)
 
+- **proxy.ts pattern:** supabase.auth.mfa.getAuthenticatorAssuranceLevel() — mfa object is on supabase.auth.mfa, not supabase.mfa
+- **Turbopack CSS imports:** Bare node_modules CSS imports not supported in Turbopack — use relative paths or local copies for CSS packages
+- **Next.js 16 NextConfig:** eslint property removed from NextConfig type; eslint still works but cannot be disabled via config
 - **RLS pattern:** Always use `(SELECT auth.jwt() ->> 'tenant_id') = tenant_id::text` — never the uncached per-row form
 - **tenant_id source:** Extracted from JWT only — never from request body
 - **Service-Role Key:** Never in browser bundle. Use `import 'server-only'` in `/src/lib/supabase/server.ts`
@@ -117,7 +120,8 @@ Phase 8 hardens for launch: compliance and audit readiness.
 
 ### Open Todos
 
-- Execute Phase 1: run 01-PLAN-01 and 01-PLAN-02 (Wave 1, parallel), then 01-PLAN-03 (Wave 2), then 01-PLAN-04 (Wave 3 — blocking DB push checkpoint)
+- Execute Phase 1: run 01-PLAN-02 (Wave 1, DB migrations), then 01-PLAN-03 (Wave 2 — Auth Flow), then 01-PLAN-04 (Wave 3 — blocking DB push checkpoint)
+- 01-PLAN-01 COMPLETE: Next.js 16 scaffold, proxy.ts, Supabase clients, domain types
 - After supabase db push: register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks)
 - After seed script: verify login → TOTP → dashboard → settings loop works end-to-end
 
@@ -133,7 +137,9 @@ Phase 8 hardens for launch: compliance and audit readiness.
 1. Read `.planning/ROADMAP.md` to see current phase structure
 2. Read `.planning/STATE.md` (this file) for architectural decisions and context
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
-4. Run `/gsd:plan-phase 1` to begin Phase 1 planning
+4. Continue with 01-PLAN-02 (Supabase DB migrations)
+
+**Last session:** 2026-05-22 — Completed 01-PLAN-01 (Next.js scaffold + Supabase clients + proxy.ts)
 
 **File locations:**
 - Requirements: `.planning/REQUIREMENTS.md`
