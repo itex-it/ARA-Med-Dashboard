@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
-import { OpenTaskCounter } from '@/components/status/OpenTaskCounter'
+import { StatusBar } from '@/components/status/StatusBar'
 
 export default async function DashboardLayout({
   children,
@@ -17,6 +17,9 @@ export default async function DashboardLayout({
   }
 
   const tenantId = (user.app_metadata?.tenant_id as string | undefined) ?? ''
+  const canToggle = ['operator', 'ordination_admin'].includes(
+    (user.app_metadata?.ara_role as string | undefined) ?? ''
+  )
 
   return (
     <div className="flex min-h-screen">
@@ -64,8 +67,7 @@ export default async function DashboardLayout({
       {/* Hauptbereich */}
       <main className="flex flex-1 flex-col bg-gray-50">
         <div className="flex items-center border-b px-6 py-2">
-          {/* Status-Bar-Hülle — vollständige Status-Bar in Phase 3 */}
-          <OpenTaskCounter tenantId={tenantId} />
+          <StatusBar tenantId={tenantId} canToggle={canToggle} />
         </div>
         <div className="flex-1 p-6">{children}</div>
       </main>
