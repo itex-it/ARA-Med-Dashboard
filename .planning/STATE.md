@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 3 — Core Dashboard Status Bar & Call Log
-current_plan: 03-03 COMPLETE
+current_plan: 03-04 COMPLETE
 status: executing
-last_updated: "2026-05-22T22:20:20Z"
+last_updated: "2026-05-22T22:28:51Z"
 progress:
   total_phases: 8
-  completed_phases: 1
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 10
-  percent: 13
+  completed_plans: 11
+  percent: 38
 ---
 
 # STATE: ARA-Med Dashboard
@@ -40,16 +40,16 @@ progress:
 
 ## Current Position
 
-**Current Phase:** 3 — Core Dashboard Status Bar & Call Log
-**Current Plan:** 03-02 COMPLETE
-**Status:** Executing Phase 3
+**Current Phase:** 4 — Inbox & Task Management
+**Current Plan:** 03-04 COMPLETE (Phase 3 COMPLETE)
+**Status:** Phase 3 complete — ready for Phase 4
 
 **Progress Bar:**
 
 ```
 Phase 1 [████████] 100% COMPLETE (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
 Phase 2 [████████] 100% COMPLETE (02-01 DB schema+types, 02-02 webhook route, 02-03 Realtime hooks)
-Phase 3 [██████  ] 75% IN PROGRESS (03-01 DB migration COMPLETE, 03-02 StatusBar COMPLETE, 03-03 Call Log COMPLETE)
+Phase 3 [████████] 100% COMPLETE (03-01 DB migration, 03-02 StatusBar, 03-03 Call Log, 03-04 Call Detail Sheet)
 Phase 4 [        ] 0%
 Phase 5 [        ] 0%
 Phase 6 [        ] 0%
@@ -57,7 +57,7 @@ Phase 7 [        ] 0%
 Phase 8 [        ] 0%
 ```
 
-**Overall: 2/8 phases complete**
+**Overall: 3/8 phases complete**
 
 ---
 
@@ -67,7 +67,7 @@ Phase 8 [        ] 0%
 |-------|------|-------------|--------|
 | 1 | Tenant Foundation & Auth | AUTH-01..06, TENANT-01..05 (11 req) | Planned (4 plans, 3 waves) |
 | 2 | n8n Event Ingestion Pipeline | REALTIME-01..03 (3 req) | COMPLETE (3 plans) |
-| 3 | Core Dashboard — Status Bar & Call Log | STATUS-01..05, CALL-01..10 (15 req) | Not started |
+| 3 | Core Dashboard — Status Bar & Call Log | STATUS-01..05, CALL-01..10 (15 req) | COMPLETE (4 plans) |
 | 4 | Inbox & Task Management | INBOX-01..05 (5 req) | Not started |
 | 5 | Configuration | HOURS-01..03, APPT-01..05, TEXT-01..04, DEPUTY-01..04, MED-01 (17 req) | Not started |
 | 6 | Routing & Communication Rules | ROUTE-01..03, COMM-01..05 (8 req) | Not started |
@@ -117,6 +117,9 @@ Phase 8 [        ] 0%
 - **TOTP state machine:** Use unified state object with phase string field instead of discriminated union — preserves all fields (factorId, qrCode) across phase transitions without type casting
 - **supabase.auth.admin.signOut signature:** Takes positional scope string, not object: `signOut(userId, 'global')` — not `{ scope: 'global' }`
 - **revoke-session auth pattern:** Bearer token checked against SUPABASE_SERVICE_ROLE_KEY env var; route returns 401 if missing or mismatched before any DB operation
+- **call_actions detail column:** Never returned from /api/calls/[id]/actions — excluded at DB query level (DSGVO C6: health-sensitive MEDSTAR data requires Phase 7 RBAC gating before exposure)
+- **Audio URL on-demand:** Fetched in CallDetailSheet useEffect only when open && canSeeAudio && call.audio_url — never at page-load (C7 honored)
+- **Boolean short-circuit for unknown types:** When rendering Record<string, unknown> fields in JSX, use Boolean(field) && (...) not field && (...) — unknown short-circuit returns unknown not ReactNode (TS2322)
 
 ### Critical Pitfalls to Avoid (from Research)
 
@@ -167,7 +170,9 @@ Phase 8 hardens for launch: compliance and audit readiness.
 - PHASE 3 IN PROGRESS: 03-01 (DB migration: ara_status, practice_status, active_mode columns + RLS) COMPLETE
 - PHASE 3 IN PROGRESS: 03-02 (shadcn install, useTenantStatus, toggleAraMedAction, useActiveCallCount, StatusBar, layout wiring) COMPLETE — STATUS-01..05 delivered
 - PHASE 3 IN PROGRESS: 03-03 (/telefonate call log page, useCallLog hook, CallLogTable, CallStatusBadge, phone/format utils) COMPLETE — CALL-01, CALL-02 delivered
-- Next: 03-04 (Call Detail Sheet)
+- PHASE 3 COMPLETE: 03-04 (Call Detail Sheet: audio API, call-feedback action, CallDetailSheet, call actions API) COMPLETE — CALL-03..10 delivered
+- PHASE 3 COMPLETE: All 4 plans (03-01..04) done. STATUS-01..05, CALL-01..10 all delivered.
+- Next: Phase 4 — Inbox & Task Management (INBOX-01..05)
 - Realtime architecture decisions locked: useRealtimeChannel (tenant-scoped, removeChannel cleanup), useOpenTaskCount (initial count + delta), OpenTaskCounter (German UI, badge)
 - StatusBar wired into layout.tsx: 5 segments live (ara_status, practice_status, active_mode, active calls, open tasks), toggle switch for operator/ordination_admin
 
@@ -186,7 +191,7 @@ Phase 8 hardens for launch: compliance and audit readiness.
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
 4. Continue with 01-PLAN-04 (Wave 3 — DB push checkpoint, seed script, smoke test)
 
-**Last session:** 2026-05-22T22:20:20Z
+**Last session:** 2026-05-22T22:28:51Z
 
 **File locations:**
 
