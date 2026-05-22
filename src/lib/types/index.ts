@@ -20,6 +20,10 @@ export interface TenantRow {
   require_mfa_level: MfaLevel
   active_features: Record<string, boolean>
   created_at: string
+  // Phase 03: Status Bar columns (STATUS-01/02/03)
+  ara_status: AraStatus
+  practice_status: PracticeStatus
+  active_mode: ActiveMode
 }
 
 /** Benutzer-Tenant-Rollenzuweisung (entspricht der user_tenant_roles Tabelle) */
@@ -78,6 +82,10 @@ export interface CallLogRow {
   inbox_qualifying: boolean
   created_at: string
   updated_at: string
+  // Phase 03: Feedback & annotation columns (CALL-08/09)
+  feedback_label: FeedbackLabel | null
+  internal_note: string | null
+  intent_corrected: string | null
 }
 
 /** Staff action item for calls requiring follow-up (entspricht der inbox_items Tabelle) */
@@ -96,5 +104,45 @@ export interface TenantDidNumberRow {
   id: string
   tenant_id: string
   did_number: string
+  created_at: string
+}
+
+// ============================================================
+// Phase 03: Status Bar & Call Detail Types
+// ============================================================
+
+/** STATUS-01: ARA-MED Voice AI system state */
+export type AraStatus = 'active' | 'paused' | 'error'
+
+/** STATUS-02: Medical practice open/closed state */
+export type PracticeStatus = 'open' | 'closed' | 'special'
+
+/** STATUS-03: Active operational mode */
+export type ActiveMode = 'normal' | 'vacation' | 'deputy' | 'overload'
+
+/** CALL-09: Staff quality feedback label on call classification */
+export type FeedbackLabel = 'correct' | 'incorrect' | 'needs_training'
+
+/** CALL-04/10: MEDSTAR action type executed during a call */
+export type CallActionType =
+  | 'appointment_booked'
+  | 'appointment_cancelled'
+  | 'appointment_rescheduled'
+  | 'prescription_ordered'
+  | 'message_created'
+  | 'forwarding'
+  | 'emergency_notice'
+
+/** CALL-04/10: Result of the MEDSTAR API call for an action */
+export type MedstarActionStatus = 'success' | 'error' | 'pending'
+
+/** Executed MEDSTAR action per call (entspricht der call_actions Tabelle) */
+export interface CallActionRow {
+  id: string
+  tenant_id: string
+  call_log_id: string
+  action_type: CallActionType
+  medstar_status: MedstarActionStatus | null
+  detail: Record<string, unknown> | null
   created_at: string
 }
