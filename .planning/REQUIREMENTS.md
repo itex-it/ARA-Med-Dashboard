@@ -174,28 +174,85 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 bis AUTH-06 | Phase 1 | Pending |
-| TENANT-01 bis TENANT-05 | Phase 1 | Pending |
-| REALTIME-01 bis REALTIME-03 | Phase 2 | Pending |
-| STATUS-01 bis STATUS-05 | Phase 3 | Pending |
-| CALL-01 bis CALL-10 | Phase 3 | Pending |
-| INBOX-01 bis INBOX-05 | Phase 4 | Pending |
-| HOURS-01 bis HOURS-03 | Phase 5 | Pending |
-| APPT-01 bis APPT-05 | Phase 5 | Pending |
-| TEXT-01 bis TEXT-04 | Phase 5 | Pending |
-| DEPUTY-01 bis DEPUTY-04 | Phase 5 | Pending |
-| MED-01 | Phase 5 | Pending |
-| ROUTE-01 bis ROUTE-03 | Phase 6 | Pending |
-| COMM-01 bis COMM-05 | Phase 6 | Pending |
-| STAT-01 bis STAT-05 | Phase 7 | Pending |
-| RBAC-01 bis RBAC-06 | Phase 7 | Pending |
-| AUDIT-01 bis AUDIT-03 | Phase 8 | Pending |
+| AUTH-01 | Phase 1: Tenant Foundation & Auth | Pending |
+| AUTH-02 | Phase 1: Tenant Foundation & Auth | Pending |
+| AUTH-03 | Phase 1: Tenant Foundation & Auth | Pending |
+| AUTH-04 | Phase 1: Tenant Foundation & Auth | Pending |
+| AUTH-05 | Phase 1: Tenant Foundation & Auth | Pending |
+| AUTH-06 | Phase 1: Tenant Foundation & Auth | Pending |
+| TENANT-01 | Phase 1: Tenant Foundation & Auth | Pending |
+| TENANT-02 | Phase 1: Tenant Foundation & Auth | Pending |
+| TENANT-03 | Phase 1: Tenant Foundation & Auth | Pending |
+| TENANT-04 | Phase 1: Tenant Foundation & Auth | Pending |
+| TENANT-05 | Phase 1: Tenant Foundation & Auth | Pending |
+| REALTIME-01 | Phase 2: n8n Event Ingestion Pipeline | Pending |
+| REALTIME-02 | Phase 2: n8n Event Ingestion Pipeline | Pending |
+| REALTIME-03 | Phase 2: n8n Event Ingestion Pipeline | Pending |
+| STATUS-01 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| STATUS-02 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| STATUS-03 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| STATUS-04 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| STATUS-05 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-01 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-02 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-03 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-04 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-05 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-06 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-07 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-08 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-09 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| CALL-10 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
+| INBOX-01 | Phase 4: Inbox & Task Management | Pending |
+| INBOX-02 | Phase 4: Inbox & Task Management | Pending |
+| INBOX-03 | Phase 4: Inbox & Task Management | Pending |
+| INBOX-04 | Phase 4: Inbox & Task Management | Pending |
+| INBOX-05 | Phase 4: Inbox & Task Management | Pending |
+| HOURS-01 | Phase 5: Configuration | Pending |
+| HOURS-02 | Phase 5: Configuration | Pending |
+| HOURS-03 | Phase 5: Configuration | Pending |
+| APPT-01 | Phase 5: Configuration | Pending |
+| APPT-02 | Phase 5: Configuration | Pending |
+| APPT-03 | Phase 5: Configuration | Pending |
+| APPT-04 | Phase 5: Configuration | Pending |
+| APPT-05 | Phase 5: Configuration | Pending |
+| TEXT-01 | Phase 5: Configuration | Pending |
+| TEXT-02 | Phase 5: Configuration | Pending |
+| TEXT-03 | Phase 5: Configuration | Pending |
+| TEXT-04 | Phase 5: Configuration | Pending |
+| DEPUTY-01 | Phase 5: Configuration | Pending |
+| DEPUTY-02 | Phase 5: Configuration | Pending |
+| DEPUTY-03 | Phase 5: Configuration | Pending |
+| DEPUTY-04 | Phase 5: Configuration | Pending |
+| MED-01 | Phase 5: Configuration | Pending |
+| ROUTE-01 | Phase 6: Routing & Communication Rules | Pending |
+| ROUTE-02 | Phase 6: Routing & Communication Rules | Pending |
+| ROUTE-03 | Phase 6: Routing & Communication Rules | Pending |
+| COMM-01 | Phase 6: Routing & Communication Rules | Pending |
+| COMM-02 | Phase 6: Routing & Communication Rules | Pending |
+| COMM-03 | Phase 6: Routing & Communication Rules | Pending |
+| COMM-04 | Phase 6: Routing & Communication Rules | Pending |
+| COMM-05 | Phase 6: Routing & Communication Rules | Pending |
+| STAT-01 | Phase 7: Statistics & User Management | Pending |
+| STAT-02 | Phase 7: Statistics & User Management | Pending |
+| STAT-03 | Phase 7: Statistics & User Management | Pending |
+| STAT-04 | Phase 7: Statistics & User Management | Pending |
+| STAT-05 | Phase 7: Statistics & User Management | Pending |
+| RBAC-01 | Phase 7: Statistics & User Management | Pending |
+| RBAC-02 | Phase 7: Statistics & User Management | Pending |
+| RBAC-03 | Phase 7: Statistics & User Management | Pending |
+| RBAC-04 | Phase 7: Statistics & User Management | Pending |
+| RBAC-05 | Phase 7: Statistics & User Management | Pending |
+| RBAC-06 | Phase 7: Statistics & User Management | Pending |
+| AUDIT-01 | Phase 8: Audit Log & System Polish | Pending |
+| AUDIT-02 | Phase 8: Audit Log & System Polish | Pending |
+| AUDIT-03 | Phase 8: Audit Log & System Polish | Pending |
 
 **Coverage:**
 - v1 requirements: 73 total
 - Mapped to phases: 73
-- Unmapped: 0 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-22*
-*Last updated: 2026-05-22 after initial definition from product-spec.md*
+*Last updated: 2026-05-22 after roadmap creation — traceability expanded to per-requirement rows*

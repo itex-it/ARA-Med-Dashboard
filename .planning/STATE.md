@@ -1,0 +1,146 @@
+# STATE: ARA-Med Dashboard
+
+**Project:** ARA-Med Dashboard — Multi-Tenant SaaS Voice AI for Austrian Medical Practices
+**Last updated:** 2026-05-22
+**Mode:** mvp
+
+---
+
+## Project Reference
+
+**Core Value:** Eine Ordination kann ARA-Med Voice AI aktivieren, alle Telefonate mit Ergebnissen in Echtzeit verfolgen und offene Aufgaben bearbeiten — ohne technisches Know-how.
+
+**Stack:** Next.js 16 + React 19 + TypeScript strict + Tailwind CSS 4 + shadcn/ui + Supabase (Postgres + Realtime + Auth + Vault) + n8n CE + Vercel
+
+**Constraint highlights:**
+- tenant_id on every table, RLS on every table — no exceptions
+- Service-Role Key only in n8n / API Routes / Server Actions — never in browser
+- All external API keys (MEDSTAR, ElevenLabs) in Supabase Vault only
+- Provider brand (ElevenLabs, n8n) never visible in the product
+- UI in German only for MVP
+
+---
+
+## Current Position
+
+**Current Phase:** Not started
+**Current Plan:** None
+**Status:** Roadmap created — awaiting first plan
+
+**Progress Bar:**
+```
+Phase 1 [        ] 0%
+Phase 2 [        ] 0%
+Phase 3 [        ] 0%
+Phase 4 [        ] 0%
+Phase 5 [        ] 0%
+Phase 6 [        ] 0%
+Phase 7 [        ] 0%
+Phase 8 [        ] 0%
+```
+
+**Overall: 0/8 phases complete**
+
+---
+
+## Phase Summary
+
+| Phase | Name | Requirements | Status |
+|-------|------|-------------|--------|
+| 1 | Tenant Foundation & Auth | AUTH-01..06, TENANT-01..05 (11 req) | Not started |
+| 2 | n8n Event Ingestion Pipeline | REALTIME-01..03 (3 req) | Not started |
+| 3 | Core Dashboard — Status Bar & Call Log | STATUS-01..05, CALL-01..10 (15 req) | Not started |
+| 4 | Inbox & Task Management | INBOX-01..05 (5 req) | Not started |
+| 5 | Configuration | HOURS-01..03, APPT-01..05, TEXT-01..04, DEPUTY-01..04, MED-01 (17 req) | Not started |
+| 6 | Routing & Communication Rules | ROUTE-01..03, COMM-01..05 (8 req) | Not started |
+| 7 | Statistics & User Management | STAT-01..05, RBAC-01..06 (11 req) | Not started |
+| 8 | Audit Log & System Polish | AUDIT-01..03 (3 req) | Not started |
+
+---
+
+## Performance Metrics
+
+**Requirements:** 73 total / 0 complete / 73 remaining
+**Phases:** 8 total / 0 complete
+**Plans:** 0 written / 0 complete
+
+---
+
+## Accumulated Context
+
+### Architecture Decisions (Locked)
+
+- **RLS pattern:** Always use `(SELECT auth.jwt() ->> 'tenant_id') = tenant_id::text` — never the uncached per-row form
+- **tenant_id source:** Extracted from JWT only — never from request body
+- **Service-Role Key:** Never in browser bundle. Use `import 'server-only'` in `/src/lib/supabase/server.ts`
+- **n8n webhook auth:** DID number is the authoritative tenant lookup — never the payload's tenant_id field
+- **Realtime channels:** Always scoped to tenant: `channel('call_log:' + tenantId)` — cleanup via `removeChannel()` in useEffect return
+- **Audio URLs:** Generated on-demand via API route (15-min expiry), never at page-load time
+- **Upsert pattern:** All n8n webhook handlers use `INSERT ... ON CONFLICT DO UPDATE` — never plain INSERT (idempotency)
+- **Composite indexes:** Every table with tenant_id gets `CREATE INDEX CONCURRENTLY idx_{table}_tenant_created ON {table} (tenant_id, created_at DESC)` in migration
+- **JWT expiry:** 15-minute sessions; Supabase SSR refreshes automatically; Realtime channels re-authenticated on `onAuthStateChange`
+
+### Critical Pitfalls to Avoid (from Research)
+
+- C1: RLS per-row JWT calls (performance collapse on large tables)
+- C2: tenant_id from request body (cross-tenant data breach)
+- C3: Realtime channel without tenant filter (data leakage)
+- C4: Realtime subscription not cleaned up (memory leak + duplicate events)
+- C5: Service role key in browser bundle (full DB exposure)
+- C6: Health data without column-level access control (DSGVO Art. 9 violation)
+- C7: Audio URL generated at page load (expiry mid-shift, CORS issues)
+- C8: Stale JWT after role change (dismissed employee retains access)
+- C9: n8n webhook accepts tenant_id from payload (cross-tenant poisoning)
+- C10: ElevenLabs duplicate events (double-booked appointments, duplicate call log rows)
+
+### Build Order Rationale
+
+Phase 1 before anything: JWT + RLS is the security foundation. Every other phase depends on tenant isolation existing.
+Phase 2 before UI: Dashboard has no data to display without the ingestion pipeline. Status bar and call log are empty shells without Phase 2.
+Phase 3 is the core value loop: staff see all calls live. This is the product.
+Phase 4 closes the operational loop: inbox turns call events into actionable tasks.
+Phase 5 enables AI configuration: practice can control Voice AI behavior.
+Phase 6 adds notification and routing config: communication channels configured.
+Phase 7 adds reporting and admin: management visibility and user control.
+Phase 8 hardens for launch: compliance and audit readiness.
+
+### DSGVO Compliance Checklist (must be complete before Phase 8 sign-off)
+
+- [ ] Phone numbers stored only as phone_hash (SHA-256)
+- [ ] transcript_text accessible only via call-detail permission (view restriction)
+- [ ] Audio presigned URLs generated on-demand, 15-min expiry, permission-checked
+- [ ] SVNR never stored in dashboard DB (MEDSTAR only)
+- [ ] AI-generated summaries restricted by call-detail permission
+- [ ] EU AI Act Art. 50 disclosure enforced in all greeting text modes
+- [ ] conversation_events retention policy (12-month Edge Function)
+- [ ] DPIA documented for systematic health data processing
+
+### Open Todos
+
+- None yet — roadmap phase just created
+
+### Active Blockers
+
+- None
+
+---
+
+## Session Continuity
+
+**To resume this project:**
+1. Read `.planning/ROADMAP.md` to see current phase structure
+2. Read `.planning/STATE.md` (this file) for architectural decisions and context
+3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
+4. Run `/gsd:plan-phase 1` to begin Phase 1 planning
+
+**File locations:**
+- Requirements: `.planning/REQUIREMENTS.md`
+- Roadmap: `.planning/ROADMAP.md`
+- State: `.planning/STATE.md` (this file)
+- Project: `.planning/PROJECT.md`
+- Research: `.planning/research/` (ARCHITECTURE.md, FEATURES.md, STACK.md, PITFALLS.md)
+- Specs: `docs/specs/` (product-spec.md, technical-architecture.md, intent-engine.md, session-management.md, medstar-api.md, medical-practice-requirements.md)
+
+---
+
+*State initialized: 2026-05-22 after roadmap creation*
