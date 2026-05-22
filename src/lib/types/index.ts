@@ -95,6 +95,8 @@ export interface InboxItemRow {
   call_log_id: string | null
   case_type: InboxCaseType
   status: InboxStatus
+  // Phase 04: INBOX-05 — note field (DB column existed in Phase 2 migration, type was missing)
+  internal_note: string | null
   created_at: string
   updated_at: string
 }
