@@ -148,7 +148,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Tenant Foundation & Auth | 4/4 | COMPLETE | 01-PLAN-01: 2026-05-22, 01-PLAN-02: 2026-05-22, 01-PLAN-03: 2026-05-22, 01-PLAN-04: 2026-05-22 |
-| 2. n8n Event Ingestion Pipeline | 0/? | Not started | - |
+| 2. n8n Event Ingestion Pipeline | 0/3 | Planned (3 plans, 2 waves) | - |
 | 3. Core Dashboard — Status Bar & Call Log | 0/? | Not started | - |
 | 4. Inbox & Task Management | 0/? | Not started | - |
 | 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 0/? | Not started | - |
