@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  ara-med-dashboard:
+    image: ghcr.io/itex-it/ara-med-dashboard:latest
+    container_name: ara-med-dashboard
+    restart: unless-stopped
+    pull_policy: always
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+    labels:
+      caddy: app.aramed.at
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true

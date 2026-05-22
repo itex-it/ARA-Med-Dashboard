@@ -8,8 +8,8 @@ Provider-agnostisch: im Produkt immer "ARA-MED Voice", "ARA-MED Nachricht" — n
 ## Tech Stack
 - Next.js 16 + React 19 + TypeScript (strict)
 - Tailwind CSS 4 + shadcn/ui
-- Supabase (Postgres + Realtime + Auth + Vault)
-- Vercel (Deployment)
+- Supabase (Postgres + Realtime + Auth + Vault) — self-hosted auf 194.242.35.77
+- Docker + Portainer (Deployment auf app.aramed.at via Caddy Docker Proxy)
 - n8n Community Edition (Webhook-Orchestrierung)
 
 ## Projektstruktur
@@ -180,9 +180,20 @@ conversation_events  → jeder Turn — vollständiger Audit-Trail
 - `medical-practice-requirements.md` — alle 8 Ordinationstypen, Business Rules
 
 ### Infrastruktur
-- Portainer: https://194.242.35.77:9443
+- Portainer: https://194.242.35.77:9443 (Endpoint ID: 3)
+- Reverse Proxy: lucaslorentz/caddy-docker-proxy — externes Docker-Netzwerk `caddy`
+- Supabase: self-hosted auf 194.242.35.77 (Stack `supabase`)
 - n8n: https://n8n.srv895382.hstgr.cloud
 - GitHub: github.com/itex-it/ARA-Med-Dashboard
+- Container Image: ghcr.io/itex-it/ara-med-dashboard:latest
+- Dashboard URL: https://app.aramed.at
+
+### Deployment-Pattern
+- `Dockerfile` — multi-stage Next.js standalone build
+- `docker-compose.yml` — Portainer Stack-Datei mit Caddy-Labels
+- `next.config.ts` — `output: 'standalone'` erforderlich für Docker standalone build
+- Caddy-Labels: `caddy: app.aramed.at` + `caddy.reverse_proxy: "{{upstreams 3000}}"`
+- Netzwerk `caddy` ist extern (von caddy-docker-proxy Stack verwaltet)
 
 ### Sophie als Konzept-Referenz (nicht Code-Referenz)
 - Intent-Schema Struktur: `intent_definitions`, `intent_aliases`, `intent_routing_rules`
