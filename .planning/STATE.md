@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+current_phase: 2 — n8n Event Ingestion Pipeline
+current_plan: 02-PLAN-01 (Phase 2, not yet started)
+status: executing
+last_updated: "2026-05-22T15:01:12.947Z"
+progress:
+  total_phases: 8
+  completed_phases: 1
+  total_plans: 7
+  completed_plans: 4
+  percent: 13
+---
+
 # STATE: ARA-Med Dashboard
 
 **Project:** ARA-Med Dashboard — Multi-Tenant SaaS Voice AI for Austrian Medical Practices
@@ -10,9 +26,10 @@
 
 **Core Value:** Eine Ordination kann ARA-Med Voice AI aktivieren, alle Telefonate mit Ergebnissen in Echtzeit verfolgen und offene Aufgaben bearbeiten — ohne technisches Know-how.
 
-**Stack:** Next.js 16 + React 19 + TypeScript strict + Tailwind CSS 4 + shadcn/ui + Supabase (Postgres + Realtime + Auth + Vault) + n8n CE + Vercel
+**Stack:** Next.js 16 + React 19 + TypeScript strict + Tailwind CSS 4 + shadcn/ui + Supabase self-hosted (Postgres + Realtime + Auth + Vault) + n8n CE + Docker/Portainer (app.aramed.at via Caddy)
 
 **Constraint highlights:**
+
 - tenant_id on every table, RLS on every table — no exceptions
 - Service-Role Key only in n8n / API Routes / Server Actions — never in browser
 - All external API keys (MEDSTAR, ElevenLabs) in Supabase Vault only
@@ -25,9 +42,10 @@
 
 **Current Phase:** 2 — n8n Event Ingestion Pipeline
 **Current Plan:** 02-PLAN-01 (Phase 2, not yet started)
-**Status:** Phase 1 COMPLETE — all 4 plans (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04) done
+**Status:** Ready to execute
 
 **Progress Bar:**
+
 ```
 Phase 1 [████████] 100% COMPLETE (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
 Phase 2 [        ] 0%
@@ -131,7 +149,10 @@ Phase 8 hardens for launch: compliance and audit readiness.
 ### Open Todos
 
 - PHASE 1 COMPLETE: 01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04 all done
-- USER ACTION REQUIRED: Run `supabase db push` to apply all 6 migrations to Supabase project
+- DEPLOYMENT CHANGED: Vercel → Docker/Portainer (app.aramed.at). Dockerfile + docker-compose.yml created; next.config.ts has output: 'standalone'
+- USER ACTION REQUIRED: Push image to ghcr.io/itex-it/ara-med-dashboard:latest (GitHub Actions or manual build)
+- USER ACTION REQUIRED: Deploy Stack in Portainer (Endpoint 3) using docker-compose.yml; set env vars NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
+- USER ACTION REQUIRED: Run `supabase db push` to apply all 6 migrations to self-hosted Supabase
 - USER ACTION REQUIRED: Register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks → public.custom_access_token_hook)
 - USER ACTION REQUIRED: Run `scripts/seed-tenant.ts` with env vars to bootstrap first tenant + Vault keys
 - USER ACTION REQUIRED: Verify login → TOTP → /dashboard → /settings end-to-end loop
@@ -146,14 +167,16 @@ Phase 8 hardens for launch: compliance and audit readiness.
 ## Session Continuity
 
 **To resume this project:**
+
 1. Read `.planning/ROADMAP.md` to see current phase structure
 2. Read `.planning/STATE.md` (this file) for architectural decisions and context
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
 4. Continue with 01-PLAN-04 (Wave 3 — DB push checkpoint, seed script, smoke test)
 
-**Last session:** 2026-05-22 — Completed 01-PLAN-04 (Seed script, tenant settings API, settings page — Phase 1 COMPLETE)
+**Last session:** 2026-05-22T14:21:40.332Z
 
 **File locations:**
+
 - Requirements: `.planning/REQUIREMENTS.md`
 - Roadmap: `.planning/ROADMAP.md`
 - State: `.planning/STATE.md` (this file)

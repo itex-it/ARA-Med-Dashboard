@@ -54,7 +54,7 @@ Phase 1 delivers the secure multi-tenant base on which every other phase depends
   ```
 - **D-15:** **Every table** gets a composite index in its migration (before any data):
   ```sql
-  CREATE INDEX CONCURRENTLY idx_{table}_tenant_created
+  CREATE INDEX idx_{table}_tenant_created
     ON {table} (tenant_id, created_at DESC);
   ```
 - **D-16:** Phase 1 establishes the RLS migration template that ALL subsequent phases copy. This template is the single most important artifact of Phase 1.
@@ -144,3 +144,4 @@ Phase 1 delivers the secure multi-tenant base on which every other phase depends
 
 *Phase: 1-Tenant Foundation & Auth*
 *Context gathered: 2026-05-22*
+</content>
