@@ -23,13 +23,13 @@
 
 ## Current Position
 
-**Current Phase:** Not started
-**Current Plan:** None
-**Status:** Roadmap created — awaiting first plan
+**Current Phase:** 1 — Tenant Foundation & Auth
+**Current Plan:** 01-PLAN-01 (Wave 1, ready for execution)
+**Status:** Phase 1 planned — ready to execute
 
 **Progress Bar:**
 ```
-Phase 1 [        ] 0%
+Phase 1 [▓▓      ] 25% (planned)
 Phase 2 [        ] 0%
 Phase 3 [        ] 0%
 Phase 4 [        ] 0%
@@ -39,7 +39,7 @@ Phase 7 [        ] 0%
 Phase 8 [        ] 0%
 ```
 
-**Overall: 0/8 phases complete**
+**Overall: 0/8 phases complete (Phase 1 in progress)**
 
 ---
 
@@ -47,7 +47,7 @@ Phase 8 [        ] 0%
 
 | Phase | Name | Requirements | Status |
 |-------|------|-------------|--------|
-| 1 | Tenant Foundation & Auth | AUTH-01..06, TENANT-01..05 (11 req) | Not started |
+| 1 | Tenant Foundation & Auth | AUTH-01..06, TENANT-01..05 (11 req) | Planned (4 plans, 3 waves) |
 | 2 | n8n Event Ingestion Pipeline | REALTIME-01..03 (3 req) | Not started |
 | 3 | Core Dashboard — Status Bar & Call Log | STATUS-01..05, CALL-01..10 (15 req) | Not started |
 | 4 | Inbox & Task Management | INBOX-01..05 (5 req) | Not started |
@@ -61,8 +61,8 @@ Phase 8 [        ] 0%
 ## Performance Metrics
 
 **Requirements:** 73 total / 0 complete / 73 remaining
-**Phases:** 8 total / 0 complete
-**Plans:** 0 written / 0 complete
+**Phases:** 8 total / 0 complete (Phase 1 in progress)
+**Plans:** 4 written (Phase 1) / 0 complete
 
 ---
 
@@ -117,7 +117,9 @@ Phase 8 hardens for launch: compliance and audit readiness.
 
 ### Open Todos
 
-- None yet — roadmap phase just created
+- Execute Phase 1: run 01-PLAN-01 and 01-PLAN-02 (Wave 1, parallel), then 01-PLAN-03 (Wave 2), then 01-PLAN-04 (Wave 3 — blocking DB push checkpoint)
+- After supabase db push: register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks)
+- After seed script: verify login → TOTP → dashboard → settings loop works end-to-end
 
 ### Active Blockers
 
