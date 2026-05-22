@@ -6,7 +6,6 @@ import type { AraRole } from '@/lib/types'
 
 // ---------------------------------------------------------------------------
 // Zod v4 Validierungsschema für Tenant-Einstellungen
-// Identisch mit dem API-Route-Schema (single source of truth per Plan)
 // ---------------------------------------------------------------------------
 
 const settingsSchema = z.object({
@@ -14,7 +13,11 @@ const settingsSchema = z.object({
   medstar_server_url: z.url().optional(),
   fallback_phone: z.string().optional(),
   forwarding_phone: z.string().optional(),
+  active_features: z.record(z.string(), z.boolean()).optional(),
 })
+
+// Feature-Flags die das Formular kennt (muss mit SettingsForm.tsx übereinstimmen)
+const KNOWN_FEATURE_FLAGS = ['voice_ai', 'inbox', 'call_log', 'statistics', 'magic_link']
 
 // ---------------------------------------------------------------------------
 // Action-State Typ
@@ -66,12 +69,19 @@ export async function updateTenantAction(
     }
   }
 
+  // Feature-Flag-Checkboxen aus FormData lesen (feature_{key} = "true" wenn aktiviert)
+  const active_features: Record<string, boolean> = {}
+  for (const flag of KNOWN_FEATURE_FLAGS) {
+    active_features[flag] = formData.get(`feature_${flag}`) === 'true'
+  }
+
   // FormData in Plain Object umwandeln (leere Strings als undefined behandeln)
   const rawData = {
     hostname: formData.get('hostname')?.toString().trim() || undefined,
     medstar_server_url: formData.get('medstar_server_url')?.toString().trim() || undefined,
     fallback_phone: formData.get('fallback_phone')?.toString().trim() || undefined,
     forwarding_phone: formData.get('forwarding_phone')?.toString().trim() || undefined,
+    active_features,
   }
 
   // Zod-Validierung
