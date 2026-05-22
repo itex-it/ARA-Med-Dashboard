@@ -1,0 +1,98 @@
+{
+  "name": "ARA-MED Ereignis-Ingestion",
+  "nodes": [
+    {
+      "id": "node-1",
+      "name": "ARA-MED Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aramed-events",
+        "responseMode": "responseNode"
+      },
+      "notes": "Node 1 receives the Voice AI call event from ElevenLabs/MEDSTAR. Provider names are internal — the product name is ARA-MED."
+    },
+    {
+      "id": "node-2",
+      "name": "Vault: Schlüssel laden",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [460, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/rpc/get_secret",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $credentials.supabaseApi.serviceRoleKey }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $credentials.supabaseApi.serviceRoleKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "secret_name", "value": "=n8n_webhook_secret" }
+          ]
+        }
+      },
+      "notes": "PFLICHT: Erster Verarbeitungsknoten. Holt den n8n_webhook_secret aus Supabase Vault via get_secret RPC. Der Service-Role-Key kommt aus dem n8n Credential-Store — kein Literal im Workflow."
+    },
+    {
+      "id": "node-3",
+      "name": "tenant_id + DID prüfen",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300],
+      "parameters": {
+        "jsCode": "// C9 Mitigation: tenant_id NIEMALS aus dem Payload lesen.\n// Die Rufnummer (did_number) ist der autoritative Tenant-Lookup-Schlüssel.\n// Lookup: SELECT tenant_id FROM tenant_did_numbers WHERE did_number = $1 LIMIT 1\nconst payload = $input.first().json.body;\nconst didNumber = payload?.did_number;\nif (!didNumber) {\n  throw new Error('did_number fehlt im Ereignis-Payload');\n}\n// did_number wird an den nächsten Knoten weitergegeben — Tenant-Auflösung erfolgt im Dashboard-API-Route.\nreturn [{ json: { ...payload, _resolved_did: didNumber } }];"
+      },
+      "notes": "C9: tenant_id stammt ausschließlich aus tenant_did_numbers (DID-Lookup). Niemals aus dem Webhook-Payload."
+    },
+    {
+      "id": "node-4",
+      "name": "Signatur erzeugen + Dashboard POST",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [900, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://app.aramed.at/api/internal/events",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-aramed-signature",
+              "value": "={{ $('Vault: Schlüssel laden').first().json }}"
+            },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "", "value": "={{ JSON.stringify($input.first().json) }}" }
+          ]
+        }
+      },
+      "notes": "Setzt den x-aramed-signature Header mit dem aus Vault geladenen n8n_webhook_secret. Kein Secret-Literal im Workflow."
+    }
+  ],
+  "connections": {
+    "ARA-MED Webhook Trigger": {
+      "main": [[{ "node": "Vault: Schlüssel laden", "type": "main", "index": 0 }]]
+    },
+    "Vault: Schlüssel laden": {
+      "main": [[{ "node": "tenant_id + DID prüfen", "type": "main", "index": 0 }]]
+    },
+    "tenant_id + DID prüfen": {
+      "main": [[{ "node": "Signatur erzeugen + Dashboard POST", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "notes": "Regel: Node 1 nach dem Trigger holt IMMER alle Keys aus dem Supabase Vault via get_secret. Kein Secret-Literal in keinem Node-Parameter. Tenant-Auflösung erfolgt über did_number (C9)."
+}
