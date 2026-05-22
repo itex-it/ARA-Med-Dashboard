@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
+import { OpenTaskCounter } from '@/components/status/OpenTaskCounter'
 
 export default async function DashboardLayout({
   children,
@@ -14,6 +15,8 @@ export default async function DashboardLayout({
   if (!user) {
     redirect('/auth/login')
   }
+
+  const tenantId = (user.app_metadata?.tenant_id as string | undefined) ?? ''
 
   return (
     <div className="flex min-h-screen">
@@ -59,7 +62,13 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Hauptbereich */}
-      <main className="flex-1 bg-gray-50 p-6">{children}</main>
+      <main className="flex flex-1 flex-col bg-gray-50">
+        <div className="flex items-center border-b px-6 py-2">
+          {/* Status-Bar-Hülle — vollständige Status-Bar in Phase 3 */}
+          <OpenTaskCounter tenantId={tenantId} />
+        </div>
+        <div className="flex-1 p-6">{children}</div>
+      </main>
     </div>
   )
 }
