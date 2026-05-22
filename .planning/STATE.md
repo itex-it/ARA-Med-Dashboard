@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 4 — Inbox & Task Management
-current_plan: 04-01 COMPLETE
+current_plan: 04-02 COMPLETE
 status: in_progress
-last_updated: "2026-05-22T23:17:00Z"
+last_updated: "2026-05-22T23:24:01.680Z"
 progress:
   total_phases: 8
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 9
-  completed_plans: 12
-  percent: 25
+  completed_plans: 13
+  percent: 38
 ---
 
 # STATE: ARA-Med Dashboard
@@ -41,8 +41,8 @@ progress:
 ## Current Position
 
 **Current Phase:** 4 — Inbox & Task Management
-**Current Plan:** 04-01 COMPLETE
-**Status:** Phase 4 in progress — 04-01 complete, Wave 2 UI (04-02) next
+**Current Plan:** 04-02 COMPLETE
+**Status:** Phase 4 COMPLETE — all 2 plans done (INBOX-01..05 delivered)
 
 **Progress Bar:**
 
@@ -50,14 +50,14 @@ progress:
 Phase 1 [████████] 100% COMPLETE (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
 Phase 2 [████████] 100% COMPLETE (02-01 DB schema+types, 02-02 webhook route, 02-03 Realtime hooks)
 Phase 3 [████████] 100% COMPLETE (03-01 DB migration, 03-02 StatusBar, 03-03 Call Log, 03-04 Call Detail Sheet)
-Phase 4 [█       ] ~50% (04-01 types+actions+hook COMPLETE)
+Phase 4 [████████] 100% COMPLETE (04-01 types+actions+hook, 04-02 InboxTable+CaseDetailSheet+/inbox page)
 Phase 5 [        ] 0%
 Phase 6 [        ] 0%
 Phase 7 [        ] 0%
 Phase 8 [        ] 0%
 ```
 
-**Overall: 3/8 phases complete**
+**Overall: 4/8 phases complete**
 
 ---
 
@@ -175,10 +175,15 @@ Phase 8 hardens for launch: compliance and audit readiness.
 - Next: Phase 4 — Inbox & Task Management (INBOX-01..05)
 - Realtime architecture decisions locked: useRealtimeChannel (tenant-scoped, removeChannel cleanup), useOpenTaskCount (initial count + delta), OpenTaskCounter (German UI, badge)
 - StatusBar wired into layout.tsx: 5 segments live (ara_status, practice_status, active_mode, active calls, open tasks), toggle switch for operator/ordination_admin
-- PHASE 4 IN PROGRESS: 04-01 (InboxItemRow type fix, updateInboxStatusAction, saveInboxNoteAction, useInboxItems, shadcn tabs/tooltip/alert) COMPLETE — INBOX-01, INBOX-04, INBOX-05 partially delivered
+- PHASE 4 COMPLETE: 04-01 (InboxItemRow type fix, updateInboxStatusAction, saveInboxNoteAction, useInboxItems, shadcn tabs/tooltip/alert) COMPLETE
+- PHASE 4 COMPLETE: 04-02 (CaseTypeBadge, InboxStatusBadge, InboxTable with Realtime tab filter, CaseDetailSheet with lifecycle buttons, /inbox Server Component page, OpenTaskCounter link) COMPLETE — INBOX-01..05 all delivered
 - Role gate pattern confirmed: ALLOWED_ROLES=['operator','ordination_admin'] app-level check required because service-role bypasses RLS UPDATE policy
 - saveInboxNoteAction intentionally has no role gate — assistants/viewers can add notes per INBOX-05
 - Both inbox Server Actions include updated_at in payload (no auto-update trigger on inbox_items)
+- Tab filter pattern: client-side from useInboxItems items array — tab switch never re-fetches; filteredItems = activeTab === 'alle' ? items : items.filter(i => i.status === activeTab)
+- Optimistic update pattern: setOptimisticStatus(next) → startTransition(action) → revert on error; separate statusError/noteError state vars
+- Lifecycle buttons: only valid next transitions rendered per current status (open/in_progress/resolved/archived)
+- Next: Phase 5 — Configuration (HOURS-01..03, APPT-01..05, TEXT-01..04, DEPUTY-01..04, MED-01)
 
 ### Active Blockers
 
@@ -195,7 +200,7 @@ Phase 8 hardens for launch: compliance and audit readiness.
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
 4. Continue with 01-PLAN-04 (Wave 3 — DB push checkpoint, seed script, smoke test)
 
-**Last session:** 2026-05-22T23:17:00Z — Completed 04-01-PLAN.md (types+actions+hook)
+**Last session:** 2026-05-22T23:24:01.673Z
 
 **File locations:**
 

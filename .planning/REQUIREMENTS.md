@@ -45,11 +45,11 @@
 
 ### Inbox und Aufgabenverwaltung (INBOX)
 
-- [ ] **INBOX-01**: Alle Gespräche mit Handlungsbedarf erscheinen in der Inbox
-- [ ] **INBOX-02**: Inbox-Fälle umfassen: Patient nicht identifizierbar, ungültige/inaktive PID, mehrere Treffer, Rückruf notwendig, Rezept nicht möglich, unklarer Intent, Notfall-/Akutfall-Hinweis, technische Fehler
-- [ ] **INBOX-03**: Jeder Inbox-Fall hat einen Lifecycle-Status: offen / in Bearbeitung / erledigt / archiviert
-- [ ] **INBOX-04**: User kann einen Fall durch die Lifecycle-Zustände führen
-- [ ] **INBOX-05**: User kann interne Notizen zu Inbox-Fällen hinzufügen
+- [x] **INBOX-01**: Alle Gespräche mit Handlungsbedarf erscheinen in der Inbox
+- [x] **INBOX-02**: Inbox-Fälle umfassen: Patient nicht identifizierbar, ungültige/inaktive PID, mehrere Treffer, Rückruf notwendig, Rezept nicht möglich, unklarer Intent, Notfall-/Akutfall-Hinweis, technische Fehler
+- [x] **INBOX-03**: Jeder Inbox-Fall hat einen Lifecycle-Status: offen / in Bearbeitung / erledigt / archiviert
+- [x] **INBOX-04**: User kann einen Fall durch die Lifecycle-Zustände führen
+- [x] **INBOX-05**: User kann interne Notizen zu Inbox-Fällen hinzufügen
 
 ### Öffnungszeiten und Kalender (HOURS)
 
@@ -203,11 +203,11 @@
 | CALL-08 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
 | CALL-09 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
 | CALL-10 | Phase 3: Core Dashboard — Status Bar & Call Log | Pending |
-| INBOX-01 | Phase 4: Inbox & Task Management | Pending |
-| INBOX-02 | Phase 4: Inbox & Task Management | Pending |
-| INBOX-03 | Phase 4: Inbox & Task Management | Pending |
-| INBOX-04 | Phase 4: Inbox & Task Management | Pending |
-| INBOX-05 | Phase 4: Inbox & Task Management | Pending |
+| INBOX-01 | Phase 4: Inbox & Task Management | Complete |
+| INBOX-02 | Phase 4: Inbox & Task Management | Complete |
+| INBOX-03 | Phase 4: Inbox & Task Management | Complete |
+| INBOX-04 | Phase 4: Inbox & Task Management | Complete |
+| INBOX-05 | Phase 4: Inbox & Task Management | Complete |
 | HOURS-01 | Phase 5: Configuration | Pending |
 | HOURS-02 | Phase 5: Configuration | Pending |
 | HOURS-03 | Phase 5: Configuration | Pending |

@@ -13,7 +13,7 @@
 - [x] **Phase 1: Tenant Foundation & Auth** - Secure multi-tenant base with authentication, 2FA, and RLS isolation
 - [ ] **Phase 2: n8n Event Ingestion Pipeline** - Data flowing in from Voice AI via secured webhook endpoint
 - [ ] **Phase 3: Core Dashboard — Status Bar & Call Log** - The product's core value loop: live call visibility
-- [ ] **Phase 4: Inbox & Task Management** - Operational loop closed: actionable cases tracked to resolution
+- [x] **Phase 4: Inbox & Task Management** - Operational loop closed: actionable cases tracked to resolution (completed 2026-05-22)
 - [ ] **Phase 5: Configuration — Hours, Appointments, Texts, Deputy, Medications** - AI behavior fully configurable per practice
 - [ ] **Phase 6: Routing & Communication Rules** - Notification channels and call routing configured
 - [ ] **Phase 7: Statistics & User Management** - Reporting visibility and role-based access control
@@ -88,11 +88,11 @@ Plans:
   2. Each inbox case displays its case type, originating call reference, and current lifecycle status (open / in progress / resolved / archived)
   3. A user can move a case through all lifecycle states — open → in progress → resolved → archived — and the transition is reflected immediately
   4. A user can add an internal note to any inbox case, and notes persist across sessions and are visible to other users of the same tenant
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 04-01-PLAN.md — Foundation: InboxItemRow type fix, shadcn install (tabs/tooltip/alert), updateInboxStatusAction, saveInboxNoteAction, useInboxItems hook
-- [ ] 04-02-PLAN.md — UI: CaseTypeBadge, InboxStatusBadge, InboxTable (tabs + Realtime), CaseDetailSheet (lifecycle + note), /inbox page, OpenTaskCounter link
+- [x] 04-02-PLAN.md — UI: CaseTypeBadge, InboxStatusBadge, InboxTable (tabs + Realtime), CaseDetailSheet (lifecycle + note), /inbox page, OpenTaskCounter link
 **UI hint**: yes
 
 ### Phase 5: Configuration — Hours, Appointments, Texts, Deputy, Medications
@@ -160,7 +160,7 @@ Plans:
 | 1. Tenant Foundation & Auth | 4/4 | COMPLETE | 01-PLAN-01: 2026-05-22, 01-PLAN-02: 2026-05-22, 01-PLAN-03: 2026-05-22, 01-PLAN-04: 2026-05-22 |
 | 2. n8n Event Ingestion Pipeline | 0/3 | Planned (3 plans, 2 waves) | - |
 | 3. Core Dashboard — Status Bar & Call Log | 0/4 | Planned (4 plans, 4 waves) | - |
-| 4. Inbox & Task Management | 0/2 | Planned (2 plans, 2 waves) | - |
+| 4. Inbox & Task Management | 2/2 | Complete   | 2026-05-22 |
 | 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 0/? | Not started | - |
 | 6. Routing & Communication Rules | 0/? | Not started | - |
 | 7. Statistics & User Management | 0/? | Not started | - |
