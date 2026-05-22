@@ -12,7 +12,13 @@ export default async function TelefonatePage() {
         <h1 className="text-xl font-semibold">Telefonate</h1>
         <span className="text-xs text-muted-foreground">Echtzeit</span>
       </div>
-      <CallLogTable tenantId={tenantId} />
+      {/* Phase 7 RBAC will compute per-user permission values server-side from user_tenant_roles.permissions */}
+      <CallLogTable
+        tenantId={tenantId}
+        canSeeAudio={true}
+        canSeeTranscript={true}
+        canSeeDetail={true}
+      />
     </div>
   )
 }
