@@ -35,7 +35,13 @@
   4. When an operator revokes a user's role, the affected user's active session is invalidated immediately (within the next request) — no waiting for JWT expiry
   5. All database tables have RLS enabled with tenant-scoped policies using the cached `(SELECT auth.jwt() ->> 'tenant_id')` pattern — cross-tenant reads return zero rows
   6. An operator can configure a tenant (hostname, MEDSTAR config, fallback numbers) and manage API keys stored exclusively in Supabase Vault
-**Plans:** TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 01-PLAN-01.md — Next.js 16 scaffold: TypeScript strict, Tailwind v4, shadcn/ui, Supabase client utilities, proxy.ts
+- [ ] 01-PLAN-02.md — Database migrations: tenants, user_tenant_roles, RLS policies, Custom Access Token Hook, Vault helper
+- [ ] 01-PLAN-03.md — Auth flow: login, logout, password reset, TOTP enrollment/verification, dashboard shell, session revocation
+- [ ] 01-PLAN-04.md — Tenant setup & Vault: seed script, settings API, settings page, schema push (blocking checkpoint)
 
 ### Phase 2: n8n Event Ingestion Pipeline
 **Goal:** Call events from ElevenLabs Voice AI flow through n8n into the dashboard database in real time — the dashboard has data to display.
@@ -141,7 +147,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Tenant Foundation & Auth | 0/? | Not started | - |
+| 1. Tenant Foundation & Auth | 0/4 | Planned | - |
 | 2. n8n Event Ingestion Pipeline | 0/? | Not started | - |
 | 3. Core Dashboard — Status Bar & Call Log | 0/? | Not started | - |
 | 4. Inbox & Task Management | 0/? | Not started | - |
@@ -178,4 +184,4 @@
 ---
 
 *Created: 2026-05-22*
-*Next: `/gsd:plan-phase 1`*
+*Updated: 2026-05-22 — Phase 1 planned (4 plans, 3 waves)*
