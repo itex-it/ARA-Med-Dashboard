@@ -24,12 +24,12 @@
 ## Current Position
 
 **Current Phase:** 1 — Tenant Foundation & Auth
-**Current Plan:** 01-PLAN-02 (Wave 1, ready for execution)
-**Status:** Phase 1 in progress — 01-PLAN-01 complete
+**Current Plan:** 01-PLAN-03 (Wave 2, ready for execution)
+**Status:** Phase 1 in progress — 01-PLAN-01 and 01-PLAN-02 complete
 
 **Progress Bar:**
 ```
-Phase 1 [▓▓▓▓    ] 50% (01-PLAN-01 complete)
+Phase 1 [▓▓▓▓▓▓  ] 75% (01-PLAN-01, 01-PLAN-02 complete)
 Phase 2 [        ] 0%
 Phase 3 [        ] 0%
 Phase 4 [        ] 0%
@@ -60,9 +60,9 @@ Phase 8 [        ] 0%
 
 ## Performance Metrics
 
-**Requirements:** 73 total / 2 complete (AUTH-01, AUTH-05) / 71 remaining
+**Requirements:** 73 total / 5 complete (AUTH-01, AUTH-05, TENANT-01, TENANT-02, TENANT-04) / 68 remaining
 **Phases:** 8 total / 0 complete (Phase 1 in progress)
-**Plans:** 4 written (Phase 1) / 1 complete (01-PLAN-01)
+**Plans:** 4 written (Phase 1) / 2 complete (01-PLAN-01, 01-PLAN-02)
 
 ---
 
@@ -80,8 +80,11 @@ Phase 8 [        ] 0%
 - **Realtime channels:** Always scoped to tenant: `channel('call_log:' + tenantId)` — cleanup via `removeChannel()` in useEffect return
 - **Audio URLs:** Generated on-demand via API route (15-min expiry), never at page-load time
 - **Upsert pattern:** All n8n webhook handlers use `INSERT ... ON CONFLICT DO UPDATE` — never plain INSERT (idempotency)
-- **Composite indexes:** Every table with tenant_id gets `CREATE INDEX CONCURRENTLY idx_{table}_tenant_created ON {table} (tenant_id, created_at DESC)` in migration
+- **Composite indexes:** Every table with tenant_id gets `CREATE INDEX idx_{table}_tenant_created ON {table} (tenant_id, created_at DESC)` in migration — without CONCURRENTLY (transactions cannot use it)
 - **JWT expiry:** 15-minute sessions; Supabase SSR refreshes automatically; Realtime channels re-authenticated on `onAuthStateChange`
+- **Hook security:** custom_access_token_hook uses SET search_path = public; get_secret uses SET search_path = vault, public — prevents search_path injection
+- **Hook tenant_id cast:** Injected as ::text cast before to_jsonb() to ensure consistent UUID string representation in JWT app_metadata
+- **Vault only path:** public.get_secret(text) is the only allowed path to vault.decrypted_secrets — revoked from all roles except service_role
 
 ### Critical Pitfalls to Avoid (from Research)
 
@@ -120,7 +123,7 @@ Phase 8 hardens for launch: compliance and audit readiness.
 
 ### Open Todos
 
-- Execute Phase 1: run 01-PLAN-02 (Wave 1, DB migrations), then 01-PLAN-03 (Wave 2 — Auth Flow), then 01-PLAN-04 (Wave 3 — blocking DB push checkpoint)
+- Execute Phase 1: run 01-PLAN-03 (Wave 2 — Auth Flow), then 01-PLAN-04 (Wave 3 — blocking DB push checkpoint)
 - 01-PLAN-01 COMPLETE: Next.js 16 scaffold, proxy.ts, Supabase clients, domain types
 - After supabase db push: register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks)
 - After seed script: verify login → TOTP → dashboard → settings loop works end-to-end
@@ -137,9 +140,9 @@ Phase 8 hardens for launch: compliance and audit readiness.
 1. Read `.planning/ROADMAP.md` to see current phase structure
 2. Read `.planning/STATE.md` (this file) for architectural decisions and context
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
-4. Continue with 01-PLAN-02 (Supabase DB migrations)
+4. Continue with 01-PLAN-03 (Auth Flow — login, logout, TOTP, dashboard shell)
 
-**Last session:** 2026-05-22 — Completed 01-PLAN-01 (Next.js scaffold + Supabase clients + proxy.ts)
+**Last session:** 2026-05-22 — Completed 01-PLAN-02 (Supabase DB migrations: tenants, user_tenant_roles, RLS, Hook, Vault helper)
 
 **File locations:**
 - Requirements: `.planning/REQUIREMENTS.md`

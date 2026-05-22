@@ -39,7 +39,7 @@
 
 Plans:
 - [x] 01-PLAN-01.md — Next.js 16 scaffold: TypeScript strict, Tailwind v4, shadcn/ui, Supabase client utilities, proxy.ts
-- [ ] 01-PLAN-02.md — Database migrations: tenants, user_tenant_roles, RLS policies, Custom Access Token Hook, Vault helper
+- [x] 01-PLAN-02.md — Database migrations: tenants, user_tenant_roles, RLS policies, Custom Access Token Hook, Vault helper
 - [ ] 01-PLAN-03.md — Auth flow: login, logout, password reset, TOTP enrollment/verification, dashboard shell, session revocation
 - [ ] 01-PLAN-04.md — Tenant setup & Vault: seed script, settings API, settings page, schema push (blocking checkpoint)
 
@@ -147,7 +147,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Tenant Foundation & Auth | 1/4 | In Progress | 01-PLAN-01: 2026-05-22 |
+| 1. Tenant Foundation & Auth | 2/4 | In Progress | 01-PLAN-01: 2026-05-22, 01-PLAN-02: 2026-05-22 |
 | 2. n8n Event Ingestion Pipeline | 0/? | Not started | - |
 | 3. Core Dashboard — Status Bar & Call Log | 0/? | Not started | - |
 | 4. Inbox & Task Management | 0/? | Not started | - |
@@ -184,4 +184,4 @@ Plans:
 ---
 
 *Created: 2026-05-22*
-*Updated: 2026-05-22 — 01-PLAN-01 complete (Next.js 16 scaffold + proxy.ts + Supabase clients)*
+*Updated: 2026-05-22 — 01-PLAN-02 complete (DB migrations: tenants, user_tenant_roles, RLS policies, Custom Access Token Hook, Vault helper)*
