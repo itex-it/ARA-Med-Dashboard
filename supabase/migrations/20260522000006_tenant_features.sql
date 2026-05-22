@@ -1,0 +1,31 @@
+-- Migration: 000006 — Tenant Feature Flags Documentation
+-- Created: 2026-05-22
+-- Phase: 1 — Tenant Foundation & Auth
+--
+-- PURPOSE:
+-- This migration is a documentation placeholder for the active_features JSONB column
+-- added in migration 000001. The column was created with DEFAULT '{}', meaning all
+-- tenants start with no features active.
+--
+-- The seed script (scripts/seed-tenant.ts) initialises new tenants with the
+-- following Phase 1 default feature flags:
+--
+--   {
+--     "voice_ai":   true,   -- ARA-MED Voice AI call handling
+--     "inbox":      true,   -- Aufgaben-Inbox
+--     "call_log":   true,   -- Anrufprotokoll (Realtime)
+--     "statistics": false,  -- Statistiken (Phase 7)
+--     "magic_link": false   -- Magic Link Login (nicht aktiviert)
+--   }
+--
+-- FEATURE FLAG RULES:
+-- - Feature flags are stored per-tenant in the active_features JSONB column on tenants
+-- - Flags are toggled via PATCH /api/settings/tenant (requires ara_role: operator | ordination_admin)
+-- - The UI displays toggle switches for each known key (settings page)
+-- - Unknown keys in active_features are preserved but not displayed in the UI
+--
+-- IDEMPOTENCY:
+-- This migration contains no DDL — it is safe to run multiple times.
+-- No schema changes are made; the active_features column already exists.
+
+-- (no DDL — documentation-only migration)
