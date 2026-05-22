@@ -61,7 +61,6 @@ All sizes use the system font stack. No font import required.
 | Body | 14px | text-sm | 400 | font-normal | 1.5 | Table cells, status-bar labels, descriptions |
 | Label | 12px | text-xs | 600 | font-semibold | 1.4 | Badges, pill indicators, column headers, counter |
 | Heading | 20px | text-xl | 600 | font-semibold | 1.25 | Page title "Telefonate", sheet title "Gesprächsdetails" |
-| Display | 28px | text-3xl | 700 | font-bold | 1.2 | Not used in this phase |
 
 Rules:
 - Never use text-base (16px) for table data — 14px is the standard for dense operational UI
