@@ -69,7 +69,13 @@ Plans:
   4. A user with call-detail rights can click a call and see the unmasked phone number, full transcript, play the audio recording via a 15-minute presigned URL, and view the AI summary (short + structured)
   5. Executed actions per call (appointment booked, prescription ordered, escalation triggered, etc.) are visible in the call detail view with MEDSTAR API response status
   6. A user can add an internal note to a call, manually correct the intent category, and mark the call with a feedback label (correct/incorrect/needs-training)
-**Plans:** TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — DB foundation: tenant status columns, call_log feedback columns, call_actions table + RLS, domain types
+- [ ] 03-02-PLAN.md — shadcn install + full status bar (ARA-MED state, practice state, mode, active calls, live toggle)
+- [ ] 03-03-PLAN.md — /telefonate call log page: live chronological table with Realtime INSERT/UPDATE
+- [ ] 03-04-PLAN.md — call detail sheet: summary, audio (presigned URL), transcript, actions, note + feedback
 **UI hint**: yes
 
 ### Phase 4: Inbox & Task Management
@@ -149,7 +155,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Tenant Foundation & Auth | 4/4 | COMPLETE | 01-PLAN-01: 2026-05-22, 01-PLAN-02: 2026-05-22, 01-PLAN-03: 2026-05-22, 01-PLAN-04: 2026-05-22 |
 | 2. n8n Event Ingestion Pipeline | 0/3 | Planned (3 plans, 2 waves) | - |
-| 3. Core Dashboard — Status Bar & Call Log | 0/? | Not started | - |
+| 3. Core Dashboard — Status Bar & Call Log | 0/4 | Planned (4 plans, 4 waves) | - |
 | 4. Inbox & Task Management | 0/? | Not started | - |
 | 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 0/? | Not started | - |
 | 6. Routing & Communication Rules | 0/? | Not started | - |
