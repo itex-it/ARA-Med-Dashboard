@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 3 — Core Dashboard Status Bar & Call Log
-current_plan: 03-02 COMPLETE
+current_plan: 03-03 COMPLETE
 status: executing
-last_updated: "2026-05-22T22:16:01.984Z"
+last_updated: "2026-05-22T22:20:20Z"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 7
-  completed_plans: 9
+  completed_plans: 10
   percent: 13
 ---
 
@@ -49,7 +49,7 @@ progress:
 ```
 Phase 1 [████████] 100% COMPLETE (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
 Phase 2 [████████] 100% COMPLETE (02-01 DB schema+types, 02-02 webhook route, 02-03 Realtime hooks)
-Phase 3 [████    ] 50% IN PROGRESS (03-01 DB migration COMPLETE, 03-02 StatusBar COMPLETE)
+Phase 3 [██████  ] 75% IN PROGRESS (03-01 DB migration COMPLETE, 03-02 StatusBar COMPLETE, 03-03 Call Log COMPLETE)
 Phase 4 [        ] 0%
 Phase 5 [        ] 0%
 Phase 6 [        ] 0%
@@ -166,7 +166,8 @@ Phase 8 hardens for launch: compliance and audit readiness.
 - PHASE 2 COMPLETE: 02-01 (DB schema+types), 02-02 (n8n webhook route), 02-03 (Realtime hooks + status-bar) all done
 - PHASE 3 IN PROGRESS: 03-01 (DB migration: ara_status, practice_status, active_mode columns + RLS) COMPLETE
 - PHASE 3 IN PROGRESS: 03-02 (shadcn install, useTenantStatus, toggleAraMedAction, useActiveCallCount, StatusBar, layout wiring) COMPLETE — STATUS-01..05 delivered
-- Next: 03-03 (Call Log table + filters), 03-04 (Call Detail Sheet)
+- PHASE 3 IN PROGRESS: 03-03 (/telefonate call log page, useCallLog hook, CallLogTable, CallStatusBadge, phone/format utils) COMPLETE — CALL-01, CALL-02 delivered
+- Next: 03-04 (Call Detail Sheet)
 - Realtime architecture decisions locked: useRealtimeChannel (tenant-scoped, removeChannel cleanup), useOpenTaskCount (initial count + delta), OpenTaskCounter (German UI, badge)
 - StatusBar wired into layout.tsx: 5 segments live (ara_status, practice_status, active_mode, active calls, open tasks), toggle switch for operator/ordination_admin
 
@@ -185,7 +186,7 @@ Phase 8 hardens for launch: compliance and audit readiness.
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
 4. Continue with 01-PLAN-04 (Wave 3 — DB push checkpoint, seed script, smoke test)
 
-**Last session:** 2026-05-22T22:16:01.977Z
+**Last session:** 2026-05-22T22:20:20Z
 
 **File locations:**
 

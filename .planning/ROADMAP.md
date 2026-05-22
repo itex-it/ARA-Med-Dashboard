@@ -72,9 +72,9 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — DB foundation: tenant status columns, call_log feedback columns, call_actions table + RLS, domain types
-- [ ] 03-02-PLAN.md — shadcn install + full status bar (ARA-MED state, practice state, mode, active calls, live toggle)
-- [ ] 03-03-PLAN.md — /telefonate call log page: live chronological table with Realtime INSERT/UPDATE
+- [x] 03-01-PLAN.md — DB foundation: tenant status columns, call_log feedback columns, call_actions table + RLS, domain types
+- [x] 03-02-PLAN.md — shadcn install + full status bar (ARA-MED state, practice state, mode, active calls, live toggle)
+- [x] 03-03-PLAN.md — /telefonate call log page: live chronological table with Realtime INSERT/UPDATE
 - [ ] 03-04-PLAN.md — call detail sheet: summary, audio (presigned URL), transcript, actions, note + feedback
 **UI hint**: yes
 
