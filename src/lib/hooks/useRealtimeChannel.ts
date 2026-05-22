@@ -8,14 +8,14 @@ import { createClient } from '@/lib/supabase/client'
 
 type ChangeEvent = 'INSERT' | 'UPDATE' | 'DELETE'
 
-interface UseRealtimeChannelOptions<T extends Record<string, unknown>> {
+interface UseRealtimeChannelOptions<T extends { [key: string]: unknown }> {
   table: string
   tenantId: string
   events: ChangeEvent[]
   onChange: (payload: RealtimePostgresChangesPayload<T>) => void
 }
 
-export function useRealtimeChannel<T extends Record<string, unknown>>({
+export function useRealtimeChannel<T extends { [key: string]: unknown }>({
   table,
   tenantId,
   onChange,
