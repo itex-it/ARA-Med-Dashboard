@@ -7,20 +7,20 @@
 
 ### Authentication (AUTH)
 
-- [ ] **AUTH-01**: User kann sich mit E-Mail und Passwort einloggen
-- [ ] **AUTH-02**: User kann sich von jeder Seite ausloggen
-- [ ] **AUTH-03**: User kann das Passwort via E-Mail-Link zurücksetzen
-- [ ] **AUTH-04**: Operator und Arzt/Admin müssen vor Dashboard-Zugriff TOTP-2FA abschließen (AAL2 via Supabase MFA)
-- [ ] **AUTH-05**: User-Session bleibt über Browser-Refresh hinweg aktiv (Supabase Auth Cookie)
-- [ ] **AUTH-06**: Beim Entziehen von Rollen/Rechten wird die aktive Session des betroffenen Users serverseitig sofort invalidiert
+- [x] **AUTH-01**: User kann sich mit E-Mail und Passwort einloggen
+- [x] **AUTH-02**: User kann sich von jeder Seite ausloggen
+- [x] **AUTH-03**: User kann das Passwort via E-Mail-Link zurücksetzen
+- [x] **AUTH-04**: Operator und Arzt/Admin müssen vor Dashboard-Zugriff TOTP-2FA abschließen (AAL2 via Supabase MFA)
+- [x] **AUTH-05**: User-Session bleibt über Browser-Refresh hinweg aktiv (Supabase Auth Cookie)
+- [x] **AUTH-06**: Beim Entziehen von Rollen/Rechten wird die aktive Session des betroffenen Users serverseitig sofort invalidiert
 
 ### Multi-Tenant Foundation (TENANT)
 
-- [ ] **TENANT-01**: Alle Datenbankabfragen sind auf den Mandanten des eingeloggten Users begrenzt — tenant_id kommt ausschließlich aus dem JWT (nie aus dem Request Body)
-- [ ] **TENANT-02**: Row-Level Security (RLS) ist auf jeder Tabelle aktiv und erzwingt Mandantenisolation
-- [ ] **TENANT-03**: Operator kann einen Mandanten konfigurieren: Hostname, MEDSTAR-Server/API-Konfiguration, Fallback-Adressen, Weiterleitungsnummern
-- [ ] **TENANT-04**: API-Keys (MEDSTAR, ElevenLabs) werden ausschließlich im Supabase Vault gespeichert und sind im Frontend nicht sichtbar
-- [ ] **TENANT-05**: Aktive Features pro Mandant sind durch den Operator konfigurierbar
+- [x] **TENANT-01**: Alle Datenbankabfragen sind auf den Mandanten des eingeloggten Users begrenzt — tenant_id kommt ausschließlich aus dem JWT (nie aus dem Request Body)
+- [x] **TENANT-02**: Row-Level Security (RLS) ist auf jeder Tabelle aktiv und erzwingt Mandantenisolation
+- [x] **TENANT-03**: Operator kann einen Mandanten konfigurieren: Hostname, MEDSTAR-Server/API-Konfiguration, Fallback-Adressen, Weiterleitungsnummern
+- [x] **TENANT-04**: API-Keys (MEDSTAR, ElevenLabs) werden ausschließlich im Supabase Vault gespeichert und sind im Frontend nicht sichtbar
+- [x] **TENANT-05**: Aktive Features pro Mandant sind durch den Operator konfigurierbar
 
 ### Status Bar (STATUS)
 

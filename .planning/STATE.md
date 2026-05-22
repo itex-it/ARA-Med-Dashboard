@@ -23,13 +23,13 @@
 
 ## Current Position
 
-**Current Phase:** 1 — Tenant Foundation & Auth
-**Current Plan:** 01-PLAN-04 (Wave 3, next — blocking DB push checkpoint)
-**Status:** Phase 1 in progress — 01-PLAN-01, 01-PLAN-02, 01-PLAN-03 complete
+**Current Phase:** 2 — n8n Event Ingestion Pipeline
+**Current Plan:** 02-PLAN-01 (Phase 2, not yet started)
+**Status:** Phase 1 COMPLETE — all 4 plans (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04) done
 
 **Progress Bar:**
 ```
-Phase 1 [▓▓▓▓▓▓▓▓] 95% (01-PLAN-01, 01-PLAN-02, 01-PLAN-03 complete — 01-PLAN-04 pending)
+Phase 1 [████████] 100% COMPLETE (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
 Phase 2 [        ] 0%
 Phase 3 [        ] 0%
 Phase 4 [        ] 0%
@@ -39,7 +39,7 @@ Phase 7 [        ] 0%
 Phase 8 [        ] 0%
 ```
 
-**Overall: 0/8 phases complete (Phase 1 in progress)**
+**Overall: 1/8 phases complete**
 
 ---
 
@@ -61,8 +61,8 @@ Phase 8 [        ] 0%
 ## Performance Metrics
 
 **Requirements:** 73 total / 11 complete (AUTH-01..06, TENANT-01..05) / 62 remaining
-**Phases:** 8 total / 0 complete (Phase 1 in progress)
-**Plans:** 4 written (Phase 1) / 3 complete (01-PLAN-01, 01-PLAN-02, 01-PLAN-03)
+**Phases:** 8 total / 1 complete (Phase 1)
+**Plans:** 4 written (Phase 1) / 4 complete (01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04)
 
 ---
 
@@ -70,6 +70,9 @@ Phase 8 [        ] 0%
 
 ### Architecture Decisions (Locked)
 
+- **Settings form pattern:** SettingsForm.tsx is a Client Component ('use client') using useActionState; Server Component page passes tenant data as props; Server Action returns non-void state (SettingsActionState) so cannot be used directly as <form action> in a Server Component
+- **Vault write path:** supabase.schema('vault').from('secrets').insert() is the primary path for writing to vault.secrets; no custom RPC function required
+- **Seed script isolation:** scripts/seed-tenant.ts uses @supabase/supabase-js createClient directly (not Next.js createServerClient); standalone script has no cookie store context
 - **proxy.ts pattern:** supabase.auth.mfa.getAuthenticatorAssuranceLevel() — mfa object is on supabase.auth.mfa, not supabase.mfa
 - **Turbopack CSS imports:** Bare node_modules CSS imports not supported in Turbopack — use relative paths or local copies for CSS packages
 - **Next.js 16 NextConfig:** eslint property removed from NextConfig type; eslint still works but cannot be disabled via config
@@ -127,12 +130,12 @@ Phase 8 hardens for launch: compliance and audit readiness.
 
 ### Open Todos
 
-- Execute Phase 1: run 01-PLAN-04 (Wave 3 — blocking DB push checkpoint + seed)
-- 01-PLAN-01 COMPLETE: Next.js 16 scaffold, proxy.ts, Supabase clients, domain types
-- 01-PLAN-02 COMPLETE: Supabase DB migrations, RLS, Custom Access Token Hook, Vault helper
-- 01-PLAN-03 COMPLETE: Auth flow — login, logout, TOTP enrollment/verify, dashboard shell, session revocation
-- After supabase db push: register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks)
-- After seed script: verify login → TOTP → dashboard loop works end-to-end
+- PHASE 1 COMPLETE: 01-PLAN-01, 01-PLAN-02, 01-PLAN-03, 01-PLAN-04 all done
+- USER ACTION REQUIRED: Run `supabase db push` to apply all 6 migrations to Supabase project
+- USER ACTION REQUIRED: Register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks → public.custom_access_token_hook)
+- USER ACTION REQUIRED: Run `scripts/seed-tenant.ts` with env vars to bootstrap first tenant + Vault keys
+- USER ACTION REQUIRED: Verify login → TOTP → /dashboard → /settings end-to-end loop
+- Start Phase 2: n8n Event Ingestion Pipeline (REALTIME-01..03)
 
 ### Active Blockers
 
@@ -148,7 +151,7 @@ Phase 8 hardens for launch: compliance and audit readiness.
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
 4. Continue with 01-PLAN-04 (Wave 3 — DB push checkpoint, seed script, smoke test)
 
-**Last session:** 2026-05-22 — Completed 01-PLAN-03 (Auth pages: login, logout, TOTP enrollment/verify, dashboard shell, session revocation API)
+**Last session:** 2026-05-22 — Completed 01-PLAN-04 (Seed script, tenant settings API, settings page — Phase 1 COMPLETE)
 
 **File locations:**
 - Requirements: `.planning/REQUIREMENTS.md`
