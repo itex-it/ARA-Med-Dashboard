@@ -40,7 +40,7 @@
 Plans:
 - [x] 01-PLAN-01.md — Next.js 16 scaffold: TypeScript strict, Tailwind v4, shadcn/ui, Supabase client utilities, proxy.ts
 - [x] 01-PLAN-02.md — Database migrations: tenants, user_tenant_roles, RLS policies, Custom Access Token Hook, Vault helper
-- [ ] 01-PLAN-03.md — Auth flow: login, logout, password reset, TOTP enrollment/verification, dashboard shell, session revocation
+- [x] 01-PLAN-03.md — Auth flow: login, logout, password reset, TOTP enrollment/verification, dashboard shell, session revocation
 - [ ] 01-PLAN-04.md — Tenant setup & Vault: seed script, settings API, settings page, schema push (blocking checkpoint)
 
 ### Phase 2: n8n Event Ingestion Pipeline

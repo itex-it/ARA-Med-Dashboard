@@ -24,12 +24,12 @@
 ## Current Position
 
 **Current Phase:** 1 — Tenant Foundation & Auth
-**Current Plan:** 01-PLAN-03 (Wave 2, ready for execution)
-**Status:** Phase 1 in progress — 01-PLAN-01 and 01-PLAN-02 complete
+**Current Plan:** 01-PLAN-04 (Wave 3, next — blocking DB push checkpoint)
+**Status:** Phase 1 in progress — 01-PLAN-01, 01-PLAN-02, 01-PLAN-03 complete
 
 **Progress Bar:**
 ```
-Phase 1 [▓▓▓▓▓▓  ] 75% (01-PLAN-01, 01-PLAN-02 complete)
+Phase 1 [▓▓▓▓▓▓▓▓] 95% (01-PLAN-01, 01-PLAN-02, 01-PLAN-03 complete — 01-PLAN-04 pending)
 Phase 2 [        ] 0%
 Phase 3 [        ] 0%
 Phase 4 [        ] 0%
@@ -60,9 +60,9 @@ Phase 8 [        ] 0%
 
 ## Performance Metrics
 
-**Requirements:** 73 total / 5 complete (AUTH-01, AUTH-05, TENANT-01, TENANT-02, TENANT-04) / 68 remaining
+**Requirements:** 73 total / 11 complete (AUTH-01..06, TENANT-01..05) / 62 remaining
 **Phases:** 8 total / 0 complete (Phase 1 in progress)
-**Plans:** 4 written (Phase 1) / 2 complete (01-PLAN-01, 01-PLAN-02)
+**Plans:** 4 written (Phase 1) / 3 complete (01-PLAN-01, 01-PLAN-02, 01-PLAN-03)
 
 ---
 
@@ -85,6 +85,10 @@ Phase 8 [        ] 0%
 - **Hook security:** custom_access_token_hook uses SET search_path = public; get_secret uses SET search_path = vault, public — prevents search_path injection
 - **Hook tenant_id cast:** Injected as ::text cast before to_jsonb() to ensure consistent UUID string representation in JWT app_metadata
 - **Vault only path:** public.get_secret(text) is the only allowed path to vault.decrypted_secrets — revoked from all roles except service_role
+- **Server Action form pattern:** Page is Server Component, form is extracted Client Component file; useActionState (React 19) returns [state, formAction, isPending]; react-hook-form handles client-side UX only
+- **TOTP state machine:** Use unified state object with phase string field instead of discriminated union — preserves all fields (factorId, qrCode) across phase transitions without type casting
+- **supabase.auth.admin.signOut signature:** Takes positional scope string, not object: `signOut(userId, 'global')` — not `{ scope: 'global' }`
+- **revoke-session auth pattern:** Bearer token checked against SUPABASE_SERVICE_ROLE_KEY env var; route returns 401 if missing or mismatched before any DB operation
 
 ### Critical Pitfalls to Avoid (from Research)
 
@@ -123,10 +127,12 @@ Phase 8 hardens for launch: compliance and audit readiness.
 
 ### Open Todos
 
-- Execute Phase 1: run 01-PLAN-03 (Wave 2 — Auth Flow), then 01-PLAN-04 (Wave 3 — blocking DB push checkpoint)
+- Execute Phase 1: run 01-PLAN-04 (Wave 3 — blocking DB push checkpoint + seed)
 - 01-PLAN-01 COMPLETE: Next.js 16 scaffold, proxy.ts, Supabase clients, domain types
+- 01-PLAN-02 COMPLETE: Supabase DB migrations, RLS, Custom Access Token Hook, Vault helper
+- 01-PLAN-03 COMPLETE: Auth flow — login, logout, TOTP enrollment/verify, dashboard shell, session revocation
 - After supabase db push: register Custom Access Token Hook in Supabase Dashboard (Auth > Hooks)
-- After seed script: verify login → TOTP → dashboard → settings loop works end-to-end
+- After seed script: verify login → TOTP → dashboard loop works end-to-end
 
 ### Active Blockers
 
@@ -140,9 +146,9 @@ Phase 8 hardens for launch: compliance and audit readiness.
 1. Read `.planning/ROADMAP.md` to see current phase structure
 2. Read `.planning/STATE.md` (this file) for architectural decisions and context
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
-4. Continue with 01-PLAN-03 (Auth Flow — login, logout, TOTP, dashboard shell)
+4. Continue with 01-PLAN-04 (Wave 3 — DB push checkpoint, seed script, smoke test)
 
-**Last session:** 2026-05-22 — Completed 01-PLAN-02 (Supabase DB migrations: tenants, user_tenant_roles, RLS, Hook, Vault helper)
+**Last session:** 2026-05-22 — Completed 01-PLAN-03 (Auth pages: login, logout, TOTP enrollment/verify, dashboard shell, session revocation API)
 
 **File locations:**
 - Requirements: `.planning/REQUIREMENTS.md`
