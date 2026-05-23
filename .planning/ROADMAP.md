@@ -107,7 +107,14 @@ Plans:
   4. A user can create and edit greeting texts per mode (Normal / Urlaub / Vertretung / Eigener Vertretungsdienst) — the EU AI Act Art. 50 disclosure is always present and cannot be removed
   5. A user can add a deputy doctor (name, greeting text, forwarding number), assign them a calendar period, and configure PID=0 behavior for non-patients during that period
   6. An operator can maintain the practice's medication list (PZN, name, phonetic pronunciation for Voice AI, active/inactive, note)
-**Plans:** TBD
+**Plans:** 6 plans
+Plans:
+- [ ] 05-01-PLAN.md — DB foundation: 9 config tables + RLS + indexes + shadcn installs + types + nav link + supabase db push [BLOCKING]
+- [ ] 05-02-PLAN.md — Öffnungszeiten module: opening hours upsert, special days CRUD, deputy periods CRUD (HOURS-01..03)
+- [ ] 05-03-PLAN.md — Terminarten module: appointment type flag toggles, synonym replace, default setter (APPT-01..05)
+- [ ] 05-04-PLAN.md — Begrüßungstexte module: greeting text save with EU AI Act enforcement, FAQ CRUD (TEXT-01..04)
+- [ ] 05-05-PLAN.md — Vertretung module: deputy doctor CRUD with date range validation (DEPUTY-01..04)
+- [ ] 05-06-PLAN.md — Medikamente module + /konfiguration page shell + build gate (MED-01)
 **UI hint**: yes
 
 ### Phase 6: Routing & Communication Rules
@@ -161,7 +168,7 @@ Plans:
 | 2. n8n Event Ingestion Pipeline | 0/3 | Planned (3 plans, 2 waves) | - |
 | 3. Core Dashboard — Status Bar & Call Log | 0/4 | Planned (4 plans, 4 waves) | - |
 | 4. Inbox & Task Management | 2/2 | Complete   | 2026-05-22 |
-| 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 0/? | Not started | - |
+| 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 0/6 | Planned (6 plans, 3 waves) | - |
 | 6. Routing & Communication Rules | 0/? | Not started | - |
 | 7. Statistics & User Management | 0/? | Not started | - |
 | 8. Audit Log & System Polish | 0/? | Not started | - |
@@ -196,3 +203,4 @@ Plans:
 *Created: 2026-05-22*
 *Updated: 2026-05-22 — Phase 1 COMPLETE: 01-PLAN-04 done (seed script, tenant settings API, settings page with German labels and feature toggles, migration 000006)*
 *Updated: 2026-05-23 — Phase 4 PLANNED: 2 plans, 2 waves (04-01 foundation, 04-02 UI)*
+*Updated: 2026-05-23 — Phase 5 PLANNED: 6 plans, 3 waves (05-01 DB foundation, 05-02..05 module plans, 05-06 integration gate)*

@@ -104,5 +104,19 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+## Infrastructure TODOs
+
+### Backup (kritisch — aktuell kein Backup konfiguriert)
+
+- [ ] **Layer 1 — PostgreSQL Dump täglich:** Cron-Job oder n8n-Workflow der `pg_dumpall` aus `supabase-db` Container ausführt, Output nach `/mnt/backups/` mit 7-Tage-Retention. Daten liegen auf `/mnt/data/supabase/volumes/db/data`.
+- [ ] **Layer 2 — VPS-Snapshot:** Provider-seitigen Snapshot-Plan aktivieren (deckt alle Container ab: supabase, sophie, n8n, paperless etc.)
+- [ ] **Offsite-Kopie:** Dumps per Restic oder rsync auf externes Ziel übertragen (z.B. Hetzner Object Storage)
+
+### Supabase Konfiguration
+
+- [ ] **SMTP einrichten:** Aktuell kein Mail-Provider konfiguriert — E-Mail-Verification und Password-Reset funktionieren nicht. Vor Production-Go-Live erledigen.
+- [ ] **Analytics + Vector deaktivieren:** `supabase-analytics` verbraucht ~2.8 GB RAM unnötig. Nach erstem ARA-Med-Go-Live im Portainer Stack deaktivieren.
+- [ ] **FUNCTIONS_VERIFY_JWT prüfen:** Aktuell `false` — vor Production auf `true` setzen und Edge Functions mit gültigem JWT testen.
+
 ---
-*Last updated: 2026-05-22 after initialization*
+*Last updated: 2026-05-23 after initialization*
