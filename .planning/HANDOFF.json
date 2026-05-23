@@ -1,0 +1,48 @@
+{
+  "paused_at": "2026-05-23T00:00:00Z",
+  "phase": "05-configuration",
+  "phase_status": "partial",
+  "blocking_gate": "human-smoke-test",
+
+  "completed_plans": [
+    { "id": "05-01", "status": "complete" },
+    { "id": "05-02", "status": "complete" },
+    { "id": "05-03", "status": "complete" },
+    { "id": "05-04", "status": "complete", "commit": "cddd032" },
+    { "id": "05-05", "status": "complete", "commit": "e450083" },
+    { "id": "05-06", "status": "partial", "tasks_done": 3, "tasks_total": 4, "commit": "1d20156" }
+  ],
+
+  "pending_task": {
+    "plan": "05-06",
+    "task": 4,
+    "description": "Human smoke test at https://app.aramed.at — verify all 5 tabs, EU AI Act lock, URL sync"
+  },
+
+  "deployment": {
+    "url": "https://app.aramed.at",
+    "container_registry": "ghcr.io/itex-it/ara-med-dashboard:latest",
+    "portainer_stack_id": 97,
+    "portainer_endpoint_id": 3,
+    "portainer_url": "https://194.242.35.77:9443",
+    "ci_cd": "GitHub Actions → GHCR → Portainer auto-redeploy on push to main",
+    "github_secrets_set": ["PORTAINER_API_KEY", "PORTAINER_STACK_ID"]
+  },
+
+  "carryovers": [
+    {
+      "id": "custom-access-token-hook",
+      "from_phase": "01",
+      "description": "GoTrue custom_access_token_hook not yet configured — tenant_id not in JWT",
+      "steps": [
+        "Create pg function public.custom_access_token_hook via pg-meta API (supabase.itex.at)",
+        "Add GOTRUE_HOOK_CUSTOM_ACCESS_TOKEN_ENABLED=true to Portainer Stack 19 gotrue container",
+        "Add GOTRUE_HOOK_CUSTOM_ACCESS_TOKEN_URI=pg-functions://postgres/public/custom_access_token_hook"
+      ],
+      "workaround_active": "Server actions read app_metadata directly from auth user — JWT doesn't carry tenant_id externally"
+    }
+  ],
+
+  "continue_file": ".planning/phases/05-configuration/.continue-here.md",
+  "next_command": "After smoke test passes: update ROADMAP.md Phase 5 to complete, then /gsd-plan-phase 6"
+}
