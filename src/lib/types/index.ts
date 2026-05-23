@@ -148,3 +148,122 @@ export interface CallActionRow {
   detail: Record<string, unknown> | null
   created_at: string
 }
+
+// ============================================================
+// Phase 05: Configuration Types
+// ============================================================
+
+export type GreetingMode = 'normal' | 'vacation' | 'deputy' | 'own_service'
+
+export type SpecialDayType = 'closure' | 'special_hours'
+
+export type PidZeroBehavior = 'refuse' | 'waitlist' | 'book_normal' | 'forward'
+
+export interface OpeningHoursRow {
+  id: string
+  tenant_id: string
+  weekday: number
+  open_from: string | null
+  open_until: string | null
+  is_closed: boolean
+  created_at: string
+}
+
+export interface SpecialDayRow {
+  id: string
+  tenant_id: string
+  date: string
+  label: string
+  type: SpecialDayType
+  open_from: string | null
+  open_until: string | null
+  is_closed: boolean
+  created_at: string
+}
+
+export interface DeputyPeriodRow {
+  id: string
+  tenant_id: string
+  start_date: string
+  end_date: string
+  label: string | null
+  active: boolean
+  created_at: string
+}
+
+export interface AppointmentTypeRow {
+  id: string
+  tenant_id: string
+  appointment_type_code: string
+  display_name: string
+  is_visible: boolean
+  is_voice_bookable: boolean
+  is_internal_only: boolean
+  is_default: boolean
+  pid_zero_allowed: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface AppointmentTypeSynonymRow {
+  id: string
+  tenant_id: string
+  appointment_type_code: string
+  synonym: string
+  language_code: string
+  created_at: string
+}
+
+export interface GreetingTextRow {
+  id: string
+  tenant_id: string
+  mode: GreetingMode
+  language_code: string
+  eu_ai_act_disclosure: string
+  eu_ai_act_disclosure_present: boolean
+  user_text: string
+  created_at: string
+  updated_at: string
+}
+
+export interface FaqEntryRow {
+  id: string
+  tenant_id: string
+  mode: 'all' | GreetingMode
+  question: string
+  answer: string
+  active: boolean
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
+export interface DeputyDoctorRow {
+  id: string
+  tenant_id: string
+  name: string
+  greeting_text: string | null
+  forwarding_number: string
+  start_date: string | null
+  end_date: string | null
+  pid_zero_behavior: PidZeroBehavior
+  pid_zero_forward_number: string | null
+  own_service_active: boolean
+  own_service_prompt: string | null
+  own_service_pid_zero_behavior: PidZeroBehavior | null
+  active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface MedicationRow {
+  id: string
+  tenant_id: string
+  pzn: string
+  name: string
+  phonetic: string | null
+  active: boolean
+  note: string | null
+  created_at: string
+  updated_at: string
+}

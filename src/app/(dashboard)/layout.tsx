@@ -48,6 +48,12 @@ export default async function DashboardLayout({
             Inbox
           </a>
           <a
+            href="/konfiguration"
+            className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
+          >
+            Konfiguration
+          </a>
+          <a
             href="/einstellungen"
             className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
           >
