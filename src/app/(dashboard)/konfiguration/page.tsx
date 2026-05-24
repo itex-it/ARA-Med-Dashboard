@@ -14,6 +14,8 @@ import type {
   RoutingRuleRow,
   VipNumberRow,
   CommRuleRow,
+  MessageTemplateRow,
+  SendLogRow,
 } from '@/lib/types'
 
 export default async function KonfigurationPage({
@@ -34,7 +36,7 @@ export default async function KonfigurationPage({
   const araRole = (user.app_metadata?.ara_role as string | undefined) ?? ''
   const hasEditRight = ['operator', 'ordination_admin'].includes(araRole)
 
-  // Fetch all 12 config tables in parallel (9 Phase 5 + 2 Phase 6 routing + 1 Phase 6 comm)
+  // Fetch all 14 config tables in parallel (9 Phase 5 + 3 Phase 6 routing/comm + 2 Phase 6 templates/log)
   const [
     { data: openingHoursRaw },
     { data: specialDaysRaw },
@@ -48,6 +50,8 @@ export default async function KonfigurationPage({
     { data: routingRulesRaw },
     { data: vipNumbersRaw },
     { data: commRulesRaw },
+    { data: messageTemplatesRaw },
+    { data: sendLogRaw },
   ] = await Promise.all([
     supabase.from('opening_hours').select('*').eq('tenant_id', tenantId).order('weekday'),
     supabase.from('special_days').select('*').eq('tenant_id', tenantId).order('date'),
@@ -73,6 +77,13 @@ export default async function KonfigurationPage({
       .select('*')
       .eq('tenant_id', tenantId)
       .order('created_at', { ascending: false }),
+    supabase.from('message_templates').select('*').eq('tenant_id', tenantId).order('name'),
+    supabase
+      .from('send_log')
+      .select('*')
+      .eq('tenant_id', tenantId)
+      .order('created_at', { ascending: false })
+      .limit(100),
   ])
 
   return (
@@ -94,6 +105,8 @@ export default async function KonfigurationPage({
         routingRules={(routingRulesRaw as RoutingRuleRow[] | null) ?? []}
         vipNumbers={(vipNumbersRaw as VipNumberRow[] | null) ?? []}
         commRules={(commRulesRaw as CommRuleRow[] | null) ?? []}
+        messageTemplates={(messageTemplatesRaw as MessageTemplateRow[] | null) ?? []}
+        sendLog={(sendLogRaw as SendLogRow[] | null) ?? []}
       />
     </div>
   )

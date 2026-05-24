@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useOptimistic, useActionState } from 'react'
+import React, { useState, useTransition, useOptimistic, useActionState } from 'react'
 import {
   Inbox,
   Mail,
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Table,
   TableBody,
@@ -46,6 +47,12 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
   createCommRuleAction,
   updateCommRuleAction,
   deleteCommRuleAction,
@@ -53,7 +60,19 @@ import {
   type CommRuleActionState,
   type ToggleCommRuleState,
 } from '@/lib/actions/communication'
-import type { CommRuleRow, CommDirection, CommChannel, CommPriority } from '@/lib/types'
+import {
+  createTemplateAction,
+  updateTemplateAction,
+  deleteTemplateAction,
+} from '@/lib/actions/templates'
+import type {
+  CommRuleRow,
+  CommDirection,
+  CommChannel,
+  CommPriority,
+  MessageTemplateRow,
+  SendLogRow,
+} from '@/lib/types'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -97,6 +116,17 @@ const CHANNEL_ICONS: Record<CommChannel, React.ReactNode> = {
   sms: <MessageCircle className="h-3 w-3 mr-1" aria-hidden="true" />,
 }
 
+// Template variables with example values for live preview
+const EXAMPLE_VALUES: Record<string, string> = {
+  '{{patient_name}}': 'Muster Maria',
+  '{{appointment_date}}': 'Montag, 12. März um 9 Uhr',
+  '{{appointment_type}}': 'Allgemeinuntersuchung',
+  '{{practice_name}}': 'Ordination Beispiel',
+  '{{callback_phone}}': '+43 1 234 567',
+}
+
+const TEMPLATE_VARIABLES = Object.keys(EXAMPLE_VALUES)
+
 // ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
@@ -105,6 +135,8 @@ interface KommunikationTabProps {
   tenantId: string
   hasEditRight: boolean
   initialCommRules: CommRuleRow[]
+  initialTemplates: MessageTemplateRow[]
+  initialSendLog: SendLogRow[]
 }
 
 // ---------------------------------------------------------------------------
@@ -767,9 +799,13 @@ function CommRulesTable({
 // ---------------------------------------------------------------------------
 
 export function KommunikationTab({
+  tenantId,
   hasEditRight,
   initialCommRules,
+  initialTemplates,
+  initialSendLog,
 }: KommunikationTabProps) {
+  // Comm rules state
   const [internRules, setInternRules] = useState<CommRuleRow[]>(
     initialCommRules.filter((r) => r.direction === 'intern'),
   )
@@ -798,6 +834,37 @@ export function KommunikationTab({
 
   const [, startToggleTransition] = useTransition()
   const [isDeletePending, startDeleteTransition] = useTransition()
+
+  // Template state
+  const [templates, setTemplates] = useState<MessageTemplateRow[]>(initialTemplates)
+  const [templateSheetOpen, setTemplateSheetOpen] = useState(false)
+  const [editingTemplate, setEditingTemplate] = useState<MessageTemplateRow | null>(null)
+  const [templateDeleteTarget, setTemplateDeleteTarget] = useState<MessageTemplateRow | null>(null)
+  const templateBodyRef = React.useRef<HTMLTextAreaElement>(null)
+
+  // Template form state
+  const [tmplName, setTmplName] = useState('')
+  const [tmplChannel, setTmplChannel] = useState<'email' | 'sms' | 'telegram'>('email')
+  const [tmplLang, setTmplLang] = useState('de')
+  const [tmplSubject, setTmplSubject] = useState('')
+  const [tmplBody, setTmplBody] = useState('')
+  const [templateIsDirty, setTemplateIsDirty] = useState(false)
+  const [isTemplatePending, startTemplateTransition] = useTransition()
+  const [templateError, setTemplateError] = useState<string | undefined>()
+
+  // Template delete pending
+  const [isTemplateDeletePending, startTemplateDeleteTransition] = useTransition()
+
+  // Send log state
+  const [sendLog] = useState<SendLogRow[]>(initialSendLog)
+  const [slFilterEvent, setSlFilterEvent] = useState('all')
+  const [slFilterChannel, setSlFilterChannel] = useState('all')
+  const [slFilterStatus, setSlFilterStatus] = useState('all')
+  const [slPage, setSlPage] = useState(1)
+
+  // ---------------------------------------------------------------------------
+  // Comm rule handlers
+  // ---------------------------------------------------------------------------
 
   function handleToggle(rule: CommRuleRow) {
     const newActive = !rule.active
@@ -872,6 +939,111 @@ export function KommunikationTab({
           ? INTERNAL_EVENT_LABELS[deleteTarget.event_type]
           : PATIENT_EVENT_LABELS[deleteTarget.event_type]) ?? deleteTarget.event_type
       : ''
+
+  // ---------------------------------------------------------------------------
+  // Template handlers
+  // ---------------------------------------------------------------------------
+
+  function openCreateTemplate() {
+    setEditingTemplate(null)
+    setTmplName('')
+    setTmplChannel('email')
+    setTmplLang('de')
+    setTmplSubject('')
+    setTmplBody('')
+    setTemplateIsDirty(false)
+    setTemplateError(undefined)
+    setTemplateSheetOpen(true)
+  }
+
+  function openEditTemplate(tmpl: MessageTemplateRow) {
+    setEditingTemplate(tmpl)
+    setTmplName(tmpl.name)
+    setTmplChannel(tmpl.channel as 'email' | 'sms' | 'telegram')
+    setTmplLang(tmpl.language_code)
+    setTmplSubject(tmpl.subject ?? '')
+    setTmplBody(tmpl.body)
+    setTemplateIsDirty(false)
+    setTemplateError(undefined)
+    setTemplateSheetOpen(true)
+  }
+
+  function insertVariableAtCursor(variable: string) {
+    const textarea = templateBodyRef.current
+    if (!textarea) {
+      setTmplBody((prev) => prev + variable)
+      setTemplateIsDirty(true)
+      return
+    }
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const newValue = tmplBody.slice(0, start) + variable + tmplBody.slice(end)
+    setTmplBody(newValue)
+    setTemplateIsDirty(true)
+    requestAnimationFrame(() => {
+      textarea.focus()
+      textarea.setSelectionRange(start + variable.length, start + variable.length)
+    })
+  }
+
+  function handleTemplateSave() {
+    const fd = new FormData()
+    if (editingTemplate) fd.set('id', editingTemplate.id)
+    fd.set('name', tmplName)
+    fd.set('channel', tmplChannel)
+    fd.set('language_code', tmplLang)
+    fd.set('subject', tmplSubject)
+    fd.set('body', tmplBody)
+    startTemplateTransition(async () => {
+      const action = editingTemplate ? updateTemplateAction : createTemplateAction
+      const result = await action({ success: undefined }, fd)
+      if (result.error) {
+        setTemplateError(result.error)
+      } else {
+        const updated: MessageTemplateRow = {
+          id: result.id ?? editingTemplate?.id ?? crypto.randomUUID(),
+          tenant_id: tenantId,
+          name: tmplName,
+          channel: tmplChannel,
+          language_code: tmplLang,
+          subject: tmplSubject || null,
+          body: tmplBody,
+          version: editingTemplate ? (editingTemplate.version + 1) : 1,
+          created_at: editingTemplate?.created_at ?? new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }
+        setTemplates((prev) =>
+          editingTemplate
+            ? prev.map((t) => (t.id === editingTemplate.id ? updated : t))
+            : [...prev, updated],
+        )
+        setTemplateSheetOpen(false)
+        setTemplateIsDirty(false)
+        setTemplateError(undefined)
+      }
+    })
+  }
+
+  // Live preview computation
+  const templatePreview = Object.entries(EXAMPLE_VALUES).reduce(
+    (text, [key, val]) => text.replaceAll(key, val),
+    tmplBody,
+  )
+
+  // ---------------------------------------------------------------------------
+  // Send log filtered view
+  // ---------------------------------------------------------------------------
+
+  const filteredSendLog = sendLog
+    .filter((l) => slFilterEvent === 'all' || l.event_type === slFilterEvent)
+    .filter((l) => slFilterChannel === 'all' || l.channel === slFilterChannel)
+    .filter((l) => slFilterStatus === 'all' || l.status === slFilterStatus)
+
+  const paginatedSendLog = filteredSendLog.slice(0, slPage * 25)
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <div>
@@ -950,24 +1122,491 @@ export function KommunikationTab({
         </TabsContent>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Sub-Tab: Nachrichtenvorlagen (placeholder)                        */}
+        {/* Sub-Tab: Nachrichtenvorlagen (COMM-05)                            */}
         {/* ---------------------------------------------------------------- */}
         <TabsContent value="vorlagen">
-          <div className="py-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              Nachrichtenvorlagen werden in Plan 06-04 implementiert.
-            </p>
+          <div className="space-y-4">
+            {/* Header with Add Button */}
+            {hasEditRight && (
+              <div className="flex justify-end">
+                <Button variant="outline" size="sm" onClick={openCreateTemplate}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Vorlage erstellen
+                </Button>
+              </div>
+            )}
+
+            {/* Templates Table */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Kanal</TableHead>
+                  <TableHead>Sprache</TableHead>
+                  <TableHead>Vorschau</TableHead>
+                  {hasEditRight && <TableHead className="w-24">Aktionen</TableHead>}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {templates.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={hasEditRight ? 5 : 4}
+                      className="text-center text-sm text-muted-foreground py-8"
+                    >
+                      Noch keine Nachrichtenvorlagen erstellt. Erstellen Sie Ihre erste Vorlage.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  templates.map((tmpl) => (
+                    <TableRow key={tmpl.id}>
+                      <TableCell className="text-sm font-medium">{tmpl.name}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="gap-1">
+                          {tmpl.channel === 'email' && (
+                            <Mail className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {tmpl.channel === 'sms' && (
+                            <MessageCircle className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {tmpl.channel === 'telegram' && (
+                            <MessageSquare className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {CHANNEL_LABELS[tmpl.channel as CommChannel] ?? tmpl.channel}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{tmpl.language_code}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="text-sm text-muted-foreground cursor-default">
+                                {tmpl.body.length > 60
+                                  ? tmpl.body.slice(0, 60) + '…'
+                                  : tmpl.body}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs whitespace-pre-wrap">
+                              {tmpl.body}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableCell>
+                      {hasEditRight && (
+                        <TableCell>
+                          <div className="flex gap-1">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => openEditTemplate(tmpl)}
+                              aria-label={`${tmpl.name} bearbeiten`}
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-destructive hover:text-destructive"
+                              onClick={() => setTemplateDeleteTarget(tmpl)}
+                              aria-label={`${tmpl.name} entfernen`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
           </div>
+
+          {/* Nachrichtenvorlage Sheet */}
+          <Sheet
+            open={templateSheetOpen}
+            onOpenChange={(open) => {
+              if (!open && templateIsDirty) return
+              setTemplateSheetOpen(open)
+            }}
+          >
+            <SheetContent
+              className="w-[600px] sm:max-w-[600px] overflow-y-auto"
+              side="right"
+              onInteractOutside={(e) => {
+                if (templateIsDirty) e.preventDefault()
+              }}
+            >
+              <SheetHeader>
+                <SheetTitle>
+                  {editingTemplate ? 'Vorlage bearbeiten' : 'Vorlage erstellen'}
+                </SheetTitle>
+              </SheetHeader>
+
+              <div className="mt-6 space-y-4 px-1">
+                {/* Vorlagenname */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium" htmlFor="tmpl-name">
+                    Vorlagenname <span className="text-destructive">*</span>
+                  </label>
+                  <Input
+                    id="tmpl-name"
+                    placeholder="Terminbestätigung Deutsch"
+                    value={tmplName}
+                    onChange={(e) => {
+                      setTmplName(e.target.value)
+                      setTemplateIsDirty(true)
+                    }}
+                  />
+                </div>
+
+                {/* Kanal */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium" htmlFor="tmpl-channel">
+                    Kanal <span className="text-destructive">*</span>
+                  </label>
+                  <Select
+                    value={tmplChannel}
+                    onValueChange={(v) => {
+                      setTmplChannel(v as 'email' | 'sms' | 'telegram')
+                      setTemplateIsDirty(true)
+                    }}
+                  >
+                    <SelectTrigger id="tmpl-channel">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="email">E-Mail</SelectItem>
+                      <SelectItem value="sms">SMS</SelectItem>
+                      <SelectItem value="telegram">Telegram</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Betreff (nur bei E-Mail) */}
+                {tmplChannel === 'email' && (
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium" htmlFor="tmpl-subject">
+                      Betreff <span className="text-destructive">*</span>
+                    </label>
+                    <Input
+                      id="tmpl-subject"
+                      placeholder="Ihre Terminbestätigung — {{practice_name}}"
+                      value={tmplSubject}
+                      onChange={(e) => {
+                        setTmplSubject(e.target.value)
+                        setTemplateIsDirty(true)
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Sprache */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium" htmlFor="tmpl-lang">
+                    Sprache
+                  </label>
+                  <Select
+                    value={tmplLang}
+                    onValueChange={(v) => {
+                      setTmplLang(v)
+                      setTemplateIsDirty(true)
+                    }}
+                  >
+                    <SelectTrigger id="tmpl-lang">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="de">Deutsch (de)</SelectItem>
+                      <SelectItem value="en">Englisch (en)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Nachrichtentext */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium" htmlFor="tmpl-body">
+                    Nachrichtentext <span className="text-destructive">*</span>
+                  </label>
+                  <Textarea
+                    id="tmpl-body"
+                    ref={templateBodyRef}
+                    className="min-h-48 font-mono text-sm"
+                    placeholder="Guten Tag {{patient_name}}, Ihr Termin am {{appointment_date}} wurde bestätigt."
+                    value={tmplBody}
+                    onChange={(e) => {
+                      setTmplBody(e.target.value)
+                      setTemplateIsDirty(true)
+                    }}
+                  />
+
+                  {/* Variable insert buttons */}
+                  <div className="bg-muted rounded-md p-3 mt-2">
+                    <p className="text-xs font-semibold text-muted-foreground mb-2">
+                      Verfügbare Variablen — Klicken zum Einfügen
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {TEMPLATE_VARIABLES.map((variable) => (
+                        <Button
+                          key={variable}
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="font-mono text-xs h-7"
+                          aria-label={`Variable ${variable} einfügen`}
+                          onClick={() => insertVariableAtCursor(variable)}
+                        >
+                          {variable}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Live Preview */}
+                <div className="space-y-1">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Vorschau (mit Beispieldaten)
+                  </p>
+                  <div className="bg-muted/50 border rounded-md p-3 text-sm text-muted-foreground whitespace-pre-wrap min-h-12">
+                    {templatePreview || (
+                      <span className="italic">Vorschau erscheint hier…</span>
+                    )}
+                  </div>
+                </div>
+
+                {templateError && (
+                  <p role="alert" className="text-xs text-destructive">
+                    {templateError}
+                  </p>
+                )}
+
+                <SheetFooter className="pt-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={isTemplatePending}
+                    onClick={handleTemplateSave}
+                  >
+                    {isTemplatePending && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
+                    Vorlage speichern
+                  </Button>
+                </SheetFooter>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* Delete template dialog */}
+          <Dialog
+            open={templateDeleteTarget !== null}
+            onOpenChange={(open) => {
+              if (!open) setTemplateDeleteTarget(null)
+            }}
+          >
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Vorlage entfernen</DialogTitle>
+              </DialogHeader>
+              <p className="text-sm text-muted-foreground">
+                Möchten Sie die Vorlage &apos;{templateDeleteTarget?.name}&apos; entfernen?
+                Kommunikationsregeln, die diese Vorlage verwenden, werden deaktiviert.
+              </p>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setTemplateDeleteTarget(null)}
+                  disabled={isTemplateDeletePending}
+                >
+                  Abbrechen
+                </Button>
+                <Button
+                  variant="destructive"
+                  disabled={isTemplateDeletePending}
+                  onClick={() => {
+                    if (!templateDeleteTarget) return
+                    const target = templateDeleteTarget
+                    setTemplateDeleteTarget(null)
+                    startTemplateDeleteTransition(async () => {
+                      const fd = new FormData()
+                      fd.set('id', target.id)
+                      const result = await deleteTemplateAction({ success: undefined }, fd)
+                      if (result.success) {
+                        setTemplates((prev) => prev.filter((t) => t.id !== target.id))
+                      }
+                    })
+                  }}
+                >
+                  {isTemplateDeletePending && (
+                    <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                  )}
+                  Entfernen
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </TabsContent>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Sub-Tab: Versandprotokoll (placeholder)                           */}
+        {/* Sub-Tab: Versandprotokoll (COMM-04)                               */}
         {/* ---------------------------------------------------------------- */}
         <TabsContent value="protokoll">
-          <div className="py-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              Versandprotokoll wird in Plan 06-04 implementiert.
-            </p>
+          <div className="space-y-4">
+            {/* Filter bar */}
+            <div className="flex flex-wrap gap-2">
+              <Select value={slFilterEvent} onValueChange={(v) => { setSlFilterEvent(v); setSlPage(1) }}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Alle Ereignisse" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alle Ereignisse</SelectItem>
+                  {Object.entries({ ...INTERNAL_EVENT_LABELS, ...PATIENT_EVENT_LABELS }).map(
+                    ([k, v]) => (
+                      <SelectItem key={k} value={k}>
+                        {v}
+                      </SelectItem>
+                    ),
+                  )}
+                </SelectContent>
+              </Select>
+
+              <Select value={slFilterChannel} onValueChange={(v) => { setSlFilterChannel(v); setSlPage(1) }}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Alle Kanäle" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alle Kanäle</SelectItem>
+                  {(Object.entries(CHANNEL_LABELS) as [CommChannel, string][]).map(([k, v]) => (
+                    <SelectItem key={k} value={k}>
+                      {v}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={slFilterStatus} onValueChange={(v) => { setSlFilterStatus(v); setSlPage(1) }}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Alle Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alle Status</SelectItem>
+                  <SelectItem value="delivered">Zugestellt</SelectItem>
+                  <SelectItem value="pending">Ausstehend</SelectItem>
+                  <SelectItem value="failed">Fehlgeschlagen</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Send log table */}
+            <Table aria-label="Versandprotokoll">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Zeitpunkt</TableHead>
+                  <TableHead>Ereignis</TableHead>
+                  <TableHead>Kanal</TableHead>
+                  <TableHead>Empfänger</TableHead>
+                  <TableHead>Vorlage</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Fehler</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {paginatedSendLog.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={7}
+                      className="text-center text-sm text-muted-foreground py-8"
+                    >
+                      Noch keine Versandversuche protokolliert.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  paginatedSendLog.map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                        {new Intl.DateTimeFormat('de-AT', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }).format(new Date(log.sent_at))}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {INTERNAL_EVENT_LABELS[log.event_type] ??
+                          PATIENT_EVENT_LABELS[log.event_type] ??
+                          log.event_type}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="gap-1">
+                          {log.channel === 'email' && (
+                            <Mail className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {log.channel === 'sms' && (
+                            <MessageCircle className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {log.channel === 'telegram' && (
+                            <MessageSquare className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {log.channel === 'inbox' && (
+                            <Inbox className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {CHANNEL_LABELS[log.channel as CommChannel] ?? log.channel}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className="font-mono text-sm text-muted-foreground"
+                          aria-label="Maskierte Empfängeradresse"
+                        >
+                          {log.recipient_masked}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {log.template_name
+                          ? `${log.template_name} v${log.template_version}`
+                          : '—'}
+                      </TableCell>
+                      <TableCell>
+                        {log.status === 'delivered' && (
+                          <Badge className="bg-green-100 text-green-600 border-0">
+                            Zugestellt
+                          </Badge>
+                        )}
+                        {log.status === 'pending' && (
+                          <Badge className="bg-yellow-100 text-yellow-600 border-0">
+                            Ausstehend
+                          </Badge>
+                        )}
+                        {log.status === 'failed' && (
+                          <Badge className="bg-red-100 text-red-600 border-0">
+                            Fehlgeschlagen
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-xs text-muted-foreground">
+                        {log.error_reason ?? '—'}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+
+            {/* Load more */}
+            {filteredSendLog.length > paginatedSendLog.length && (
+              <div className="flex justify-center pt-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSlPage((p) => p + 1)}
+                >
+                  Ältere laden
+                </Button>
+              </div>
+            )}
           </div>
         </TabsContent>
       </Tabs>
@@ -987,7 +1626,7 @@ export function KommunikationTab({
       />
 
       {/* ------------------------------------------------------------------ */}
-      {/* Delete Dialog                                                        */}
+      {/* Delete Comm Rule Dialog                                              */}
       {/* ------------------------------------------------------------------ */}
       <Dialog
         open={!!deleteTarget}

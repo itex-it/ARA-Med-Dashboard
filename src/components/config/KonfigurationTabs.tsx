@@ -23,6 +23,8 @@ import type {
   RoutingRuleRow,
   VipNumberRow,
   CommRuleRow,
+  MessageTemplateRow,
+  SendLogRow,
 } from '@/lib/types'
 
 interface KonfigurationTabsProps {
@@ -41,6 +43,8 @@ interface KonfigurationTabsProps {
   routingRules: RoutingRuleRow[]
   vipNumbers: VipNumberRow[]
   commRules: CommRuleRow[]
+  messageTemplates: MessageTemplateRow[]
+  sendLog: SendLogRow[]
 }
 
 export default function KonfigurationTabs({
@@ -59,6 +63,8 @@ export default function KonfigurationTabs({
   routingRules,
   vipNumbers,
   commRules,
+  messageTemplates,
+  sendLog,
 }: KonfigurationTabsProps) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState(initialTab)
@@ -138,6 +144,8 @@ export default function KonfigurationTabs({
           tenantId={tenantId}
           hasEditRight={hasEditRight}
           initialCommRules={commRules}
+          initialTemplates={messageTemplates}
+          initialSendLog={sendLog}
         />
       </TabsContent>
     </Tabs>
