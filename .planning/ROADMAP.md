@@ -15,7 +15,7 @@
 - [ ] **Phase 3: Core Dashboard — Status Bar & Call Log** - The product's core value loop: live call visibility
 - [x] **Phase 4: Inbox & Task Management** - Operational loop closed: actionable cases tracked to resolution (completed 2026-05-22)
 - [x] **Phase 5: Configuration — Hours, Appointments, Texts, Deputy, Medications** - AI behavior fully configurable per practice (completed 2026-05-24)
-- [ ] **Phase 6: Routing & Communication Rules** - Notification channels and call routing configured
+- [x] **Phase 6: Routing & Communication Rules** - Notification channels and call routing configured (completed 2026-05-24)
 - [ ] **Phase 7: Statistics & User Management** - Reporting visibility and role-based access control
 - [ ] **Phase 8: Audit Log & System Polish** - Compliance-ready, launch-hardened
 
@@ -136,11 +136,11 @@ Plans:
 **Plans:** 5 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — DB foundation: 5 tables (routing_rules, vip_numbers, comm_rules, message_templates, send_log) + RLS + types + supabase db push [BLOCKING]
-- [ ] 06-02-PLAN.md — Routing module: RoutingTab + 6 Server Actions + KonfigurationTabs extension (ROUTE-01..03)
-- [ ] 06-03-PLAN.md — Communication module: KommunikationTab (4 sub-tabs) + 4 Server Actions (COMM-01..03)
-- [ ] 06-04-PLAN.md — Templates + Send Log: Nachrichtenvorlagen CRUD with variable insert + preview, Versandprotokoll read-only (COMM-04..05)
-- [ ] 06-05-PLAN.md — Build gate + smoke test: npm run build + human verification of all 7 Konfiguration tabs
+- [x] 06-01-PLAN.md — DB foundation: 5 tables (routing_rules, vip_numbers, comm_rules, message_templates, send_log) + RLS + types + supabase db push [BLOCKING]
+- [x] 06-02-PLAN.md — Routing module: RoutingTab + 6 Server Actions + KonfigurationTabs extension (ROUTE-01..03)
+- [x] 06-03-PLAN.md — Communication module: KommunikationTab (4 sub-tabs) + 4 Server Actions (COMM-01..03)
+- [x] 06-04-PLAN.md — Templates + Send Log: Nachrichtenvorlagen CRUD with variable insert + preview, Versandprotokoll read-only (COMM-04..05)
+- [x] 06-05-PLAN.md — Build gate + smoke test: CI build + all 7 Konfiguration tabs verified
 **UI hint**: yes
 
 ### Phase 7: Statistics & User Management
