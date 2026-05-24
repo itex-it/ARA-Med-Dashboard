@@ -4,16 +4,11 @@
   "phase": "08",
   "phase_name": "Audit Log & System Polish",
   "phase_dir": ".planning/phases/08-audit-log-polish",
-  "plan": 0,
-  "task": 0,
-  "status": "planned",
-  "completed_tasks": [],
-  "remaining_tasks": [
-    {"id": 1, "name": "Execute 08-01-PLAN.md (Wave 1: foundation)", "status": "not_started"},
-    {"id": 2, "name": "Execute 08-02-PLAN.md (Wave 2a: instrument Server Actions)", "status": "not_started"},
-    {"id": 3, "name": "Execute 08-03-PLAN.md (Wave 2b: audit-log page)", "status": "not_started"},
-    {"id": 4, "name": "Execute 08-04-PLAN.md (Wave 3: build gate + DSGVO + deploy)", "status": "not_started"}
-  ],
+  "plan": 4,
+  "task": 7,
+  "status": "complete",
+  "completed_tasks": [1, 2, 3, 4],
+  "remaining_tasks": [],
   "blockers": [
     {
       "description": "Portainer auto-redeploy blocked by firewall (GitHub Actions IPs not whitelisted)",
@@ -32,9 +27,10 @@
     {"decision": "New users created via auth.admin.createUser with email_confirm:true", "rationale": "SMTP not configured on self-hosted Supabase; createUser bypasses email invite, admin shares tempPassword once", "phase": "07"},
     {"decision": "No new DB tables for Phase 7", "rationale": "Statistics aggregate existing call_log/call_actions/inbox_items; user management uses existing user_tenant_roles (permissions JSONB column)", "phase": "07"},
     {"decision": "logAuditEvent uses try/catch — audit failure never throws", "rationale": "Audit reliability must never come at the cost of UX — the helper swallows its own errors silently so primary actions always complete", "phase": "08"},
-    {"decision": "audit_log RLS: no INSERT policy for users — service role only", "rationale": "Users cannot forge audit records; logAuditEvent always uses createServiceRoleClient() which bypasses RLS", "phase": "08"}
+    {"decision": "audit_log RLS: no INSERT policy for users — service role only", "rationale": "Users cannot forge audit records; logAuditEvent always uses createServiceRoleClient() which bypasses RLS", "phase": "08"},
+    {"decision": "All Server Actions instrumented with logAuditEvent() — try/catch prevents audit failures from blocking primary operations", "rationale": "Audit reliability must never come at the cost of UX — logAuditEvent swallows its own errors silently", "phase": "08"}
   ],
   "uncommitted_files": [],
-  "next_action": "Run /gsd-execute-phase 8 to execute Wave 1 → Wave 2 (parallel) → Wave 3",
-  "context_notes": "Phase 8 planned. 4 PLAN.md files written: 08-01 (foundation), 08-02 (instrument 11 Server Actions), 08-03 (audit-log page + components), 08-04 (build gate + DSGVO review + deploy). Wave 1 must complete before Waves 2a+2b run in parallel. Wave 3 after both Wave 2 plans complete."
+  "next_action": "MVP complete. All 8 phases delivered. Ready for live tenant onboarding.",
+  "context_notes": "Phase 8 complete. audit_log table live. All Server Actions instrumented. /audit-log page live. DSGVO compliance review passed. MVP delivery complete — 73/73 requirements delivered across 8 phases."
 }
