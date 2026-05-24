@@ -416,3 +416,21 @@ export interface IntentFrequency {
   intent: string
   count: number
 }
+
+// ============================================================
+// Phase 08: Audit Log Types
+// ============================================================
+
+export interface AuditLogRow {
+  id: string
+  tenant_id: string
+  user_id: string
+  action: string
+  object_type: string
+  object_id: string
+  old_value: Record<string, unknown> | null
+  new_value: Record<string, unknown> | null
+  ip_address: string
+  user_agent: string
+  created_at: string
+}

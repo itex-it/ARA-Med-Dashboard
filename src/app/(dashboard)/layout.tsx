@@ -66,6 +66,14 @@ export default async function DashboardLayout({
               Benutzer
             </a>
           )}
+          {['operator', 'ordination_admin'].includes(araRole) && (
+            <a
+              href="/audit-log"
+              className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
+            >
+              Audit-Log
+            </a>
+          )}
           <a
             href="/settings"
             className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
