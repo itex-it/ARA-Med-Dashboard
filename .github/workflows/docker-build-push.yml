@@ -57,12 +57,32 @@ jobs:
           PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
           PORTAINER_STACK_ID: ${{ secrets.PORTAINER_STACK_ID }}
         run: |
-          if [ -n "$PORTAINER_API_KEY" ] && [ -n "$PORTAINER_STACK_ID" ]; then
-            curl -sk -X POST \
-              -H "X-API-Key: $PORTAINER_API_KEY" \
-              "https://194.242.35.77:9443/api/stacks/$PORTAINER_STACK_ID/pull/file?endpointId=3" \
-              -H "Content-Type: application/json" \
-              -d '{"pullImage":true}' || echo "Portainer redeploy skipped (optional)"
+          if [ -z "$PORTAINER_API_KEY" ] || [ -z "$PORTAINER_STACK_ID" ]; then
+            echo "PORTAINER_API_KEY or PORTAINER_STACK_ID not set — skipping"
+            exit 0
+          fi
+          # Get current stack file
+          FILE=$(curl -sf --max-time 10 \
+            -H "X-API-Key: $PORTAINER_API_KEY" \
+            "https://194.242.35.77:9443/api/stacks/$PORTAINER_STACK_ID/file" 2>/dev/null) || true
+          ENV=$(curl -sf --max-time 10 \
+            -H "X-API-Key: $PORTAINER_API_KEY" \
+            "https://194.242.35.77:9443/api/stacks/$PORTAINER_STACK_ID?endpointId=3" 2>/dev/null) || true
+          if [ -z "$FILE" ] || [ -z "$ENV" ]; then
+            echo "⚠️  Cannot reach Portainer (firewall blocks GitHub Actions IPs)."
+            echo "   Redeploy manually: PUT /api/stacks/$PORTAINER_STACK_ID?endpointId=3 with PullImage:true"
+            exit 0
+          fi
+          CONTENT=$(echo "$FILE" | python3 -c "import sys,json; print(json.load(sys.stdin)['StackFileContent'])")
+          ENVS=$(echo "$ENV" | python3 -c "import sys,json; print(json.dumps(json.load(sys.stdin).get('Env',[])))")
+          PAYLOAD=$(python3 -c "import json,sys; print(json.dumps({'StackFileContent':sys.argv[1],'Env':json.loads(sys.argv[2]),'Prune':False,'PullImage':True}))" "$CONTENT" "$ENVS")
+          HTTP=$(curl -sf --max-time 30 -X PUT \
+            -H "X-API-Key: $PORTAINER_API_KEY" \
+            -H "Content-Type: application/json" \
+            "https://194.242.35.77:9443/api/stacks/$PORTAINER_STACK_ID?endpointId=3" \
+            -d "$PAYLOAD" -w "%{http_code}" -o /dev/null 2>/dev/null) || true
+          if [ "$HTTP" = "200" ]; then
+            echo "✅ Portainer redeploy triggered (Stack $PORTAINER_STACK_ID)"
           else
-            echo "PORTAINER_API_KEY or PORTAINER_STACK_ID not set — skipping auto-redeploy"
+            echo "⚠️  Portainer redeploy failed (HTTP $HTTP) — pull new image manually in Portainer UI"
           fi
