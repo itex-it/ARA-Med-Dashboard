@@ -14,7 +14,7 @@
 - [ ] **Phase 2: n8n Event Ingestion Pipeline** - Data flowing in from Voice AI via secured webhook endpoint
 - [ ] **Phase 3: Core Dashboard — Status Bar & Call Log** - The product's core value loop: live call visibility
 - [x] **Phase 4: Inbox & Task Management** - Operational loop closed: actionable cases tracked to resolution (completed 2026-05-22)
-- [ ] **Phase 5: Configuration — Hours, Appointments, Texts, Deputy, Medications** - AI behavior fully configurable per practice
+- [x] **Phase 5: Configuration — Hours, Appointments, Texts, Deputy, Medications** - AI behavior fully configurable per practice (completed 2026-05-24)
 - [ ] **Phase 6: Routing & Communication Rules** - Notification channels and call routing configured
 - [ ] **Phase 7: Statistics & User Management** - Reporting visibility and role-based access control
 - [ ] **Phase 8: Audit Log & System Polish** - Compliance-ready, launch-hardened
@@ -109,12 +109,12 @@ Plans:
   6. An operator can maintain the practice's medication list (PZN, name, phonetic pronunciation for Voice AI, active/inactive, note)
 **Plans:** 6 plans
 Plans:
-- [ ] 05-01-PLAN.md — DB foundation: 9 config tables + RLS + indexes + shadcn installs + types + nav link + supabase db push [BLOCKING]
-- [ ] 05-02-PLAN.md — Öffnungszeiten module: opening hours upsert, special days CRUD, deputy periods CRUD (HOURS-01..03)
-- [ ] 05-03-PLAN.md — Terminarten module: appointment type flag toggles, synonym replace, default setter (APPT-01..05)
-- [ ] 05-04-PLAN.md — Begrüßungstexte module: greeting text save with EU AI Act enforcement, FAQ CRUD (TEXT-01..04)
-- [ ] 05-05-PLAN.md — Vertretung module: deputy doctor CRUD with date range validation (DEPUTY-01..04)
-- [ ] 05-06-PLAN.md — Medikamente module + /konfiguration page shell + build gate (MED-01)
+- [x] 05-01-PLAN.md — DB foundation: 9 config tables + RLS + indexes + shadcn installs + types + nav link + supabase db push [BLOCKING]
+- [x] 05-02-PLAN.md — Öffnungszeiten module: opening hours upsert, special days CRUD, deputy periods CRUD (HOURS-01..03)
+- [x] 05-03-PLAN.md — Terminarten module: appointment type flag toggles, synonym replace, default setter (APPT-01..05)
+- [x] 05-04-PLAN.md — Begrüßungstexte module: greeting text save with EU AI Act enforcement, FAQ CRUD (TEXT-01..04)
+- [x] 05-05-PLAN.md — Vertretung module: deputy doctor CRUD with date range validation (DEPUTY-01..04)
+- [x] 05-06-PLAN.md — Medikamente module + /konfiguration page shell + build gate (MED-01)
 **UI hint**: yes
 
 ### Phase 6: Routing & Communication Rules
@@ -168,7 +168,7 @@ Plans:
 | 2. n8n Event Ingestion Pipeline | 0/3 | Planned (3 plans, 2 waves) | - |
 | 3. Core Dashboard — Status Bar & Call Log | 0/4 | Planned (4 plans, 4 waves) | - |
 | 4. Inbox & Task Management | 2/2 | Complete   | 2026-05-22 |
-| 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 0/6 | Planned (6 plans, 3 waves) | - |
+| 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 6/6 | COMPLETE | 2026-05-24 |
 | 6. Routing & Communication Rules | 0/? | Not started | - |
 | 7. Statistics & User Management | 0/? | Not started | - |
 | 8. Audit Log & System Polish | 0/? | Not started | - |
