@@ -16,7 +16,7 @@
 - [x] **Phase 4: Inbox & Task Management** - Operational loop closed: actionable cases tracked to resolution (completed 2026-05-22)
 - [x] **Phase 5: Configuration — Hours, Appointments, Texts, Deputy, Medications** - AI behavior fully configurable per practice (completed 2026-05-24)
 - [x] **Phase 6: Routing & Communication Rules** - Notification channels and call routing configured (completed 2026-05-24)
-- [ ] **Phase 7: Statistics & User Management** - Reporting visibility and role-based access control
+- [x] **Phase 7: Statistics & User Management** - Reporting visibility and role-based access control (completed 2026-05-24)
 - [ ] **Phase 8: Audit Log & System Polish** - Compliance-ready, launch-hardened
 
 ---
@@ -157,10 +157,10 @@ Plans:
 **Plans:** 4 plans (3 waves)
 
 Plans:
-- [ ] 07-01-PLAN.md — Foundation: Phase 07 types, permissions utility (20 module categories), nav links, stub pages [Wave 1]
-- [ ] 07-02-PLAN.md — Statistics module: KPIs, CSS volume chart, top intents, saved time (STAT-01..05) [Wave 2a]
-- [ ] 07-03-PLAN.md — User management: invite, edit, deactivate with delegation ceiling (RBAC-01..06) [Wave 2b]
-- [ ] 07-04-PLAN.md — Build gate + smoke test: CI build + both pages verified live [Wave 3]
+- [x] 07-01-PLAN.md — Foundation: Phase 07 types, permissions utility (20 module categories), nav links, stub pages [Wave 1]
+- [x] 07-02-PLAN.md — Statistics module: KPIs, CSS volume chart, top intents, saved time (STAT-01..05) [Wave 2a]
+- [x] 07-03-PLAN.md — User management: invite, edit, deactivate with delegation ceiling (RBAC-01..06) [Wave 2b]
+- [x] 07-04-PLAN.md — Build gate + smoke test: CI build + both pages verified live [Wave 3]
 **UI hint**: yes
 
 ### Phase 8: Audit Log & System Polish
@@ -188,7 +188,7 @@ Plans:
 | 4. Inbox & Task Management | 2/2 | Complete   | 2026-05-22 |
 | 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 6/6 | COMPLETE | 2026-05-24 |
 | 6. Routing & Communication Rules | 5/5 | COMPLETE | 2026-05-24 |
-| 7. Statistics & User Management | 0/4 | Planned (4 plans, 3 waves) | - |
+| 7. Statistics & User Management | 4/4 | COMPLETE | 2026-05-24 |
 | 8. Audit Log & System Polish | 0/? | Not started | - |
 
 ---
