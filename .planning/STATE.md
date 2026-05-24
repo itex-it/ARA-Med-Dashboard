@@ -123,6 +123,9 @@ Phase 8 [        ] 0%
 - **audit.ts server guard:** Use `import 'server-only'` (not `'use server'`) for utility modules that are not Server Actions — 'use server' is for Next.js Server Action files only
 - **pg-meta auth:** Self-hosted Supabase pg-meta accessible via https://supabase.itex.at/api/platform/pg-meta/default/query with Basic Auth (supabase_itex-it), NOT via raw IP port 8085 which is firewalled
 - **audit_log INSERT:** No user-facing RLS INSERT policy — logAuditEvent always uses createServiceRoleClient() which bypasses RLS; this prevents users from forging audit records (T-08-01)
+- **Auth helper userId pattern:** All shared getAuthContext()/getAuthedTenantId() helpers return userId: user.id alongside tenantId — single source for audit attribution, no extra getUser() round-trips per action
+- **TypeScript union narrowing for userId:** After if (auth.error) return, implicit union types don't narrow userId fully — use (auth as { tenantId: string; userId: string }) cast at destructure point; safe because error guard proves success branch
+- **SETTINGS_UPDATED safe logging:** Log only fields_changed string array derived from Object.keys(updateData) — never log hostname values, URLs, or any credential fields (T-08-05)
 
 ### Critical Pitfalls to Avoid (from Research)
 
