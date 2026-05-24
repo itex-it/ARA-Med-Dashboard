@@ -4,6 +4,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 // ---------------------------------------------------------------------------
 // Role Gate
@@ -118,7 +119,7 @@ function parseJsonField(value: FormDataEntryValue | null): Record<string, unknow
 // ---------------------------------------------------------------------------
 
 async function getAuthedTenantId(): Promise<
-  { tenantId: string; error?: undefined } | { tenantId?: undefined; error: string }
+  { tenantId: string; userId: string; error?: undefined } | { tenantId?: undefined; userId?: undefined; error: string }
 > {
   const authClient = await createServerClient()
   const {
@@ -140,7 +141,7 @@ async function getAuthedTenantId(): Promise<
     return { error: 'Keine Berechtigung.' }
   }
 
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 // ---------------------------------------------------------------------------
@@ -167,7 +168,7 @@ export async function createRoutingRuleAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const serviceClient = createServiceRoleClient()
   const { error: dbError } = await serviceClient.from('routing_rules').insert({
@@ -179,6 +180,15 @@ export async function createRoutingRuleAction(
     console.error('[createRoutingRuleAction] DB error:', dbError)
     return { error: 'Regel konnte nicht gespeichert werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'ROUTING_RULE_CREATED',
+    objectType: 'routing_rule',
+    objectId: '',
+    newValue: { name: parsed.data.name, condition_type: parsed.data.condition_type, action_type: parsed.data.action_type },
+  })
 
   return { success: true }
 }
@@ -208,7 +218,7 @@ export async function updateRoutingRuleAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const { id, ...updateData } = parsed.data
   const serviceClient = createServiceRoleClient()
@@ -222,6 +232,15 @@ export async function updateRoutingRuleAction(
     console.error('[updateRoutingRuleAction] DB error:', dbError)
     return { error: 'Regel konnte nicht aktualisiert werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'ROUTING_RULE_UPDATED',
+    objectType: 'routing_rule',
+    objectId: id,
+    newValue: { name: updateData.name, condition_type: updateData.condition_type, action_type: updateData.action_type },
+  })
 
   return { success: true }
 }
@@ -243,7 +262,7 @@ export async function deleteRoutingRuleAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const serviceClient = createServiceRoleClient()
   const { error: dbError } = await serviceClient
@@ -256,6 +275,16 @@ export async function deleteRoutingRuleAction(
     console.error('[deleteRoutingRuleAction] DB error:', dbError)
     return { error: 'Regel konnte nicht entfernt werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'ROUTING_RULE_DELETED',
+    objectType: 'routing_rule',
+    objectId: parsed.data.id,
+    oldValue: { id: parsed.data.id },
+    newValue: null,
+  })
 
   return { success: true }
 }

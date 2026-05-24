@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 const ALLOWED_ROLES = ['operator', 'ordination_admin']
 
@@ -36,7 +37,7 @@ const deleteMedicationSchema = z.object({
 // ---------------------------------------------------------------------------
 
 async function getAuthContext(): Promise<
-  { tenantId: string } | { error: string }
+  { tenantId: string; userId: string } | { error: string }
 > {
   const supabase = await createServerClient()
   const {
@@ -58,7 +59,7 @@ async function getAuthContext(): Promise<
     return { error: 'Unzureichende Berechtigung.' }
   }
 
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 // ---------------------------------------------------------------------------
@@ -90,7 +91,7 @@ export async function addMedicationAction(
 
   const auth = await getAuthContext()
   if ('error' in auth) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const serviceClient = createServiceRoleClient()
   const { error: dbError } = await serviceClient
@@ -109,6 +110,15 @@ export async function addMedicationAction(
     return { error: 'Medikament konnte nicht gespeichert werden. Bitte erneut versuchen.' }
   }
 
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'MEDICATION_CREATED',
+    objectType: 'medication',
+    objectId: parsed.data.pzn,
+    newValue: { pzn: parsed.data.pzn, name: parsed.data.name, active: parsed.data.active },
+  })
+
   return { success: true }
 }
 
@@ -118,7 +128,7 @@ export async function toggleMedicationActiveAction(data: {
 }): Promise<MedicationActionState> {
   const auth = await getAuthContext()
   if ('error' in auth) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const parsed = toggleActiveSchema.safeParse(data)
   if (!parsed.success) {
@@ -137,6 +147,15 @@ export async function toggleMedicationActiveAction(data: {
     return { error: 'Status konnte nicht geändert werden.' }
   }
 
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'MEDICATION_UPDATED',
+    objectType: 'medication',
+    objectId: parsed.data.id,
+    newValue: { active: parsed.data.active },
+  })
+
   return { success: true }
 }
 
@@ -145,7 +164,7 @@ export async function deleteMedicationAction(data: {
 }): Promise<MedicationActionState> {
   const auth = await getAuthContext()
   if ('error' in auth) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const parsed = deleteMedicationSchema.safeParse(data)
   if (!parsed.success) {
@@ -163,6 +182,16 @@ export async function deleteMedicationAction(data: {
     console.error('[deleteMedicationAction] DB error:', dbError)
     return { error: 'Medikament konnte nicht gelöscht werden.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'MEDICATION_DELETED',
+    objectType: 'medication',
+    objectId: parsed.data.id,
+    oldValue: { id: parsed.data.id },
+    newValue: null,
+  })
 
   return { success: true }
 }

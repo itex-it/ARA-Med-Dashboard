@@ -4,6 +4,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 // ---------------------------------------------------------------------------
 // Role Gate
@@ -54,7 +55,7 @@ const deleteTemplateSchema = z.object({
 // ---------------------------------------------------------------------------
 
 async function getAuthedTenantId(): Promise<
-  { tenantId: string; error?: undefined } | { tenantId?: undefined; error: string }
+  { tenantId: string; userId: string; error?: undefined } | { tenantId?: undefined; userId?: undefined; error: string }
 > {
   // Step 1: Auth — createServerClient must be awaited
   const authClient = await createServerClient()
@@ -79,7 +80,7 @@ async function getAuthedTenantId(): Promise<
     return { error: 'Unzureichende Berechtigung.' }
   }
 
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 // ---------------------------------------------------------------------------
@@ -106,7 +107,7 @@ export async function createTemplateAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   // Step 4: Service-role write — sync (no await on createServiceRoleClient)
   const serviceClient = createServiceRoleClient()
@@ -124,6 +125,15 @@ export async function createTemplateAction(
     console.error('[createTemplateAction] DB error:', dbError)
     return { error: 'Vorlage konnte nicht gespeichert werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'TEMPLATE_CREATED',
+    objectType: 'template',
+    objectId: data.id,
+    newValue: { name: parsed.data.name, channel: parsed.data.channel, language_code: parsed.data.language_code },
+  })
 
   return { success: true, id: data.id }
 }
@@ -153,7 +163,7 @@ export async function updateTemplateAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const { id, ...updateData } = parsed.data
 
@@ -182,6 +192,15 @@ export async function updateTemplateAction(
     return { error: 'Vorlage konnte nicht aktualisiert werden. Bitte erneut versuchen.' }
   }
 
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'TEMPLATE_UPDATED',
+    objectType: 'template',
+    objectId: id,
+    newValue: { name: updateData.name, channel: updateData.channel, language_code: updateData.language_code },
+  })
+
   return { success: true }
 }
 
@@ -203,7 +222,7 @@ export async function deleteTemplateAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const { id } = parsed.data
   const serviceClient = createServiceRoleClient()
@@ -230,6 +249,16 @@ export async function deleteTemplateAction(
     console.error('[deleteTemplateAction] DB error:', dbError)
     return { error: 'Vorlage konnte nicht entfernt werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'TEMPLATE_DELETED',
+    objectType: 'template',
+    objectId: id,
+    oldValue: { id },
+    newValue: null,
+  })
 
   return { success: true, deactivated_rules: deactivatedCount }
 }

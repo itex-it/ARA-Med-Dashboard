@@ -4,6 +4,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 // ---------------------------------------------------------------------------
 // Role Gate
@@ -80,7 +81,7 @@ const toggleCommRuleSchema = z.object({
 // ---------------------------------------------------------------------------
 
 async function getAuthedTenantId(): Promise<
-  { tenantId: string; error?: undefined } | { tenantId?: undefined; error: string }
+  { tenantId: string; userId: string; error?: undefined } | { tenantId?: undefined; userId?: undefined; error: string }
 > {
   const authClient = await createServerClient()
   const {
@@ -102,7 +103,7 @@ async function getAuthedTenantId(): Promise<
     return { error: 'Keine Berechtigung.' }
   }
 
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 // ---------------------------------------------------------------------------
@@ -147,7 +148,7 @@ export async function createCommRuleAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const serviceClient = createServiceRoleClient()
   const { error: dbError } = await serviceClient.from('comm_rules').insert({
@@ -160,6 +161,15 @@ export async function createCommRuleAction(
     console.error('[createCommRuleAction] DB error:', dbError)
     return { error: 'Regel konnte nicht gespeichert werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'COMM_RULE_CREATED',
+    objectType: 'communication_rule',
+    objectId: '',
+    newValue: { direction: parsed.data.direction, event_type: parsed.data.event_type, channel: parsed.data.channel },
+  })
 
   return { success: true }
 }
@@ -197,7 +207,7 @@ export async function updateCommRuleAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const { id, ...updateData } = parsed.data
   const serviceClient = createServiceRoleClient()
@@ -211,6 +221,15 @@ export async function updateCommRuleAction(
     console.error('[updateCommRuleAction] DB error:', dbError)
     return { error: 'Regel konnte nicht aktualisiert werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'COMM_RULE_UPDATED',
+    objectType: 'communication_rule',
+    objectId: id,
+    newValue: { direction: updateData.direction, event_type: updateData.event_type, channel: updateData.channel },
+  })
 
   return { success: true }
 }
@@ -232,7 +251,7 @@ export async function deleteCommRuleAction(
 
   const auth = await getAuthedTenantId()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const serviceClient = createServiceRoleClient()
   const { error: dbError } = await serviceClient
@@ -245,6 +264,16 @@ export async function deleteCommRuleAction(
     console.error('[deleteCommRuleAction] DB error:', dbError)
     return { error: 'Regel konnte nicht entfernt werden. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'COMM_RULE_DELETED',
+    objectType: 'communication_rule',
+    objectId: parsed.data.id,
+    oldValue: { id: parsed.data.id },
+    newValue: null,
+  })
 
   return { success: true }
 }

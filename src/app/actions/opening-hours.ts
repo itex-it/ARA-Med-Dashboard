@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 const ALLOWED_ROLES = ['operator', 'ordination_admin']
 
@@ -72,7 +73,7 @@ async function getAuthContext() {
   const araRole = user.app_metadata?.ara_role as string | undefined
   if (!araRole || !ALLOWED_ROLES.includes(araRole)) return { error: 'Unzureichende Berechtigung.' }
 
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 export async function saveOpeningHoursAction(
@@ -93,7 +94,7 @@ export async function saveOpeningHoursAction(
 
   const auth = await getAuthContext()
   if (auth.error) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const rows = parsed.data.hours.map((h) => ({
     tenant_id: tenantId!,
@@ -112,6 +113,15 @@ export async function saveOpeningHoursAction(
     console.error('[saveOpeningHoursAction] DB error:', dbError)
     return { error: 'Speichern fehlgeschlagen. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId: tenantId!,
+    userId,
+    action: 'OPENING_HOURS_UPDATED',
+    objectType: 'opening_hours',
+    objectId: tenantId!,
+    newValue: { hours: parsed.data.hours },
+  })
 
   return { success: true }
 }

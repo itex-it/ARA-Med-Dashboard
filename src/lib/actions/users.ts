@@ -5,6 +5,7 @@ import 'server-only'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 import {
   canGrantRole,
   applyDelegationCeiling,
@@ -161,6 +162,15 @@ export async function createUserAction(formData: FormData): Promise<CreateUserRe
     return { error: 'Benutzer konnte nicht in der Datenbank gespeichert werden.' }
   }
 
+  await logAuditEvent({
+    tenantId,
+    userId: user.id,
+    action: 'USER_CREATED',
+    objectType: 'user',
+    objectId: authData.user.id,
+    newValue: { email: parsed.data.email, role: parsed.data.role },
+  })
+
   revalidatePath('/benutzer')
   return { ok: true, tempPassword }
 }
@@ -254,6 +264,15 @@ export async function updateUserAction(formData: FormData): Promise<UpdateUserRe
     return { error: 'Benutzer konnte nicht aktualisiert werden.' }
   }
 
+  await logAuditEvent({
+    tenantId,
+    userId: user.id,
+    action: 'USER_UPDATED',
+    objectType: 'user',
+    objectId: parsed.data.targetUserId,
+    newValue: { role: parsed.data.role, active: isActive },
+  })
+
   // Invalidate session immediately (role change or deactivation)
   await serviceClient.auth.admin.signOut(parsed.data.targetUserId, 'global')
 
@@ -327,6 +346,15 @@ export async function deactivateUserAction(formData: FormData): Promise<Deactiva
     console.error('[deactivateUserAction] Update error:', updateError)
     return { error: 'Benutzer konnte nicht deaktiviert werden.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId: user.id,
+    action: 'USER_DEACTIVATED',
+    objectType: 'user',
+    objectId: parsed.data.targetUserId,
+    newValue: { active: false },
+  })
 
   // Invalidate session immediately
   await serviceClient.auth.admin.signOut(parsed.data.targetUserId, 'global')

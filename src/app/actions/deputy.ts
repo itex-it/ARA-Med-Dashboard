@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 const ALLOWED_ROLES = ['operator', 'ordination_admin']
 
@@ -14,7 +15,7 @@ export interface DeputyDoctorActionState {
 // Shared auth helper
 // ---------------------------------------------------------------------------
 
-async function getAuthContext(): Promise<{ tenantId: string } | { error: string }> {
+async function getAuthContext(): Promise<{ tenantId: string; userId: string } | { error: string }> {
   const supabase = await createServerClient()
   const {
     data: { user },
@@ -35,7 +36,7 @@ async function getAuthContext(): Promise<{ tenantId: string } | { error: string 
     return { error: 'Unzureichende Berechtigung.' }
   }
 
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 // ---------------------------------------------------------------------------
@@ -82,7 +83,7 @@ export async function addDeputyDoctorAction(
 ): Promise<DeputyDoctorActionState> {
   const auth = await getAuthContext()
   if ('error' in auth) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const parsed = addDeputyDoctorSchema.safeParse(data)
   if (!parsed.success) {
@@ -99,6 +100,15 @@ export async function addDeputyDoctorAction(
     return { error: 'Vertretungsarzt konnte nicht gespeichert werden.' }
   }
 
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'DEPUTY_MODE_UPDATED',
+    objectType: 'deputy',
+    objectId: tenantId,
+    newValue: { name: parsed.data.name, forwarding_number: parsed.data.forwarding_number },
+  })
+
   return { success: true }
 }
 
@@ -107,7 +117,7 @@ export async function updateDeputyDoctorAction(
 ): Promise<DeputyDoctorActionState> {
   const auth = await getAuthContext()
   if ('error' in auth) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const parsed = updateDeputyDoctorSchema.safeParse(data)
   if (!parsed.success) {
@@ -129,6 +139,15 @@ export async function updateDeputyDoctorAction(
     return { error: 'Änderungen konnten nicht gespeichert werden.' }
   }
 
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'DEPUTY_MODE_UPDATED',
+    objectType: 'deputy',
+    objectId: id,
+    newValue: { ...rest },
+  })
+
   return { success: true }
 }
 
@@ -137,7 +156,7 @@ export async function deleteDeputyDoctorAction(
 ): Promise<DeputyDoctorActionState> {
   const auth = await getAuthContext()
   if ('error' in auth) return { error: auth.error }
-  const { tenantId } = auth
+  const { tenantId, userId } = auth as { tenantId: string; userId: string }
 
   const parsed = deleteDeputyDoctorSchema.safeParse(data)
   if (!parsed.success) {
@@ -155,6 +174,16 @@ export async function deleteDeputyDoctorAction(
     console.error('[deleteDeputyDoctorAction] DB error:', dbError)
     return { error: 'Vertretungsarzt konnte nicht entfernt werden.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'DEPUTY_MODE_UPDATED',
+    objectType: 'deputy',
+    objectId: parsed.data.id,
+    oldValue: { id: parsed.data.id },
+    newValue: null,
+  })
 
   return { success: true }
 }

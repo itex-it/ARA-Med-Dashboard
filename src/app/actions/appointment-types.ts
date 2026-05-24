@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 const ALLOWED_ROLES = ['operator', 'ordination_admin']
 
@@ -37,7 +38,7 @@ async function getAuthContext() {
   if (!tenantId) return { error: 'Kein Tenant zugewiesen.' }
   const araRole = user.app_metadata?.ara_role as string | undefined
   if (!araRole || !ALLOWED_ROLES.includes(araRole)) return { error: 'Unzureichende Berechtigung.' }
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 export async function updateAppointmentTypeFlagsAction(data: {
@@ -70,6 +71,21 @@ export async function updateAppointmentTypeFlagsAction(data: {
     console.error('[updateAppointmentTypeFlagsAction] DB error:', dbError)
     return { error: 'Aktualisierung fehlgeschlagen.' }
   }
+
+  await logAuditEvent({
+    tenantId: auth.tenantId!,
+    userId: auth.userId!,
+    action: 'APPOINTMENT_TYPE_UPDATED',
+    objectType: 'appointment_type',
+    objectId: parsed.data.id,
+    newValue: {
+      visible: parsed.data.visible,
+      is_voice_bookable: parsed.data.is_voice_bookable,
+      is_internal_only: parsed.data.is_internal_only,
+      pid_zero_allowed: parsed.data.pid_zero_allowed,
+    },
+  })
+
   return { success: true }
 }
 
@@ -109,6 +125,16 @@ export async function saveAppointmentSynonymsAction(data: {
       return { error: 'Synonyme konnten nicht gespeichert werden.' }
     }
   }
+
+  await logAuditEvent({
+    tenantId: auth.tenantId!,
+    userId: auth.userId!,
+    action: 'APPOINTMENT_TYPE_UPDATED',
+    objectType: 'appointment_type',
+    objectId: parsed.data.appointmentTypeCode,
+    newValue: { synonyms: parsed.data.synonyms },
+  })
+
   return { success: true }
 }
 
@@ -145,5 +171,15 @@ export async function setDefaultAppointmentTypeAction(data: {
     console.error('[setDefaultAppointmentTypeAction] set error:', setError)
     return { error: 'Standard konnte nicht gesetzt werden.' }
   }
+
+  await logAuditEvent({
+    tenantId: auth.tenantId!,
+    userId: auth.userId!,
+    action: 'APPOINTMENT_TYPE_UPDATED',
+    objectType: 'appointment_type',
+    objectId: parsed.data.id,
+    newValue: { is_default: true },
+  })
+
   return { success: true }
 }

@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 
 // ---------------------------------------------------------------------------
 // EU AI Act Art. 50 — server-side constant, NEVER derived from client input
@@ -48,7 +49,7 @@ const deleteFaqSchema = z.object({
 // Auth helper — canonical pattern from update-inbox-status.ts
 // ---------------------------------------------------------------------------
 async function getAuthContext(): Promise<
-  { tenantId: string } | { error: string }
+  { tenantId: string; userId: string } | { error: string }
 > {
   const supabase = await createServerClient()
   const {
@@ -70,7 +71,7 @@ async function getAuthContext(): Promise<
     return { error: 'Unzureichende Berechtigung.' }
   }
 
-  return { tenantId }
+  return { tenantId, userId: user.id }
 }
 
 // ---------------------------------------------------------------------------
@@ -95,7 +96,7 @@ export async function saveGreetingTextAction(
   if ('error' in authResult) {
     return { error: authResult.error }
   }
-  const { tenantId } = authResult
+  const { tenantId, userId } = authResult as { tenantId: string; userId: string }
 
   const serviceClient = createServiceRoleClient()
   const { error: dbError } = await serviceClient
@@ -117,6 +118,15 @@ export async function saveGreetingTextAction(
     console.error('[saveGreetingTextAction] DB error:', dbError)
     return { error: 'Fehler beim Speichern. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId,
+    action: 'GREETING_TEXT_UPDATED',
+    objectType: 'greeting_text',
+    objectId: tenantId,
+    newValue: { mode: parsed.data.mode, user_text: parsed.data.user_text },
+  })
 
   return { success: true }
 }

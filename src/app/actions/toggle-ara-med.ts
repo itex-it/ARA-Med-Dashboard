@@ -1,6 +1,7 @@
 'use server'
 
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 import type { AraStatus } from '@/lib/types'
 
 export interface ToggleAraMedState {
@@ -45,6 +46,15 @@ export async function toggleAraMedAction(nextStatus: AraStatus): Promise<ToggleA
     console.error('[toggleAraMedAction] DB error:', dbError)
     return { error: 'Aktion fehlgeschlagen. Bitte erneut versuchen.' }
   }
+
+  await logAuditEvent({
+    tenantId,
+    userId: user.id,
+    action: 'ARA_MED_TOGGLED',
+    objectType: 'tenant',
+    objectId: tenantId,
+    newValue: { enabled: nextStatus },
+  })
 
   return { success: true, ara_status: nextStatus }
 }

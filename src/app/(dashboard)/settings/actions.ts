@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createServerClient, createServiceRoleClient } from '@/lib/supabase/server'
+import { logAuditEvent } from '@/lib/audit'
 import type { AraRole } from '@/lib/types'
 
 // ---------------------------------------------------------------------------
@@ -115,6 +116,17 @@ export async function updateTenantAction(
     console.error('[updateTenantAction] DB-Fehler:', dbError.message)
     return { error: 'Fehler beim Speichern der Einstellungen. Bitte versuchen Sie es erneut.' }
   }
+
+  // Log which fields were changed — never log credential values (T-08-05)
+  const changedFields = Object.keys(updateData).filter((k) => updateData[k as keyof typeof updateData] !== undefined)
+  await logAuditEvent({
+    tenantId,
+    userId: user.id,
+    action: 'SETTINGS_UPDATED',
+    objectType: 'settings',
+    objectId: tenantId,
+    newValue: { fields_changed: changedFields },
+  })
 
   return { success: true }
 }
