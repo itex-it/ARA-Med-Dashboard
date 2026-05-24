@@ -54,7 +54,7 @@ export default async function DashboardLayout({
             Konfiguration
           </a>
           <a
-            href="/einstellungen"
+            href="/settings"
             className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
           >
             Einstellungen
