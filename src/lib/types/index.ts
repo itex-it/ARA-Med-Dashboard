@@ -267,3 +267,85 @@ export interface MedicationRow {
   created_at: string
   updated_at: string
 }
+
+// ============================================================
+// Phase 06: Routing & Communication Types
+// ============================================================
+
+export type RoutingConditionType = 'phone' | 'intent' | 'time_period' | 'mode'
+export type RoutingActionType = 'direct_connect' | 'custom_prompt' | 'create_ticket' | 'offer_bypass_slot' | 'forward_to_number' | 'record_message'
+export type CommDirection = 'intern' | 'patient'
+export type CommChannel = 'inbox' | 'email' | 'telegram' | 'sms'
+export type CommPriority = 'high' | 'normal' | 'low'
+export type SendLogStatus = 'pending' | 'delivered' | 'failed'
+
+export interface RoutingRuleRow {
+  id: string
+  tenant_id: string
+  name: string
+  condition_type: RoutingConditionType
+  condition_value: Record<string, unknown>
+  action_type: RoutingActionType
+  action_value: Record<string, unknown>
+  priority: number
+  active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface VipNumberRow {
+  id: string
+  tenant_id: string
+  phone_number: string
+  label: string
+  created_at: string
+}
+
+export interface CommRuleRow {
+  id: string
+  tenant_id: string
+  direction: CommDirection
+  event_type: string
+  channel: CommChannel
+  channel_target: string | null
+  fallback_channel: CommChannel | null
+  fallback_channel_target: string | null
+  template_id: string | null
+  priority: CommPriority
+  time_window_from: string | null
+  time_window_until: string | null
+  retry_interval_minutes: number | null
+  max_retries: number
+  privacy_class: string
+  active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface MessageTemplateRow {
+  id: string
+  tenant_id: string
+  name: string
+  channel: 'email' | 'sms' | 'telegram'
+  language_code: string
+  subject: string | null
+  body: string
+  version: number
+  created_at: string
+  updated_at: string
+}
+
+export interface SendLogRow {
+  id: string
+  tenant_id: string
+  comm_rule_id: string | null
+  event_type: string
+  channel: string
+  recipient_masked: string
+  template_name: string | null
+  template_version: number | null
+  status: SendLogStatus
+  error_reason: string | null
+  sent_at: string
+  created_at: string
+}
