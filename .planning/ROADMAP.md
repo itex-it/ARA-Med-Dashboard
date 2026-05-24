@@ -154,7 +154,13 @@ Plans:
   3. A user can view estimated saved phone time based on resolved calls
   4. An operator can create tenants and assign Arzt/Admin users; an Arzt/Admin can manage Assistenz and Viewer users — each can only grant rights up to their own permission level (server-enforced)
   5. Every user has an assigned role (Operator / Arzt+Ordinationsadmin / Ordinationsassistenz / Viewer) with granular module rights (none/view/edit/manage/admin) — permission checks run exclusively server-side on every API route and Server Action
-**Plans:** TBD
+**Plans:** 4 plans (3 waves)
+
+Plans:
+- [ ] 07-01-PLAN.md — Foundation: Phase 07 types, permissions utility (20 module categories), nav links, stub pages [Wave 1]
+- [ ] 07-02-PLAN.md — Statistics module: KPIs, CSS volume chart, top intents, saved time (STAT-01..05) [Wave 2a]
+- [ ] 07-03-PLAN.md — User management: invite, edit, deactivate with delegation ceiling (RBAC-01..06) [Wave 2b]
+- [ ] 07-04-PLAN.md — Build gate + smoke test: CI build + both pages verified live [Wave 3]
 **UI hint**: yes
 
 ### Phase 8: Audit Log & System Polish
@@ -181,8 +187,8 @@ Plans:
 | 3. Core Dashboard — Status Bar & Call Log | 4/4 | COMPLETE | 2026-05-22 |
 | 4. Inbox & Task Management | 2/2 | Complete   | 2026-05-22 |
 | 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 6/6 | COMPLETE | 2026-05-24 |
-| 6. Routing & Communication Rules | 0/5 | Planned (5 plans, 4 waves) | - |
-| 7. Statistics & User Management | 0/? | Not started | - |
+| 6. Routing & Communication Rules | 5/5 | COMPLETE | 2026-05-24 |
+| 7. Statistics & User Management | 0/4 | Planned (4 plans, 3 waves) | - |
 | 8. Audit Log & System Polish | 0/? | Not started | - |
 
 ---

@@ -1,15 +1,17 @@
 {
   "version": "1.0",
-  "timestamp": "2026-05-24T13:00:00Z",
+  "timestamp": "2026-05-24T15:00:00Z",
   "phase": "07",
   "phase_name": "Statistics & User Management",
   "phase_dir": ".planning/phases/07-statistics-user-mgmt",
   "plan": 0,
   "task": 0,
-  "status": "not_started",
+  "status": "planned",
   "completed_tasks": [],
   "remaining_tasks": [
-    {"id": 1, "name": "Plan Phase 7 via /gsd-plan-phase 7", "status": "not_started"}
+    {"id": 1, "name": "Execute Wave 1: 07-01 (foundation)", "status": "not_started"},
+    {"id": 2, "name": "Execute Wave 2 parallel: 07-02 (statistics) + 07-03 (user management)", "status": "not_started"},
+    {"id": 3, "name": "Execute Wave 3: 07-04 (build gate)", "status": "not_started"}
   ],
   "blockers": [
     {
@@ -23,9 +25,12 @@
     {"decision": "Auth user created directly via SQL", "rationale": "No Supabase Admin UI access; GoTrue admin API returned errors", "phase": "05"},
     {"decision": "postcss.config.mjs required for Tailwind v4 in production", "rationale": "next build uses Turbopack in Next.js 16; @tailwindcss/postcss installed", "phase": "05"},
     {"decision": "Portainer PUT /api/stacks/{id} MUST include Env array", "rationale": "Empty Env array in PUT payload wipes all env vars from the stack — always pass all 3 vars", "phase": "06"},
-    {"decision": "Migrations applied via pg-meta API directly", "rationale": "No supabase_migrations schema on self-hosted instance; CREATE TABLE IF NOT EXISTS ensures idempotency", "phase": "06"}
+    {"decision": "Migrations applied via pg-meta API directly", "rationale": "No supabase_migrations schema on self-hosted instance; CREATE TABLE IF NOT EXISTS ensures idempotency", "phase": "06"},
+    {"decision": "Statistics use CSS-only bars — no recharts", "rationale": "No external chart dependency for MVP; Tailwind CSS percentage bars sufficient for call volume visualization", "phase": "07"},
+    {"decision": "New users created via auth.admin.createUser with email_confirm:true", "rationale": "SMTP not configured on self-hosted Supabase; createUser bypasses email invite, admin shares tempPassword once", "phase": "07"},
+    {"decision": "No new DB tables for Phase 7", "rationale": "Statistics aggregate existing call_log/call_actions/inbox_items; user management uses existing user_tenant_roles (permissions JSONB column)", "phase": "07"}
   ],
   "uncommitted_files": [],
-  "next_action": "Start new session and run /gsd-plan-phase 7",
-  "context_notes": "Phase 6 complete. All 7 Konfiguration tabs verified live (Routing + Kommunikation visible). 5 tables, 20 RLS policies, 13 Server Actions deployed. Phase 7: Statistics & User Management not yet planned."
+  "next_action": "Run /gsd-execute-phase 7 --auto to execute all 4 plans across 3 waves",
+  "context_notes": "Phase 7 PLANNED. 4 plans across 3 waves. Wave 1: 07-01 (types + permissions utility + nav + stubs). Wave 2 parallel: 07-02 (statistics/STAT-01..05) + 07-03 (user management/RBAC-01..06). Wave 3: 07-04 (build gate). No new DB migrations needed — statistics are pure aggregations, user management uses existing user_tenant_roles table. Permission delegation enforced via applyDelegationCeiling() server-side. New users created via auth.admin.createUser (no SMTP needed)."
 }
