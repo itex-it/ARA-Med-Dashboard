@@ -116,9 +116,9 @@
 
 ### Audit-Log (AUDIT)
 
-- [ ] **AUDIT-01**: Alle kritischen Änderungen werden protokolliert: Benutzerverwaltung, Rechteänderungen, ARA aktiviert/deaktiviert, Öffnungszeiten, Routing-Regeln, Kommunikationsregeln, Templates, Terminart-Konfiguration, Vertretungsmodus, Prompts, API-/System-Settings
-- [ ] **AUDIT-02**: Jeder Audit-Eintrag enthält: Mandant, User, Aktion, Objekt, alter Wert, neuer Wert, Zeitpunkt, IP/User-Agent
-- [ ] **AUDIT-03**: Operator und Arzt/Admin können den Audit-Log einsehen
+- [x] **AUDIT-01**: Alle kritischen Änderungen werden protokolliert: Benutzerverwaltung, Rechteänderungen, ARA aktiviert/deaktiviert, Öffnungszeiten, Routing-Regeln, Kommunikationsregeln, Templates, Terminart-Konfiguration, Vertretungsmodus, Prompts, API-/System-Settings
+- [x] **AUDIT-02**: Jeder Audit-Eintrag enthält: Mandant, User, Aktion, Objekt, alter Wert, neuer Wert, Zeitpunkt, IP/User-Agent
+- [x] **AUDIT-03**: Operator und Arzt/Admin können den Audit-Log einsehen
 
 ### Realtime-Updates (REALTIME)
 
@@ -244,9 +244,9 @@
 | RBAC-04 | Phase 7: Statistics & User Management | Pending |
 | RBAC-05 | Phase 7: Statistics & User Management | Pending |
 | RBAC-06 | Phase 7: Statistics & User Management | Pending |
-| AUDIT-01 | Phase 8: Audit Log & System Polish | Pending |
-| AUDIT-02 | Phase 8: Audit Log & System Polish | Pending |
-| AUDIT-03 | Phase 8: Audit Log & System Polish | Pending |
+| AUDIT-01 | Phase 8: Audit Log & System Polish | Complete |
+| AUDIT-02 | Phase 8: Audit Log & System Polish | Complete |
+| AUDIT-03 | Phase 8: Audit Log & System Polish | Complete |
 
 **Coverage:**
 - v1 requirements: 73 total

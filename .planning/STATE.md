@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 5 — Configuration
-current_plan: 04-02 COMPLETE (Phase 4 COMPLETE)
-status: completed
-last_updated: "2026-05-23T11:53:18.227Z"
+current_phase: 8 — Audit Log & System Polish
+current_plan: 08-01 COMPLETE (Phase 8 in progress — 1/4 plans done)
+status: in_progress
+last_updated: "2026-05-24T15:21:31.428Z"
 progress:
   total_phases: 8
-  completed_phases: 4
-  total_plans: 19
-  completed_plans: 13
-  percent: 50
+  completed_phases: 7
+  total_plans: 32
+  completed_plans: 29
+  percent: 78
 ---
 
 # STATE: ARA-Med Dashboard
@@ -120,6 +120,9 @@ Phase 8 [        ] 0%
 - **call_actions detail column:** Never returned from /api/calls/[id]/actions — excluded at DB query level (DSGVO C6: health-sensitive MEDSTAR data requires Phase 7 RBAC gating before exposure)
 - **Audio URL on-demand:** Fetched in CallDetailSheet useEffect only when open && canSeeAudio && call.audio_url — never at page-load (C7 honored)
 - **Boolean short-circuit for unknown types:** When rendering Record<string, unknown> fields in JSX, use Boolean(field) && (...) not field && (...) — unknown short-circuit returns unknown not ReactNode (TS2322)
+- **audit.ts server guard:** Use `import 'server-only'` (not `'use server'`) for utility modules that are not Server Actions — 'use server' is for Next.js Server Action files only
+- **pg-meta auth:** Self-hosted Supabase pg-meta accessible via https://supabase.itex.at/api/platform/pg-meta/default/query with Basic Auth (supabase_itex-it), NOT via raw IP port 8085 which is firewalled
+- **audit_log INSERT:** No user-facing RLS INSERT policy — logAuditEvent always uses createServiceRoleClient() which bypasses RLS; this prevents users from forging audit records (T-08-01)
 
 ### Critical Pitfalls to Avoid (from Research)
 
@@ -200,7 +203,7 @@ Phase 8 hardens for launch: compliance and audit readiness.
 3. Read `.planning/REQUIREMENTS.md` for requirement details and traceability
 4. Continue with Phase 5 — Configuration (/gsd:plan-phase 5)
 
-**Last session:** 2026-05-23T11:53:18.222Z
+**Last session:** 2026-05-24T13:55:19.020Z
 
 **File locations:**
 
