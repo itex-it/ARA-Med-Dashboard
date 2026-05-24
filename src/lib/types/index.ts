@@ -349,3 +349,70 @@ export interface SendLogRow {
   sent_at: string
   created_at: string
 }
+
+// ============================================================
+// Phase 07: Statistics & User Management Types
+// ============================================================
+
+export type PermissionLevel = 'none' | 'view' | 'edit' | 'manage' | 'admin'
+
+export type ModuleCategory =
+  | 'dashboard'
+  | 'telefonate'
+  | 'audio'
+  | 'transkripte'
+  | 'patientendaten'
+  | 'inbox'
+  | 'termine'
+  | 'rezepte'
+  | 'routing'
+  | 'kommunikation'
+  | 'kommunikation_templates'
+  | 'oeffnungszeiten'
+  | 'vertretung'
+  | 'prompts'
+  | 'training'
+  | 'statistiken'
+  | 'kosten'
+  | 'benutzerverwaltung'
+  | 'system_settings'
+  | 'audit_log'
+
+export type ModulePermissions = Record<ModuleCategory, PermissionLevel>
+
+export interface TenantUserDisplay {
+  id: string
+  email: string
+  role: AraRole
+  permissions: Partial<ModulePermissions>
+  active: boolean
+  created_at: string
+  last_sign_in_at: string | null
+}
+
+export interface StatsSummary {
+  totalCalls: number
+  avgDurationSeconds: number
+  resolvedCount: number
+  forwardedCount: number
+  failedCount: number
+  resolutionRate: number
+  forwardingRate: number
+  openTasksCount: number
+  bookedAppointments: number
+  prescriptionRequests: number
+  emergencyCases: number
+  estimatedSavedMinutes: number
+}
+
+export interface DailyCallVolume {
+  date: string
+  total: number
+  resolved: number
+  forwarded: number
+}
+
+export interface IntentFrequency {
+  intent: string
+  count: number
+}

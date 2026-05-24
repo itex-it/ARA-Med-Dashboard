@@ -17,9 +17,8 @@ export default async function DashboardLayout({
   }
 
   const tenantId = (user.app_metadata?.tenant_id as string | undefined) ?? ''
-  const canToggle = ['operator', 'ordination_admin'].includes(
-    (user.app_metadata?.ara_role as string | undefined) ?? ''
-  )
+  const araRole = (user.app_metadata?.ara_role as string | undefined) ?? ''
+  const canToggle = ['operator', 'ordination_admin'].includes(araRole)
 
   return (
     <div className="flex min-h-screen">
@@ -48,11 +47,25 @@ export default async function DashboardLayout({
             Inbox
           </a>
           <a
+            href="/statistiken"
+            className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
+          >
+            Statistiken
+          </a>
+          <a
             href="/konfiguration"
             className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
           >
             Konfiguration
           </a>
+          {['operator', 'ordination_admin'].includes(araRole) && (
+            <a
+              href="/benutzer"
+              className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
+            >
+              Benutzer
+            </a>
+          )}
           <a
             href="/settings"
             className="rounded px-2 py-1.5 text-gray-700 hover:bg-gray-100"
