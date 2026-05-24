@@ -173,12 +173,12 @@ Plans:
   2. Each audit entry contains: tenant, user, action, object, old value, new value, timestamp, IP address, and user agent — no fields are nullable for these attributes
   3. Operator and Arzt/Admin users can view the full audit log for their tenant via the dashboard, filtered by date range and action type
   4. A manual DSGVO compliance review confirms: phone numbers stored only as hashed values, transcripts accessible only to users with call-detail rights, audio URLs generated on-demand with 15-minute expiry, SVNR never stored in the dashboard DB, and tenant data isolation verified across all tables
-**Plans:** 1/4 plans executed
+**Plans:** 2/4 plans executed
 
 Plans:
 - [x] 08-01-PLAN.md — audit_log migration, logAuditEvent helper, nav link, stub page [Wave 1]
 - [ ] 08-02-PLAN.md — Instrument all Server Actions with audit logging (AUDIT-01) [Wave 2a]
-- [ ] 08-03-PLAN.md — Audit-log page with date range and action filters (AUDIT-03) [Wave 2b]
+- [x] 08-03-PLAN.md — Audit-log page with date range and action filters (AUDIT-03) [Wave 2b]
 - [ ] 08-04-PLAN.md — Build gate, DSGVO compliance review, deployment [Wave 3]
 **UI hint**: yes
 
@@ -195,7 +195,7 @@ Plans:
 | 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 6/6 | COMPLETE | 2026-05-24 |
 | 6. Routing & Communication Rules | 5/5 | COMPLETE | 2026-05-24 |
 | 7. Statistics & User Management | 4/4 | COMPLETE | 2026-05-24 |
-| 8. Audit Log & System Polish | 1/4 | In Progress|  |
+| 8. Audit Log & System Polish | 2/4 | In Progress|  |
 
 ---
 
