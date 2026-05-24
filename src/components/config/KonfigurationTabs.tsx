@@ -9,6 +9,7 @@ import { BegruesungsTexteTab } from '@/components/config/BegruesungsTexteTab'
 import { VertretungTab } from '@/components/config/VertretungTab'
 import { MedikamenteTab } from '@/components/config/MedikamenteTab'
 import { RoutingTab } from '@/components/config/RoutingTab'
+import { KommunikationTab } from '@/components/config/KommunikationTab'
 import type {
   OpeningHoursRow,
   SpecialDayRow,
@@ -21,6 +22,7 @@ import type {
   MedicationRow,
   RoutingRuleRow,
   VipNumberRow,
+  CommRuleRow,
 } from '@/lib/types'
 
 interface KonfigurationTabsProps {
@@ -38,6 +40,7 @@ interface KonfigurationTabsProps {
   medications: MedicationRow[]
   routingRules: RoutingRuleRow[]
   vipNumbers: VipNumberRow[]
+  commRules: CommRuleRow[]
 }
 
 export default function KonfigurationTabs({
@@ -55,6 +58,7 @@ export default function KonfigurationTabs({
   medications,
   routingRules,
   vipNumbers,
+  commRules,
 }: KonfigurationTabsProps) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState(initialTab)
@@ -73,6 +77,7 @@ export default function KonfigurationTabs({
         <TabsTrigger value="vertretung">Vertretung</TabsTrigger>
         <TabsTrigger value="medikamente">Medikamente</TabsTrigger>
         <TabsTrigger value="routing">Routing</TabsTrigger>
+        <TabsTrigger value="kommunikation">Kommunikation</TabsTrigger>
       </TabsList>
 
       <TabsContent value="oeffnungszeiten">
@@ -125,6 +130,14 @@ export default function KonfigurationTabs({
           hasEditRight={hasEditRight}
           initialRoutingRules={routingRules}
           initialVipNumbers={vipNumbers}
+        />
+      </TabsContent>
+
+      <TabsContent value="kommunikation">
+        <KommunikationTab
+          tenantId={tenantId}
+          hasEditRight={hasEditRight}
+          initialCommRules={commRules}
         />
       </TabsContent>
     </Tabs>

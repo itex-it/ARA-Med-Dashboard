@@ -13,6 +13,7 @@ import type {
   MedicationRow,
   RoutingRuleRow,
   VipNumberRow,
+  CommRuleRow,
 } from '@/lib/types'
 
 export default async function KonfigurationPage({
@@ -33,7 +34,7 @@ export default async function KonfigurationPage({
   const araRole = (user.app_metadata?.ara_role as string | undefined) ?? ''
   const hasEditRight = ['operator', 'ordination_admin'].includes(araRole)
 
-  // Fetch all 11 config tables in parallel (9 Phase 5 + 2 Phase 6)
+  // Fetch all 12 config tables in parallel (9 Phase 5 + 2 Phase 6 routing + 1 Phase 6 comm)
   const [
     { data: openingHoursRaw },
     { data: specialDaysRaw },
@@ -46,6 +47,7 @@ export default async function KonfigurationPage({
     { data: medicationsRaw },
     { data: routingRulesRaw },
     { data: vipNumbersRaw },
+    { data: commRulesRaw },
   ] = await Promise.all([
     supabase.from('opening_hours').select('*').eq('tenant_id', tenantId).order('weekday'),
     supabase.from('special_days').select('*').eq('tenant_id', tenantId).order('date'),
@@ -66,6 +68,11 @@ export default async function KonfigurationPage({
     supabase.from('medications').select('*').eq('tenant_id', tenantId).order('name'),
     supabase.from('routing_rules').select('*').eq('tenant_id', tenantId).order('priority'),
     supabase.from('vip_numbers').select('*').eq('tenant_id', tenantId).order('created_at'),
+    supabase
+      .from('comm_rules')
+      .select('*')
+      .eq('tenant_id', tenantId)
+      .order('created_at', { ascending: false }),
   ])
 
   return (
@@ -86,6 +93,7 @@ export default async function KonfigurationPage({
         medications={(medicationsRaw as MedicationRow[] | null) ?? []}
         routingRules={(routingRulesRaw as RoutingRuleRow[] | null) ?? []}
         vipNumbers={(vipNumbersRaw as VipNumberRow[] | null) ?? []}
+        commRules={(commRulesRaw as CommRuleRow[] | null) ?? []}
       />
     </div>
   )
