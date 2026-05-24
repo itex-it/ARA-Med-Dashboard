@@ -8,6 +8,7 @@ import { TerminartenTab } from '@/components/config/TerminartenTab'
 import { BegruesungsTexteTab } from '@/components/config/BegruesungsTexteTab'
 import { VertretungTab } from '@/components/config/VertretungTab'
 import { MedikamenteTab } from '@/components/config/MedikamenteTab'
+import { RoutingTab } from '@/components/config/RoutingTab'
 import type {
   OpeningHoursRow,
   SpecialDayRow,
@@ -18,6 +19,8 @@ import type {
   FaqEntryRow,
   DeputyDoctorRow,
   MedicationRow,
+  RoutingRuleRow,
+  VipNumberRow,
 } from '@/lib/types'
 
 interface KonfigurationTabsProps {
@@ -33,6 +36,8 @@ interface KonfigurationTabsProps {
   faqEntries: FaqEntryRow[]
   deputyDoctors: DeputyDoctorRow[]
   medications: MedicationRow[]
+  routingRules: RoutingRuleRow[]
+  vipNumbers: VipNumberRow[]
 }
 
 export default function KonfigurationTabs({
@@ -48,6 +53,8 @@ export default function KonfigurationTabs({
   faqEntries,
   deputyDoctors,
   medications,
+  routingRules,
+  vipNumbers,
 }: KonfigurationTabsProps) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState(initialTab)
@@ -65,6 +72,7 @@ export default function KonfigurationTabs({
         <TabsTrigger value="begruessung">Begrüßungstexte</TabsTrigger>
         <TabsTrigger value="vertretung">Vertretung</TabsTrigger>
         <TabsTrigger value="medikamente">Medikamente</TabsTrigger>
+        <TabsTrigger value="routing">Routing</TabsTrigger>
       </TabsList>
 
       <TabsContent value="oeffnungszeiten">
@@ -108,6 +116,15 @@ export default function KonfigurationTabs({
           tenantId={tenantId}
           hasEditRight={hasEditRight}
           initialMedications={medications}
+        />
+      </TabsContent>
+
+      <TabsContent value="routing">
+        <RoutingTab
+          tenantId={tenantId}
+          hasEditRight={hasEditRight}
+          initialRoutingRules={routingRules}
+          initialVipNumbers={vipNumbers}
         />
       </TabsContent>
     </Tabs>

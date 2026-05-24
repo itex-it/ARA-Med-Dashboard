@@ -11,6 +11,8 @@ import type {
   FaqEntryRow,
   DeputyDoctorRow,
   MedicationRow,
+  RoutingRuleRow,
+  VipNumberRow,
 } from '@/lib/types'
 
 export default async function KonfigurationPage({
@@ -31,7 +33,7 @@ export default async function KonfigurationPage({
   const araRole = (user.app_metadata?.ara_role as string | undefined) ?? ''
   const hasEditRight = ['operator', 'ordination_admin'].includes(araRole)
 
-  // Fetch all 9 config tables in parallel
+  // Fetch all 11 config tables in parallel (9 Phase 5 + 2 Phase 6)
   const [
     { data: openingHoursRaw },
     { data: specialDaysRaw },
@@ -42,6 +44,8 @@ export default async function KonfigurationPage({
     { data: faqEntriesRaw },
     { data: deputyDoctorsRaw },
     { data: medicationsRaw },
+    { data: routingRulesRaw },
+    { data: vipNumbersRaw },
   ] = await Promise.all([
     supabase.from('opening_hours').select('*').eq('tenant_id', tenantId).order('weekday'),
     supabase.from('special_days').select('*').eq('tenant_id', tenantId).order('date'),
@@ -60,6 +64,8 @@ export default async function KonfigurationPage({
       .eq('tenant_id', tenantId)
       .order('created_at', { ascending: false }),
     supabase.from('medications').select('*').eq('tenant_id', tenantId).order('name'),
+    supabase.from('routing_rules').select('*').eq('tenant_id', tenantId).order('priority'),
+    supabase.from('vip_numbers').select('*').eq('tenant_id', tenantId).order('created_at'),
   ])
 
   return (
@@ -78,6 +84,8 @@ export default async function KonfigurationPage({
         faqEntries={(faqEntriesRaw as FaqEntryRow[] | null) ?? []}
         deputyDoctors={(deputyDoctorsRaw as DeputyDoctorRow[] | null) ?? []}
         medications={(medicationsRaw as MedicationRow[] | null) ?? []}
+        routingRules={(routingRulesRaw as RoutingRuleRow[] | null) ?? []}
+        vipNumbers={(vipNumbersRaw as VipNumberRow[] | null) ?? []}
       />
     </div>
   )
