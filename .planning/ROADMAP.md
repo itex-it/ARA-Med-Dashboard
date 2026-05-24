@@ -54,7 +54,12 @@ Plans:
   3. Supabase Realtime fires a `postgres_changes` event on `call_log` INSERT/UPDATE that a subscribed client receives within 2 seconds
   4. The open-task counter in the status bar updates in real time when a new inbox-qualifying event arrives — no page refresh required
   5. Keys (MEDSTAR, ElevenLabs) are fetched from Supabase Vault as the first node of every n8n workflow — no secrets appear in n8n node configuration
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+- [x] 02-01-PLAN.md — DB schema: call_log table, tenant_did_numbers, Supabase types
+- [x] 02-02-PLAN.md — n8n webhook route: /api/internal/events, HMAC verification, upsert
+- [x] 02-03-PLAN.md — Realtime hooks: useRealtimeChannel, useOpenTaskCount, status-bar wiring
 **UI hint**: yes
 
 ### Phase 3: Core Dashboard — Status Bar & Call Log
@@ -75,7 +80,7 @@ Plans:
 - [x] 03-01-PLAN.md — DB foundation: tenant status columns, call_log feedback columns, call_actions table + RLS, domain types
 - [x] 03-02-PLAN.md — shadcn install + full status bar (ARA-MED state, practice state, mode, active calls, live toggle)
 - [x] 03-03-PLAN.md — /telefonate call log page: live chronological table with Realtime INSERT/UPDATE
-- [ ] 03-04-PLAN.md — call detail sheet: summary, audio (presigned URL), transcript, actions, note + feedback
+- [x] 03-04-PLAN.md — call detail sheet: summary, audio (presigned URL), transcript, actions, note + feedback
 **UI hint**: yes
 
 ### Phase 4: Inbox & Task Management
@@ -128,7 +133,14 @@ Plans:
   3. A user can configure internal notification rules (new inbox event → email/Telegram/SMS) and patient notification rules (appointment confirmation, reminder, cancellation, prescription received) with channel, fallback channel, template, priority, time window, retry logic, and privacy class
   4. Every send attempt is logged with event type, channel, masked recipient, template version, status, error reason, and timestamp — visible to the user
   5. A user can create and edit message templates with variables (patient_name, appointment_date, etc.) and language versions via language_code
-**Plans:** TBD
+**Plans:** 5 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — DB foundation: 5 tables (routing_rules, vip_numbers, comm_rules, message_templates, send_log) + RLS + types + supabase db push [BLOCKING]
+- [ ] 06-02-PLAN.md — Routing module: RoutingTab + 6 Server Actions + KonfigurationTabs extension (ROUTE-01..03)
+- [ ] 06-03-PLAN.md — Communication module: KommunikationTab (4 sub-tabs) + 4 Server Actions (COMM-01..03)
+- [ ] 06-04-PLAN.md — Templates + Send Log: Nachrichtenvorlagen CRUD with variable insert + preview, Versandprotokoll read-only (COMM-04..05)
+- [ ] 06-05-PLAN.md — Build gate + smoke test: npm run build + human verification of all 7 Konfiguration tabs
 **UI hint**: yes
 
 ### Phase 7: Statistics & User Management
@@ -165,11 +177,11 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Tenant Foundation & Auth | 4/4 | COMPLETE | 01-PLAN-01: 2026-05-22, 01-PLAN-02: 2026-05-22, 01-PLAN-03: 2026-05-22, 01-PLAN-04: 2026-05-22 |
-| 2. n8n Event Ingestion Pipeline | 0/3 | Planned (3 plans, 2 waves) | - |
-| 3. Core Dashboard — Status Bar & Call Log | 0/4 | Planned (4 plans, 4 waves) | - |
+| 2. n8n Event Ingestion Pipeline | 3/3 | COMPLETE | 2026-05-22 |
+| 3. Core Dashboard — Status Bar & Call Log | 4/4 | COMPLETE | 2026-05-22 |
 | 4. Inbox & Task Management | 2/2 | Complete   | 2026-05-22 |
 | 5. Configuration — Hours, Appointments, Texts, Deputy, Medications | 6/6 | COMPLETE | 2026-05-24 |
-| 6. Routing & Communication Rules | 0/? | Not started | - |
+| 6. Routing & Communication Rules | 0/5 | Planned (5 plans, 4 waves) | - |
 | 7. Statistics & User Management | 0/? | Not started | - |
 | 8. Audit Log & System Polish | 0/? | Not started | - |
 
@@ -204,3 +216,4 @@ Plans:
 *Updated: 2026-05-22 — Phase 1 COMPLETE: 01-PLAN-04 done (seed script, tenant settings API, settings page with German labels and feature toggles, migration 000006)*
 *Updated: 2026-05-23 — Phase 4 PLANNED: 2 plans, 2 waves (04-01 foundation, 04-02 UI)*
 *Updated: 2026-05-23 — Phase 5 PLANNED: 6 plans, 3 waves (05-01 DB foundation, 05-02..05 module plans, 05-06 integration gate)*
+*Updated: 2026-05-24 — Phase 6 PLANNED: 5 plans, 4 waves (06-01 DB foundation, 06-02..03 Wave 2 parallel modules, 06-04 Wave 3 templates+log, 06-05 Wave 4 build gate)*
